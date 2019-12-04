@@ -45,15 +45,15 @@ public class Register {
         this.sp = sp & 0xFFFF;
     }
     public void setA(int a) {
-        this.a = a;
+        this.a = (a & 0x100);
     }
 
     public void setX(int x) {
-        this.x = x;
+        this.x = (x & 0x100);
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.y = (y & 0x100);
     }
 
     public void setP(int p) {
@@ -73,11 +73,14 @@ public class Register {
         setFlag(Flags.DECIMALMODE,0);
     }
     //load accumulator , loads 1 byte of memory into the accumulato setting the zero and negative flags as appropriate
-    public void setLDA() {
+    public void setLDA(int value8bit) {
+        setA(value8bit);
         if(getA()==0)
             setFlag(Flags.ZERO,1);
 
-       // if()
+        if(((getA() >> 7) & 1) == 1)
+            setFlag(Flags.NEGATIVE,1);
+
     }
     private void setFlag(Flags currentFlag, int value) {
         for (Flags f : this.flags){
