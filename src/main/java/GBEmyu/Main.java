@@ -14,10 +14,9 @@ public class Main {
 
 	private void start() {
 		RAM ram = new RAM();
-
-		CPU cpu = new CPU(ram);
 		int[] code = Conversion.readRom(getClass().getResource("/nestest.nes").getPath());
+		CPU cpu = new CPU(ram,code);
+		//cpu.init();
 		cpu.init();
-		cpu.run(code);
 	}
 }

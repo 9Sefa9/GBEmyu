@@ -3,9 +3,10 @@ package GBEmyu.cpu;
 import GBEmyu.utilities.Conversion;
 
 public class Opcode {
+    private String[] opcodes;
     //opcodes
-    public static String[] opcodes() {
-        String[] opcodes = new String[0x100];
+    public String[] getOpcodes() {
+        opcodes = new String[0x100];
 
         for(int i = 0; i < 0x100; ++i) {
             opcodes[i] = Conversion.toHex(i);

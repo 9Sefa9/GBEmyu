@@ -11,8 +11,8 @@ public class Register {
     private int y;
     private int p; //status register
     private int s;
-    private int pc; //Program counter
-    private int sp; //Stack Pointer
+    private int pc=0; //Program counter
+    private int sp=0; //Stack Pointer
 
 
 
@@ -36,13 +36,16 @@ public class Register {
         }
     }
     private Flags[] flags;
+    public Register(){
+        flags = Flags.values();
+    }
     //setters
-    public void setPc(int val) {
-        this.pc = val & 0xFFFF; //65535
+    public void incrementPC() {
         this.pc = (pc + 1) & 0xFFFF; //sicher gehen, dass er 0xFFFF nicht überschreitet.
     }
-    public void setSp(int sp) {
-        this.sp = sp & 0xFFFF;
+    public void incrementSP() {
+
+        this.sp = (sp + 1) & 0xFFFF;
     }
     public void setA(int a) {
         this.a = (a & 0x100);
@@ -82,6 +85,15 @@ public class Register {
             setFlag(Flags.NEGATIVE,1);
 
     }
+    public void setDEX(){
+        setX(getX()-1);
+
+        if(getX()==0)
+            setFlag(Flags.ZERO,1);
+
+        if(((getX() >> 7) & 1) == 1)
+            setFlag(Flags.NEGATIVE,1);
+    }
     private void setFlag(Flags currentFlag, int value) {
         for (Flags f : this.flags){
             if(f.name().equals(currentFlag.name())){
@@ -93,7 +105,7 @@ public class Register {
 
     //getters
     public int getSp() {
-        return sp;
+        return this.sp;
     }
     public int getPc(){
         return this.pc;
