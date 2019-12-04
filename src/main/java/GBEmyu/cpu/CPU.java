@@ -34,9 +34,9 @@ public class CPU {
     private void gameLoop(){
 
         while(true){
-                int pc = register.getPc();
-                switch(inst[pc]) {
 
+                switch(inst[register.getPc()]) {
+                    //case 0x
                     case 0x78: // SEI imm
                         register.setSEI();
                         System.out.println("SEI at " + (String.format("0x%04X", register.getPc())));
@@ -55,12 +55,12 @@ public class CPU {
                         register.setDEX();
                         break;
                     default:{
-                        Logger.logMsg(Logger.ERROR,String.format("No command for 0x%02x", inst[pc]));
+                        Logger.logMsg(Logger.ERROR,String.format("No command for 0x%02x", inst[register.getPc()]));
                     }
                 }
                 register.incrementPC();
             try {
-                sleep((1));
+                sleep((0));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
