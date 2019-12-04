@@ -1,15 +1,17 @@
+package GBEmyu;
+
 import java.util.Arrays;
 
 public class RAM {
 
-	private int[] internalRam = new int[0x800];
+	private int[] Ram = new int[0x800];
 	//private Mapper mapper;
 	//private APU apu;
 	//private PPU ppu;
 
 	
 	public RAM() {
-		Arrays.fill(internalRam, 0xff);
+		Arrays.fill(Ram, 0xff);
 	}
 
 

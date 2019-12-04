@@ -1,6 +1,6 @@
-package cpu;
+package GBEmyu.cpu;
 
-import Utilities.Conversion;
+import GBEmyu.utilities.Conversion;
 
 public class Opcode {
     //opcodes

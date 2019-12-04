@@ -1,11 +1,16 @@
-package Utilities;
+package GBEmyu.utilities;
+
+import sun.util.logging.PlatformLogger;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class Conversion {
 
@@ -41,7 +46,7 @@ public class Conversion {
 			stream = new FileInputStream(rom);
 			stream.read(rom_buf);
 		} catch (IOException e) {
-			System.err.println("Failed to open file");
+			LOGGER.log (Level.WARNING, "Failed to open file!");
 			e.printStackTrace();
 		}
 		int[] instructions = new int[rom_buf.length];

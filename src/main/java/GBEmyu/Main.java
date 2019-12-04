@@ -1,5 +1,7 @@
-import Utilities.Conversion;
-import cpu.CPU;
+package GBEmyu;
+
+import GBEmyu.cpu.CPU;
+import GBEmyu.utilities.Conversion;
 
 public class Main {
 
@@ -11,9 +13,9 @@ public class Main {
 	}
 
 	private void start() {
-		RAM wRam = new RAM();
+		RAM ram = new RAM();
 
-		CPU cpu = new CPU(wRam);
+		CPU cpu = new CPU(ram);
 		int[] code = Conversion.readRom(getClass().getResource("/nestest.nes").getPath());
 		cpu.init();
 		cpu.run(code);
