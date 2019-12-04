@@ -45,7 +45,7 @@ public class CPU {
                     System.out.println("CLD at " + (String.format("0x%04X", i)));
                     break;
                 case 0xA9:
-                    register.setLDA();
+                    //register.setLDA();
                     System.out.println("LDA at " + (String.format("0x%04X", i)));
                     break;
                 case 0xCA: // dec on x and
