@@ -1,10 +1,12 @@
 package GBEmyu;
 
 import GBEmyu.utilities.Helper;
+import GBEmyu.utilities.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 public class MemoryMap {
 
@@ -23,7 +25,7 @@ public class MemoryMap {
 	private void createMemory() {
 		//setze alle werte von 0(inkl) bis 65535(inkl.)
 		Helper.forSet(memory,0,memory.length);
-		//System.out.println(Arrays.toString(memory));
+        Logger.LOGGER.log(Level.INFO,"Memory Map created :: "+String.format("0x%04X", memory.length));
 	}
 
 	public int[] getMemory(){
@@ -33,7 +35,6 @@ public class MemoryMap {
 		// TODO: Create this method
 		getMemory()[address] = val;
 	}
-
 
 	public int read(int address) {
 		// TODO: create this method
