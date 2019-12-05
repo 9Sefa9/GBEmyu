@@ -67,11 +67,11 @@ public class Register {
         this.s = s;
     }
 
-    //set interrupt disable Opcode: $78
+    //set interrupt disable OpcodeBuilder: $78
     public void setSEI(){
         setFlag(Flags.INTERRUPTDISABLE,1);
     }
-    //clear decimal mode Opcode: $D8
+    //clear decimal mode OpcodeBuilder: $D8
     public void setCLD(){
         setFlag(Flags.DECIMALMODE,0);
     }
@@ -128,7 +128,7 @@ public class Register {
 
     @Override
     public String toString(){
-        Logger.logMsg(Logger.INFO,"Registers::: "+" A "+a+" X "+x+" Y "+y+" P "+p+" S "+s+" PC "+pc+" SP "+sp);
+        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"Registers::: "+" A "+a+" X "+x+" Y "+y+" P "+p+" S "+s+" PC "+pc+" SP "+sp);
         return "";
     }
 }

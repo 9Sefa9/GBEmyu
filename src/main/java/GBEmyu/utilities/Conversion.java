@@ -17,13 +17,17 @@ public class Conversion {
 	// setup random generator
 	static Random randomGenerator = new Random();
 	
-	
+	/*
+	System.out.println(Integer.decode("0x4d2"))    // output 1234
+	//and vice versa
+	System.out.println(Integer.toHexString(1234); //  output is 4d2);
+	 */
 	// tohex methods
 	public static String toHex(int number) {
-		return Integer.toHexString(number).toUpperCase(Locale.UK);
+		return Integer.toHexString(number);
 	}
 	public static String toHex(long number) {
-		return Long.toHexString(number).toUpperCase(Locale.UK);
+		return Long.toHexString(number).toUpperCase();
 	}
 	
 	
