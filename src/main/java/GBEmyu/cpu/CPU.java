@@ -37,6 +37,39 @@ public class CPU {
                     //decode instruction
                     int instruction = instructions[register.getPC()];
 
+                    switch(opcodes[instructions[register.getPC()]].getAddressMode()){
+                        case IMMEDIATE:
+
+                            break;
+                        case ZEROPAGEX:
+
+                            break;
+
+                        case ZEROPAGE:
+
+                            break;
+
+                        case ABSOLUTE:
+
+                            break;
+
+                        case ABSOLUTEX:
+
+                            break;
+
+                        case ABSOLUTEY:
+
+                            break;
+
+                        case INDIRECTX:
+
+                            break;
+
+                        case INDIRECTY:
+
+                            break;
+
+                    }
                     //execute opcode operation
                     opcodes[instructions[register.getPC()]].operation();
 

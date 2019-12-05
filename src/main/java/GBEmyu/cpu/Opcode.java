@@ -8,16 +8,20 @@ interface Action{
 public class Opcode implements Action {
     private String opcodeName;
     private int hexAddress;
-
-    public Opcode(String opcodeName, int hexAddress){
+    private Register.AddressModes addressMode;
+    public Opcode(Register.AddressModes addressMode, String opcodeName, int hexAddress){
         this.opcodeName = opcodeName;
         this.hexAddress = hexAddress;
+        this.addressMode = addressMode;
     }
     public int getHexAddress(){
         return this.hexAddress;
     }
     public String getOpcodeName(){
         return this.opcodeName;
+    }
+    public Register.AddressModes getAddressMode(){
+        return this.addressMode;
     }
     @Override
     public void operation() {

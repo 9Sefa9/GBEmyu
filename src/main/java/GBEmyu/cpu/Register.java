@@ -14,6 +14,20 @@ public class Register {
     private int pc=0; //Program counter
     private int sp=0; //Stack Pointer
 
+    //AddressMode - wird von den Opcodes eingesetzt. Und in der CPU Loop.  Siehe http://obelisk.me.uk/6502/reference.html
+    public enum AddressModes{
+        IMMEDIATE,
+        ZEROPAGE,
+        ZEROPAGEX,
+        ABSOLUTE,
+        ABSOLUTEX,
+        ABSOLUTEY,
+        INDIRECTX,
+        INDIRECTY
+    }
+
+    //flags
+    private Flags[] flags;
     private enum Flags{
         CARRY(0),
         DECIMALMODE(0),
@@ -33,9 +47,12 @@ public class Register {
          this.val = val;
         }
     }
-    private Flags[] flags;
+
+
+
     public Register(){
-        flags = Flags.values();
+        this.flags = Flags.values();
+
     }
 
     //setters
