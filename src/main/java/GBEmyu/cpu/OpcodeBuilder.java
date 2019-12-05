@@ -26,7 +26,7 @@ public class OpcodeBuilder {
     private  Opcode LDA =  new Opcode("LDA", 0xA9){
         @Override
         public void operation(){
-            register.setLDA(inst[register.getPc()+1]);
+            register.setLDA(inst[register.getPC()+1]);
         }
     };
     private  Opcode LDAINDIRECTX =  new Opcode("LDAINDIRECTX", 0xA1){
@@ -411,32 +411,32 @@ public class OpcodeBuilder {
         opcodes[0xBF] = BRK;
 
         opcodes[0xC0] = BRK;
-        opcodes[0xC1] = CMPINDIRECTX;
+     //   opcodes[0xC1] = CMPINDIRECTX;
         opcodes[0xC2] = BRK;
         opcodes[0xC3] = BRK;
         opcodes[0xC4] = BRK;
-        opcodes[0xC5] = CMPZEROPAGE;
+     //   opcodes[0xC5] = CMPZEROPAGE;
         opcodes[0xC6] = BRK;
         opcodes[0xC7] = BRK;
         opcodes[0xC8] = BRK;
-        opcodes[0xC9] = CMPIMMEDIATE;
+     //   opcodes[0xC9] = CMPIMMEDIATE;
         opcodes[0xCA] = DEX;
         opcodes[0xCB] = BRK;
         opcodes[0xCC] = BRK;
-        opcodes[0xCD] = CMPABSOLUTE;
+     //   opcodes[0xCD] = CMPABSOLUTE;
         opcodes[0xCE] = BRK;
         opcodes[0xCF] = BRK;
 
         opcodes[0xD0] = BRK;
-        opcodes[0xD1] = CMPINDIRECTY;
+     //   opcodes[0xD1] = CMPINDIRECTY;
         opcodes[0xD2] = BRK;
         opcodes[0xD3] = BRK;
         opcodes[0xD4] = BRK;
-        opcodes[0xD5] = CMPZEROPAGEX;
+     //   opcodes[0xD5] = CMPZEROPAGEX;
         opcodes[0xD6] = DECZEROPAGEX;
         opcodes[0xD7] = BRK;
         opcodes[0xD8] = CLD;
-        opcodes[0xD9] = CMPABSOLUTEY;
+     //   opcodes[0xD9] = CMPABSOLUTEY;
         opcodes[0xDA] = BRK;
         opcodes[0xDB] = BRK;
         opcodes[0xDC] = BRK;

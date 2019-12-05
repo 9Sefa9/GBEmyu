@@ -12,32 +12,28 @@ import java.util.logging.Logger;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
-public class Conversion {
+public class Helper {
 
-	// setup random generator
-	static Random randomGenerator = new Random();
-	
 	/*
 	System.out.println(Integer.decode("0x4d2"))    // output 1234
 	//and vice versa
-	System.out.println(Integer.toHexString(1234); //  output is 4d2);
+	Syst
+
 	 */
-	// tohex methods
+	// conversion toHex methods
 	public static String toHex(int number) {
 		return Integer.toHexString(number);
 	}
 	public static String toHex(long number) {
 		return Long.toHexString(number).toUpperCase();
 	}
-	
-	
-	// Generation methods
-	public static int generateInt(int range) {
-		return randomGenerator.nextInt(range + 1);
-	}
-	
-	public static long generateLong(long startRange, long endRange) {
-		return startRange + (long)(randomGenerator.nextDouble() * (endRange - startRange));		
+
+	//helper function to iterate through
+	public static void forSet(int[] address, int from, int to){
+
+		for(int i = from; i<to; i++){
+			address[i] = i;
+		}
 	}
 	
 	// read rom method

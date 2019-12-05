@@ -14,8 +14,6 @@ public class Register {
     private int pc=0; //Program counter
     private int sp=0; //Stack Pointer
 
-
-
     private enum Flags{
         CARRY(0),
         DECIMALMODE(0),
@@ -39,6 +37,7 @@ public class Register {
     public Register(){
         flags = Flags.values();
     }
+
     //setters
     public void incrementPC() {
         this.pc = (pc + 1) & 0xFFFF; //sicher gehen, dass er 0xFFFF nicht überschreitet.
@@ -50,19 +49,15 @@ public class Register {
     public void setA(int a) {
         this.a = (a & 0x100);
     }
-
     public void setX(int x) {
         this.x = (x & 0x100);
     }
-
     public void setY(int y) {
         this.y = (y & 0x100);
     }
-
     public void setP(int p) {
         this.p = p;
     }
-
     public void setS(int s) {
         this.s = s;
     }
@@ -85,6 +80,7 @@ public class Register {
             setFlag(Flags.NEGATIVE,1);
 
     }
+    //decreae X and set flags appropriately
     public void setDEX(){
         setX(getX()-1);
 
@@ -94,6 +90,7 @@ public class Register {
         if(((getX() >> 7) & 1) == 1)
             setFlag(Flags.NEGATIVE,1);
     }
+    //find and set the flag
     private void setFlag(Flags currentFlag, int value) {
         for (Flags f : this.flags){
             if(f.name().equals(currentFlag.name())){
@@ -104,10 +101,10 @@ public class Register {
     }
 
     //getters
-    public int getSp() {
+    public int getSP() {
         return this.sp;
     }
-    public int getPc(){
+    public int getPC(){
         return this.pc;
     }
     public int getA() {
