@@ -32,7 +32,6 @@ public class Register {
         INDIRECTY
     }
 
-    //flags
     private Flags[] flags;
     private enum Flags{
         CARRY(0),

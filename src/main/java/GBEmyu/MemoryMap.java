@@ -36,8 +36,23 @@ public class MemoryMap {
 		getMemory()[address] = val;
 	}
 
-	public int read(int address) {
-		// TODO: create this method
-		return getMemory()[address];
+	public int readRam(int address16){
+		if(address16 < 0x800){
+			return this.memory[address16];
+		}
+		else{
+			return readRamAgain(address16);
+		}
+	}
+	// lesen http://nemulator.com/files/nes_emu.txt
+	private int readRamAgain(int address16) {
+		if( address16 < 0x2000)
+			return this.memory[address16 & 0x7FF];
+		//else if(address16 <= 0x3FFF)
+			//return ppu_read(address16);
+	//	else if(address16 >= 0x4000 && address16 <= 0x4017)
+		//	return apu_read(address16);
+
+		//else	return  readRamFP
 	}
 }

@@ -46,60 +46,60 @@ public class CPU {
                             //bin mit der reihenfolge nicht sicher aber :
                             //doAkkumulator() oder so
                             //execute opcode operation
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case IMPLICIT:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case IMMEDIATE:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case ZEROPAGE:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case ZEROPAGEX:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case ZEROPAGEY:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case RELATIVE:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case ABSOLUTE:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
 
                         case ABSOLUTEX:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case ABSOLUTEY:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case INDIRECT:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case INDIRECTX:
 
-                            opcodes[instructions[register.getPC()]].operation();
+
                             break;
                         case INDIRECTY:
 
-                            opcodes[instructions[register.getPC()]].operation();
                             break;
 
                     }
-
+                    //Führe spezifische operation aus, nachdem die addressmodes aufegührt wurden.
+                    opcodes[instructions[register.getPC()]].operation();
 
                     Logger.LOGGER.log(Level.INFO, "CYCLE::"+getCycle()+"  PC::"+ register.getPC() +"  Instruction(HEX)::" + instruction + "  OpcodeName::" + opcodes[instruction].getOpcodeName() + "  OpcodeHexAddress::" + opcodes[instruction].getHexAddress());
                     register.incrementPC();
