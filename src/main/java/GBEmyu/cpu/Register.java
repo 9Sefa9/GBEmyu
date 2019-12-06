@@ -16,12 +16,18 @@ public class Register {
 
     //AddressMode - wird von den Opcodes eingesetzt. Und in der CPU Loop.  Siehe http://obelisk.me.uk/6502/reference.html
     public enum AddressModes{
+        HLT,
+        IMPLICIT,
+        ACCUMULATOR,
         IMMEDIATE,
         ZEROPAGE,
         ZEROPAGEX,
+        ZEROPAGEY,
+        RELATIVE,
         ABSOLUTE,
         ABSOLUTEX,
         ABSOLUTEY,
+        INDIRECT,
         INDIRECTX,
         INDIRECTY
     }
