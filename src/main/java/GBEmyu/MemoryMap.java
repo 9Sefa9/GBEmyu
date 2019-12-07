@@ -37,15 +37,23 @@ public class MemoryMap {
 	}
 
 	public int readRam(int address16){
-		if(address16 < 0x800){
-			return this.memory[address16];
-		}
-		else{
-			return readRamAgain(address16);
-		}
-	}
+	    try {
+            if (address16 < 0x800) {
+                return this.memory[address16];
+            } else {
+                throw new Exception("Ram Overflow - set "+this.memory[address16]+ " to -1");
+            }
+
+        }catch (Exception e){
+	        e.printStackTrace();
+        }
+	//	else{
+	//		return readRamAgain(address16);
+	//	}
+        return -1;
+    }
 	// lesen http://nemulator.com/files/nes_emu.txt
-	private int readRamAgain(int address16) {
+	/*private int readRamAgain(int address16) {
 		if( address16 < 0x2000)
 			return this.memory[address16 & 0x7FF];
 		//else if(address16 <= 0x3FFF)
@@ -54,5 +62,5 @@ public class MemoryMap {
 		//	return apu_read(address16);
 
 		//else	return  readRamFP
-	}
+	}*/
 }

@@ -126,6 +126,7 @@ public class Register {
     public int getSP() {
         return this.sp;
     }
+
     public int getPC(){
         return this.pc;
     }

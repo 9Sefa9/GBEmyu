@@ -6,342 +6,342 @@ public class OpcodeBuilder {
     private int[] inst;
     private  Opcode BRKIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"BRKIMPLICIT", 0x00){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
         }
     };
 
     private  Opcode SEIIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"SEIIMPLICIT", 0x78){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
             register.setSEI();
         }
     };
 
     private  Opcode CLDIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"CLDIMPLICIT", 0xD8){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
             register.setCLD();
         }
     };
     private  Opcode LDAIMMEDIATE =  new Opcode(Register.AddressModes.IMMEDIATE,"LDAIMMEDIATE", 0xA9){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
             register.setLDA(inst[register.getPC()+1]);
         }
     };
     private  Opcode LDAINDIRECTX =  new Opcode(Register.AddressModes.INDIRECTX,"LDAINDIRECTX", 0xA1){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
 
     private  Opcode DEXIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"DEXIMPLICIT", 0xCA){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
             register.setDEX();
         }
     };
 
     private  Opcode ROLZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"ROLZEROPAGE", 0x26){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode CLCIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"CLCIMPLICIT", 0x18){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode NOPIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"NOPIMPLICIT", 0xEA){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode NOPABSOLUTE = new Opcode(Register.AddressModes.ABSOLUTE,"NOPABSOLUTE", 0x0C){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode NOPABSOLUTEX = new Opcode(Register.AddressModes.ABSOLUTEX,"NOPABSOLUTEX", 0x1C){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode NOPZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"NOPZEROPAGE", 0x04){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode NOPZEROPAGEX = new Opcode(Register.AddressModes.ZEROPAGEX,"NOPZEROPAGEX", 0x14){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode JSRABSOLUTE = new Opcode(Register.AddressModes.ABSOLUTE,"JSRABSOLUTE", 0x20){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode RORZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"RORZEROPAGE", 0x66){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode PLAIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"PLAIMPLICIT", 0x68){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode ADCIMMEDIATE = new Opcode(Register.AddressModes.IMMEDIATE,"ADCIMMEDIATE", 0x69){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode STAZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"STAZEROPAGE", 0x85){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode STAABSOLUTE = new Opcode(Register.AddressModes.ABSOLUTE,"STAABSOLUTE", 0x8D){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode DECZEROPAGEX = new Opcode(Register.AddressModes.ZEROPAGEX,"DECZEROPAGEX", 0xD6){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode BEQRELATIVE = new Opcode(Register.AddressModes.RELATIVE,"BEQRELATIVE", 0xF0){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     //halt the cpu, reset needed to continue..
     private Opcode KIL = new Opcode(Register.AddressModes.HLT,"KIL", 0x02){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
 
     private Opcode SLOABSOLUTEY = new Opcode(Register.AddressModes.ABSOLUTEY,"SLOABSOLUTEY", 0x1B){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode SLOZEROPAGEX = new Opcode(Register.AddressModes.ZEROPAGEX,"SLOZEROPAGEX", 0x17){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode SLOABSOLUTE = new Opcode(Register.AddressModes.ABSOLUTE,"SLOABSOLUTE", 0x0F){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode SLOABSOLUTEX = new Opcode(Register.AddressModes.ABSOLUTEX,"SLOABSOLUTEX", 0x1F){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode SLOZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"SLOZEROPAGE", 0x07){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode SLOINDIRECTX = new Opcode(Register.AddressModes.INDIRECTX,"SLOINDIRECTX", 0x03){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private Opcode SLOINDIRECTY = new Opcode(Register.AddressModes.INDIRECTY,"SLOINDIRECTY", 0x13){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ORAABSOLUTEY = new Opcode(Register.AddressModes.ABSOLUTEY,"ORAABSOLUTEY", 0x19){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ORAABSOLUTEX = new Opcode(Register.AddressModes.ABSOLUTEX,"ORAABSOLUTEX", 0x1D){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ORAINDIRECTY = new Opcode(Register.AddressModes.INDIRECTY,"ORAINDIRECTY", 0x11){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
 
     private  Opcode ORAZEROPAGEX = new Opcode(Register.AddressModes.ZEROPAGEX,"ORAZEROPAGEX", 0x15){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ORAINDIRECTX = new Opcode(Register.AddressModes.INDIRECTX,"ORAINDIRECTX", 0x01){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ORAZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"ORAZEROPAGE", 0x05){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ORAABSOLUTE= new Opcode(Register.AddressModes.ABSOLUTE,"ORAABSOLUTE", 0x0D){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ORAIMMEDIATE= new Opcode(Register.AddressModes.IMMEDIATE,"ORAIMMEDIATE", 0x09){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
 
     private  Opcode ASLABSOLUTEX= new Opcode(Register.AddressModes.ABSOLUTEX,"ASLABSOLUTEX", 0x1E){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
 
     private  Opcode ASLZEROPAGEX= new Opcode(Register.AddressModes.ZEROPAGEX,"ASLZEROPAGEX", 0x16){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ASLZEROPAGE= new Opcode(Register.AddressModes.ZEROPAGE,"ASLZEROPAGE", 0x06){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ASLABSOLUTE= new Opcode(Register.AddressModes.ABSOLUTE,"ASLABSOLUTE", 0x0E){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode ASLACCUMULATOR = new Opcode(Register.AddressModes.ACCUMULATOR,"ASLACCUMULATOR", 0x0A){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode PHPIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"PHPIMPLICIT", 0x08){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     //http://www.oxyron.de/html/opcodes02.html  Suceh nach ANCIMMEDIATE.
     private  Opcode ANCIMMEDIATE = new Opcode(Register.AddressModes.IMMEDIATE,"ANCIMMEDIATE", 0x0B){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode LSRZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"LSRZEROPAGE", 0x46){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode PHAIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"PHAIMPLICIT", 0x48){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
 
     private  Opcode CMPABSOLUTEY = new Opcode(Register.AddressModes.ABSOLUTEY,"CMPABSOLUTEY", 0xD9){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
        private  Opcode CMPINDIRECTY = new Opcode(Register.AddressModes.INDIRECTY,"CMPINDIRECTY", 0xD1){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode CMPABSOLUTEX = new Opcode(Register.AddressModes.ABSOLUTEX,"CMPABSOLUTEX", 0xDD){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode BPLRELATIVE = new Opcode(Register.AddressModes.RELATIVE,"BPLRELATIVE", 0x10){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode CMPABSOLUTE = new Opcode(Register.AddressModes.ABSOLUTE,"CMPABSOLUTE", 0xCD){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode CMPINDIRECTX = new Opcode(Register.AddressModes.INDIRECTX,"CMPINDIRECTX", 0xC1){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
 
     private  Opcode CMPIMMEDIATE = new Opcode(Register.AddressModes.IMMEDIATE,"CMPIMMEDIATE", 0xC9){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode CMPZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"CMPZEROPAGE", 0xC5){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
     private  Opcode CMPZEROPAGEX = new Opcode(Register.AddressModes.ZEROPAGEX,"CMPZEROPAGEX", 0xD5){
         @Override
-        public void operation(){
+        public void operation(int[] operanden){
 
         }
     };
