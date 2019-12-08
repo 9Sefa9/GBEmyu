@@ -4,51 +4,106 @@ public class OpcodeBuilder {
     private Opcode[] opcodes;
     private Register register;
     private int[] inst;
-    private  Opcode BRKIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"BRKIMPLICIT", 0x00){
+    private  Opcode BRKIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"BRKIMPLICIT", 0x00,7){
         @Override
         public void operation(int[] operanden){
+
         }
     };
 
-    private  Opcode SEIIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"SEIIMPLICIT", 0x78){
+    private  Opcode SEIIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"SEIIMPLICIT", 0x78,	2){
         @Override
         public void operation(int[] operanden){
             register.setSEI();
         }
     };
 
-    private  Opcode CLDIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"CLDIMPLICIT", 0xD8){
+    private  Opcode CLDIMPLICIT =  new Opcode(Register.AddressModes.IMPLICIT,"CLDIMPLICIT", 0xD8,2){
         @Override
         public void operation(int[] operanden){
             register.setCLD();
         }
     };
-    private  Opcode LDAIMMEDIATE =  new Opcode(Register.AddressModes.IMMEDIATE,"LDAIMMEDIATE", 0xA9){
+    private  Opcode LDAIMMEDIATE =  new Opcode(Register.AddressModes.IMMEDIATE,"LDAIMMEDIATE", 0xA9,2){
         @Override
         public void operation(int[] operanden){
             register.setLDA(inst[register.getPC()+1]);
         }
     };
-    private  Opcode LDAINDIRECTX =  new Opcode(Register.AddressModes.INDIRECTX,"LDAINDIRECTX", 0xA1){
+    private  Opcode LDAZEROPAGE =  new Opcode(Register.AddressModes.ZEROPAGE,"LDAZEROPAGE", 0xA5,3){
+        @Override
+        public void operation(int[] operanden){
+            register.setLDA(inst[register.getPC()+1]);
+        }
+    };
+    private  Opcode LDAINDIRECTX =  new Opcode(Register.AddressModes.INDIRECTX,"LDAINDIRECTX", 0xA1,6){
         @Override
         public void operation(int[] operanden){
 
         }
     };
+    private  Opcode LDAABSOLUTE =  new Opcode(Register.AddressModes.ABSOLUTE,"LDAABSOLUTE", 0xAD,4){
+        @Override
+        public void operation(int[] operanden){
 
-    private  Opcode DEXIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"DEXIMPLICIT", 0xCA){
+        }
+    };
+    private  Opcode LDAABSOLUTEX =  new Opcode(Register.AddressModes.ABSOLUTEX,"LDAABSOLUTEX", 0xBD,4){
+        @Override
+        public void operation(int[] operanden){
+
+        }
+    };
+    private  Opcode LDAABSOLUTEY =  new Opcode(Register.AddressModes.ABSOLUTEY,"LDAABSOLUTEY", 0xB9,4){
+        @Override
+        public void operation(int[] operanden){
+
+        }
+    };
+    private  Opcode LDAZEROPAGEX =  new Opcode(Register.AddressModes.ZEROPAGEX,"LDAZEROPAGEX", 0xB5,4){
+        @Override
+        public void operation(int[] operanden){
+
+        }
+    };
+    private  Opcode DEXIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"DEXIMPLICIT", 0xCA,2){
         @Override
         public void operation(int[] operanden){
             register.setDEX();
         }
     };
 
-    private  Opcode ROLZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"ROLZEROPAGE", 0x26){
+    private  Opcode ROLZEROPAGE = new Opcode(Register.AddressModes.ZEROPAGE,"ROLZEROPAGE", 0x26,5){
         @Override
         public void operation(int[] operanden){
 
         }
     };
+    private  Opcode ROLZEROPAGEX = new Opcode(Register.AddressModes.ZEROPAGEX,"ROLZEROPAGEX", 0x36,6){
+        @Override
+        public void operation(int[] operanden){
+
+        }
+    };
+    private  Opcode ROLABSOLUTE = new Opcode(Register.AddressModes.ABSOLUTE,"ROLABSOLUTE", 0x2E,6){
+        @Override
+        public void operation(int[] operanden){
+
+        }
+    };
+    private  Opcode ROLABSOLUTEX = new Opcode(Register.AddressModes.ABSOLUTEX,"ROLABSOLUTEX", 0x3E,7){
+        @Override
+        public void operation(int[] operanden){
+
+        }
+    };
+    private  Opcode ROLACCUMULATOR = new Opcode(Register.AddressModes.ACCUMULATOR,"ROLACCUMULATOR", 0x2A,2){
+        @Override
+        public void operation(int[] operanden){
+
+        }
+    };
+
     private  Opcode CLCIMPLICIT = new Opcode(Register.AddressModes.IMPLICIT,"CLCIMPLICIT", 0x18){
         @Override
         public void operation(int[] operanden){
@@ -402,7 +457,7 @@ public class OpcodeBuilder {
         opcodes[0x27] = BRKIMPLICIT;
         opcodes[0x28] = BRKIMPLICIT;
         opcodes[0x29] = BRKIMPLICIT;
-        opcodes[0x2A] = BRKIMPLICIT;
+        opcodes[0x2A] = ROLACCUMULATOR;
         opcodes[0x2B] = BRKIMPLICIT;
         opcodes[0x2C] = BRKIMPLICIT;
         opcodes[0x2D] = BRKIMPLICIT;
@@ -533,7 +588,7 @@ public class OpcodeBuilder {
         opcodes[0xA2] = BRKIMPLICIT;
         opcodes[0xA3] = BRKIMPLICIT;
         opcodes[0xA4] = BRKIMPLICIT;
-        opcodes[0xA5] = LDAIMMEDIATE;
+        opcodes[0xA5] = LDAZEROPAGE;
         opcodes[0xA6] = BRKIMPLICIT;
         opcodes[0xA7] = BRKIMPLICIT;
         opcodes[0xA8] = BRKIMPLICIT;
@@ -541,24 +596,24 @@ public class OpcodeBuilder {
         opcodes[0xAA] = BRKIMPLICIT;
         opcodes[0xAB] = BRKIMPLICIT;
         opcodes[0xAC] = BRKIMPLICIT;
-        opcodes[0xAD] = BRKIMPLICIT;
+        opcodes[0xAD] = LDAABSOLUTE;
         opcodes[0xAE] = BRKIMPLICIT;
         opcodes[0xAF] = BRKIMPLICIT;
 
         opcodes[0xB0] = BRKIMPLICIT;
-        opcodes[0xB1] = BRKIMPLICIT;
+        opcodes[0xB1] = LDAINDIRECTY;
         opcodes[0xB2] = KIL;
         opcodes[0xB3] = BRKIMPLICIT;
         opcodes[0xB4] = BRKIMPLICIT;
-        opcodes[0xB5] = BRKIMPLICIT;
+        opcodes[0xB5] = LDAZEROPAGEX;
         opcodes[0xB6] = BRKIMPLICIT;
         opcodes[0xB7] = BRKIMPLICIT;
         opcodes[0xB8] = BRKIMPLICIT;
-        opcodes[0xB9] = BRKIMPLICIT;
+        opcodes[0xB9] = LDAABSOLUTEY;
         opcodes[0xBA] = BRKIMPLICIT;
         opcodes[0xBB] = BRKIMPLICIT;
         opcodes[0xBC] = BRKIMPLICIT;
-        opcodes[0xBD] = BRKIMPLICIT;
+        opcodes[0xBD] = LDAABSOLUTEX;
         opcodes[0xBE] = BRKIMPLICIT;
         opcodes[0xBF] = BRKIMPLICIT;
 

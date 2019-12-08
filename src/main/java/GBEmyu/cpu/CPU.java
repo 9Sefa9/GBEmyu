@@ -24,21 +24,23 @@ public class CPU {
         clockspeed = 0;
     }
     public void init() {
-        gameLoop();
+        step();
     }
-    private void gameLoop() {
+    private int step() {
             //1 read or write means 1 CPU cycle.
             setCycle(0);
             //1.662607MHz = 1662607Hz
             //1662607Hz/59.9Hz = 27756cycles/frame
             /*while(getCycle()<=27756)*/
-                while(true){
-
+               // while(getCycle()<=27756){
+                int instruction;
+                Opcode currentOpcode;
+                int currentCycle = getCycle();
                 try {
 
-                    int instruction = instructions[register.getPC()];
+                    instruction = instructions[register.getPC()];
                     //Fetch opcode from the current PC address
-                    Opcode currentOpcode = opcodes[instructions[register.getPC()]];
+                    currentOpcode = opcodes[instructions[register.getPC()]];
 
                     // opcodes[instructions[register.getPC()]].operation();
                     switch(currentOpcode.getAddressMode()){
@@ -95,15 +97,15 @@ public class CPU {
                     Logger.LOGGER.log(Level.INFO, "CYCLE::"+getCycle()+"  PC::"+ register.getPC() +"  Instruction(HEX)::" + instruction + "  OpcodeName::" + opcodes[instruction].getOpcodeName() + "  OpcodeHexAddress::" + opcodes[instruction].getHexAddress());
                     register.incrementPC();
 
-                    sleep(0);
+                    sleep(5);
                 } catch (InterruptedException | NullPointerException e) {
                     System.out.println("CYCLE::"+getCycle()+"  PC::"+ register.getPC() +"  Instruction(HEX)::" + instructions[register.getPC()] + "  NOT FOUND IN OPCODES ! ::"+ Arrays.toString(e.getStackTrace()));
-                    break;
+                    //break;
                 }
-            }
-
-
+                return getCycle() - currentCycle;
     }
+
+
 
     private void implicit(Opcode opcode) {
 
@@ -119,7 +121,6 @@ public class CPU {
         do anything to it, and then do operation on it.
         2 cycles*/
         System.out.println("implicit");
-        register.incrementPC();
         incrementCycle(2);
         opcode.operation(null);
 
@@ -166,6 +167,7 @@ public class CPU {
 	            return hi<<8 | lo
 }
              */
+        System.out.println("absolute");
             register.incrementPC();
             int lo = instructions[register.getPC()];
             register.incrementPC();
@@ -186,6 +188,7 @@ public class CPU {
 		            pageCrossed = pagesDiffer(address-uint16(cpu.X), address)
 }
          */
+        System.out.println("absolute x");
         register.incrementPC();
         int lo = instructions[register.getPC()];
         register.incrementPC();
@@ -208,6 +211,7 @@ public class CPU {
 
 
     private void absolutey(Opcode currentOpcode){
+        System.out.println("absolute y");
         register.incrementPC();
         int lo = instructions[register.getPC()];
         register.incrementPC();
@@ -236,8 +240,9 @@ public class CPU {
 	        return uint16(hi)<<8 | uint16(lo)
 }
          */
+        System.out.println("indirect");
         register.incrementPC();
-        int[] pointerAddress ={instructions[register.getPC()] +register.getX()};
+        int[] pointerAddress ={instructions[register.getPC()]};
 
         int hi = ((pointerAddress[0] & 0xFF) | (pointerAddress[0]+1));
 
@@ -248,13 +253,73 @@ public class CPU {
 
     }
     private void indirectx(Opcode currentOpcode){
+        //cpu.read16bug(uint16(cpu.Read(cpu.PC+1) + cpu.X))
+        /*
+        func (cpu *CPU) read16bug(address uint16) uint16 {
+	        a := address
+	        b := (a & 0xFF00) | uint16(byte(a)+1)
+	        lo := cpu.Read(a)
+	        hi := cpu.Read(b)
+	        return uint16(hi)<<8 | uint16(lo)
+}
+         */
+        System.out.println("indirect x");
+        register.incrementPC();
+        int[] a ={instructions[register.getPC()] +register.getX()};
+
+        int b = ((a[0] & 0xFF) | (a[0]+1) & 0xFF);
+
+        int lo = instructions[a[0]];
+        int hi = instructions[b];
+        int[] value = { ((hi & 0xFF) <<8) | (lo & 0xFF) };
+        incrementCycle(6);
+        currentOpcode.operation(value);
 
     }
     private void indirecty(Opcode currentOpcode){
+            /*
+            case modeIndirectIndexed:
+		        address = cpu.read16bug(uint16(cpu.Read(cpu.PC+1))) + uint16(cpu.Y)
+		        pageCrossed = pagesDiffer(address-uint16(cpu.Y), address)
+             */
+        System.out.println("indirect y");
+        register.incrementPC();
+        int[] a ={instructions[register.getPC()] +register.getY()};
+
+        int b = ((a[0] & 0xFF) | (a[0]+1) & 0xFF);
+
+        int lo = instructions[a[0]];
+        int hi = instructions[b];
+        int[] value = { ((hi & 0xFF) <<8) | (lo & 0xFF) };
+        if(pageCrossing(a[0] - register.getY(), a[0])){
+            incrementCycle(6);
+            currentOpcode.operation(value);
+        }else{
+            incrementCycle(5);
+            currentOpcode.operation(value);
+        }
+
 
     }
     private void relative(Opcode currentOpcode){
-
+    /*
+            case modeRelative:
+		        offset := uint16(cpu.Read(cpu.PC + 1))
+		        if offset < 0x80 {
+			    address = cpu.PC + 2 + offset
+		        } else {
+			    address = cpu.PC + 2 + offset - 0x100
+		        }
+    */
+        System.out.println("relative");
+        register.incrementPC();
+        int offset = instructions[register.getPC()];
+        int []value=new int[1];
+        if(offset < 0x80)
+            value[0] = register.getPC() + 2 +offset;
+        else
+            value[0] = register.getPC() +2 + offset - 0x100;
+        currentOpcode.operation(value);
     }
 
     private void zeropage(Opcode currentOpcode) {
