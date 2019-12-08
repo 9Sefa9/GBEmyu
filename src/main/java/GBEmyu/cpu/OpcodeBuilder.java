@@ -5,8 +5,13 @@ public class OpcodeBuilder {
     private Register register;
     private int[] inst;
 
+/*Bemerkungen:
+    1. Die einzelnen cyclen NICHT in der jeweilige Operation verwenden und sie der haupt cycle erhöhen! Denn in der CPU klasse wird sowieso am ende
+    der jeweilige cycle entnommen und erhöht. Hier ist also nur die operation von deuten. Die ienzelnen Inkrementetionen von Cyclen wird in der CPU klasse vorgenommen.
+*/
 
 //ä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#ö ====  OFFICIAL OPCODES SECTION  ====  ä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#öä#ü#ö
+
 
     //LDA
     private  Opcode LDAIMMEDIATE =  new Opcode(Register.AddressModes.IMMEDIATE,"LDAIMMEDIATE", 0xA9,2){
@@ -57,7 +62,6 @@ public class OpcodeBuilder {
 
         }
     };
-
 
 
 
@@ -1073,74 +1077,74 @@ public class OpcodeBuilder {
 
 
 
-
+    //@TODO die KILs wurden mit cycle 1 versehen, da wir sonst ins negative gehen. Laut dokumentation aber benötigt man kein cycle ?
     //halt the cpu, reset needed to continue..
-    private Opcode KIL1 = new Opcode(Register.AddressModes.HLT,"KIL", 0x02,-1){
+    private Opcode KIL1 = new Opcode(Register.AddressModes.HLT,"KIL1", 0x02,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL2 = new Opcode(Register.AddressModes.HLT,"KIL", 0x12,-1){
+    private Opcode KIL2 = new Opcode(Register.AddressModes.HLT,"KIL2", 0x12,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL3= new Opcode(Register.AddressModes.HLT,"KIL", 0x22,-1){
+    private Opcode KIL3= new Opcode(Register.AddressModes.HLT,"KIL3", 0x22,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL4 = new Opcode(Register.AddressModes.HLT,"KIL", 0x32,-1){
+    private Opcode KIL4 = new Opcode(Register.AddressModes.HLT,"KIL4", 0x32,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL5 = new Opcode(Register.AddressModes.HLT,"KIL", 0x42,-1){
+    private Opcode KIL5 = new Opcode(Register.AddressModes.HLT,"KIL5", 0x42,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL6 = new Opcode(Register.AddressModes.HLT,"KIL", 0x52,-1){
+    private Opcode KIL6 = new Opcode(Register.AddressModes.HLT,"KIL6", 0x52,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL7= new Opcode(Register.AddressModes.HLT,"KIL", 0x62,-1){
+    private Opcode KIL7= new Opcode(Register.AddressModes.HLT,"KIL7", 0x62,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL8 = new Opcode(Register.AddressModes.HLT,"KIL", 0x72,-1){
+    private Opcode KIL8 = new Opcode(Register.AddressModes.HLT,"KIL8", 0x72,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL9 = new Opcode(Register.AddressModes.HLT,"KIL", 0x82,-1){
+    private Opcode KIL9 = new Opcode(Register.AddressModes.HLT,"KIL9", 0x82,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL10 = new Opcode(Register.AddressModes.HLT,"KIL", 0x92,-1){
+    private Opcode KIL10 = new Opcode(Register.AddressModes.HLT,"KIL10", 0x92,1){
         @Override
         public void operation(int[] operanden){
 
         }
     };
-    private Opcode KIL11 = new Opcode(Register.AddressModes.HLT,"KIL", 0xB2,-1){
+    private Opcode KIL11 = new Opcode(Register.AddressModes.HLT,"KIL11", 0xB2,1){
         @Override
         public void operation(int[] operanden){
 
         }
-    };private Opcode KIL12 = new Opcode(Register.AddressModes.HLT,"KIL", 0xD2,-1){
+    };private Opcode KIL12 = new Opcode(Register.AddressModes.HLT,"KIL12", 0xD2,1){
         @Override
         public void operation(int[] operanden){
 

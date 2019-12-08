@@ -9,17 +9,17 @@ interface Action{
 public class Opcode implements Action {
     private String opcodeName;
     private int hexAddress;
-    private int cycles;
+    private int cycle;
     private Register.AddressModes addressMode;
 
-    public Opcode(Register.AddressModes addressMode, String opcodeName, int hexAddress, int cycles){
+    public Opcode(Register.AddressModes addressMode, String opcodeName, int hexAddress, int cycle){
         this.opcodeName = opcodeName;
         this.hexAddress = hexAddress;
         this.addressMode = addressMode;
-        this.cycles = cycles;
+        this.cycle = cycle;
     }
-    public int getCycles(){
-        return this.cycles;
+    public int getCycle(){
+        return this.cycle;
     }
     public int getHexAddress(){
         return this.hexAddress;

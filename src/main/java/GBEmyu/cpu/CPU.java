@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 import static java.lang.Thread.sleep;
-
+//@TODO BUS Klasse erstellen. Opcode funktionalitäten implementieren.
 public class CPU {
 
     private Register register;
@@ -27,9 +27,15 @@ public class CPU {
         setCycle(0);
         while(true) {
             clock();
+            try {
+                sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
     private void clock() {
+        //System.out.println("CLOCK! "+getCycle());
         //1 read or write means 1 CPU cycle.
 
         //1.662607MHz = 1662607Hz
@@ -37,17 +43,20 @@ public class CPU {
         /*while(getCycle()<=27756)*/
         if (getCycle() == 0) {
             int instruction;
-            Opcode currentOpcode;
+
+            Opcode currentOpcode = null;
             try {
 
                 instruction = instructions[register.getPC()];
                 //Fetch opcode from the current PC address
-                currentOpcode = opcodes[instructions[register.getPC()]];
-
+                currentOpcode = opcodes[instruction];
+                //Logger.LOGGER.log(Level.INFO,
+                System.out.println("\n         MAIN CYCLE::" + getCycle() +" OPCODE Cycle:"+currentOpcode.getCycle()+" AddressMode:  "+currentOpcode.getAddressMode()+"  PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + "  OpcodeName::" + currentOpcode.getOpcodeName() + "  OpcodeHexAddress::" + currentOpcode.getHexAddress()+"\n");
                 // opcodes[instructions[register.getPC()]].operation();
                 switch (currentOpcode.getAddressMode()) {
                     case HLT:
                         //Halte CPU
+
                         break;
                     case IMPLICIT:
                         implicit(currentOpcode);
@@ -93,17 +102,13 @@ public class CPU {
                         break;
 
                 }
-                incrementCycle(currentOpcode.getCycles());
-                register.incrementPC();
-                //opcodes[instructions[register.getPC()]].operation();
-
-                Logger.LOGGER.log(Level.INFO, "CYCLE::" + getCycle() + "  PC::" + register.getPC() + "  Instruction(HEX)::" + instruction + "  OpcodeName::" + opcodes[instruction].getOpcodeName() + "  OpcodeHexAddress::" + opcodes[instruction].getHexAddress());
+                incrementCycle(currentOpcode.getCycle());
                 register.incrementPC();
 
-                sleep(5);
-            } catch (InterruptedException | NullPointerException e) {
-                System.out.println("CYCLE::" + getCycle() + "  PC::" + register.getPC() + "  Instruction(HEX)::" + instructions[register.getPC()] + "  NOT FOUND IN OPCODES ! ::" + Arrays.toString(e.getStackTrace()));
-                //break;
+
+            } catch ( NullPointerException e) {
+                System.out.println("EXCEPTION _________ MAIN CYCLE::" + getCycle() + ""+"OPCODE Cycle:"+currentOpcode.getCycle()+"   PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + "  NOT FOUND IN OPCODES ! ::" + Arrays.toString(e.getStackTrace()));
+
             }
 
         }
@@ -124,7 +129,7 @@ public class CPU {
         2. Read the next instruction byte, but doesn't
         do anything to it, and then do operation on it.
         2 cycles*/
-        System.out.println("implicit");
+
         incrementCycle(2);
         opcode.operation(null);
 
@@ -154,7 +159,6 @@ public class CPU {
     private void accumulator(Opcode opcode) {
         //These instructions have register A (the accumulator) as the target.
         opcode.operation(null);
-        System.out.println("accumulator - not specified yet");
 
     }
 
@@ -171,7 +175,7 @@ public class CPU {
 	            return hi<<8 | lo
 }
              */
-        System.out.println("absolute");
+
             register.incrementPC();
             int lo = instructions[register.getPC()];
             register.incrementPC();
@@ -192,7 +196,7 @@ public class CPU {
 		            pageCrossed = pagesDiffer(address-uint16(cpu.X), address)
 }
          */
-        System.out.println("absolute x");
+
         register.incrementPC();
         int lo = instructions[register.getPC()];
         register.incrementPC();
@@ -215,7 +219,7 @@ public class CPU {
 
 
     private void absolutey(Opcode currentOpcode){
-        System.out.println("absolute y");
+
         register.incrementPC();
         int lo = instructions[register.getPC()];
         register.incrementPC();
@@ -244,7 +248,7 @@ public class CPU {
 	        return uint16(hi)<<8 | uint16(lo)
 }
          */
-        System.out.println("indirect");
+
         register.incrementPC();
         int[] pointerAddress ={instructions[register.getPC()]};
 
@@ -267,7 +271,7 @@ public class CPU {
 	        return uint16(hi)<<8 | uint16(lo)
 }
          */
-        System.out.println("indirect x");
+
         register.incrementPC();
         int[] a ={instructions[register.getPC()] +register.getX()};
 
@@ -286,7 +290,7 @@ public class CPU {
 		        address = cpu.read16bug(uint16(cpu.Read(cpu.PC+1))) + uint16(cpu.Y)
 		        pageCrossed = pagesDiffer(address-uint16(cpu.Y), address)
              */
-        System.out.println("indirect y");
+
         register.incrementPC();
         int[] a ={instructions[register.getPC()] +register.getY()};
 
@@ -315,7 +319,7 @@ public class CPU {
 			    address = cpu.PC + 2 + offset - 0x100
 		        }
     */
-        System.out.println("relative");
+
         register.incrementPC();
         int offset = instructions[register.getPC()];
         int []value=new int[1];
@@ -346,7 +350,7 @@ of the PC.
 3 cycles
          */
         //auf meine weise gelöst. Vllt. klappt es ohne diese anleitung oben.
-        System.out.println("zeropage");
+
         register.incrementPC();
         int[] fetchValue = {instructions[register.getPC()]};
         incrementCycle(3);
@@ -373,7 +377,7 @@ of the PC.
         4 cycles
         */
         //ich lass das erstmal so... @TODO muss aber auf jeden fall mal betrachtet werden.
-        System.out.println("zeropage x");
+
         register.incrementPC();
         int[] fetchValue = {instructions[register.getPC()]};
         fetchValue[0] = (fetchValue[0] + register.getX()) & 0xFF;
@@ -384,7 +388,7 @@ of the PC.
 
     }
     private void zeropagey(Opcode currentOpcode) {
-        System.out.println("zeropage y");
+
         //auf meine weise gelöst. Vllt. klappt es ohne diese anleitung oben.
         register.incrementPC();
         int[] fetchValue = {instructions[register.getPC()]};

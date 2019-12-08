@@ -3,7 +3,7 @@ package GBEmyu.cpu;
 import com.sun.media.jfxmedia.logging.Logger;
 
 import java.util.logging.Level;
-
+//TODO Komplett umkrempeln... funktionen rauschmeisen bzw transpotieren zu OPCODERbuilder
 public class Register {
     //register
     private int a; // accumulator
