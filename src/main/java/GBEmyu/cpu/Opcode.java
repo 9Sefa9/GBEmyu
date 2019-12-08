@@ -18,6 +18,9 @@ public class Opcode implements Action {
         this.addressMode = addressMode;
         this.cycles = cycles;
     }
+    public int getCycles(){
+        return this.cycles;
+    }
     public int getHexAddress(){
         return this.hexAddress;
     }

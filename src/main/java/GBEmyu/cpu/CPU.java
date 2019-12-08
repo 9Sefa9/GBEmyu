@@ -93,6 +93,7 @@ public class CPU {
                         break;
 
                 }
+                incrementCycle(currentOpcode.getCycles());
                 register.incrementPC();
                 //opcodes[instructions[register.getPC()]].operation();
 
