@@ -24,87 +24,90 @@ public class CPU {
         clockspeed = 0;
     }
     public void init() {
-        step();
+        setCycle(0);
+        while(true) {
+            clock();
+        }
     }
-    private int step() {
-            //1 read or write means 1 CPU cycle.
-            setCycle(0);
-            //1.662607MHz = 1662607Hz
-            //1662607Hz/59.9Hz = 27756cycles/frame
-            /*while(getCycle()<=27756)*/
-               // while(getCycle()<=27756){
-                int instruction;
-                Opcode currentOpcode;
-                int currentCycle = getCycle();
-                try {
+    private void clock() {
+        //1 read or write means 1 CPU cycle.
 
-                    instruction = instructions[register.getPC()];
-                    //Fetch opcode from the current PC address
-                    currentOpcode = opcodes[instructions[register.getPC()]];
+        //1.662607MHz = 1662607Hz
+        //1662607Hz/59.9Hz = 27756cycles/frame
+        /*while(getCycle()<=27756)*/
+        if (getCycle() == 0) {
+            int instruction;
+            Opcode currentOpcode;
+            try {
 
-                    // opcodes[instructions[register.getPC()]].operation();
-                    switch(currentOpcode.getAddressMode()){
-                        case HLT:
-                            //Halte CPU
-                            break;
-                        case IMPLICIT:
-                            implicit(currentOpcode);
-                            break;
-                        case IMMEDIATE:
-                            immediate(currentOpcode);
-                            break;
-                        case ACCUMULATOR:
-                            //bin mit der reihenfolge nicht sicher aber :
-                            //doAkkumulator() oder so
-                            //execute opcode operation
-                            accumulator(currentOpcode);
-                            break;
-                        case ZEROPAGE:
-                            zeropage(currentOpcode);
-                            break;
-                        case ZEROPAGEX:
-                            zeropagex(currentOpcode);
-                            break;
-                        case ZEROPAGEY:
-                            zeropagey(currentOpcode);
-                            break;
-                        case RELATIVE:
-                            relative(currentOpcode);
-                            break;
-                        case ABSOLUTE:
-                            absolute(currentOpcode);
-                            break;
-                        case ABSOLUTEX:
-                            absolutex(currentOpcode);
-                            break;
-                        case ABSOLUTEY:
-                            absolutey(currentOpcode);
-                            break;
-                        case INDIRECT:
-                            indirect(currentOpcode);
-                            break;
-                        case INDIRECTX:
-                            indirectx(currentOpcode);
-                            break;
-                        case INDIRECTY:
-                            indirecty(currentOpcode);
-                            break;
+                instruction = instructions[register.getPC()];
+                //Fetch opcode from the current PC address
+                currentOpcode = opcodes[instructions[register.getPC()]];
 
-                    }
-                    register.incrementPC();
-                    //opcodes[instructions[register.getPC()]].operation();
+                // opcodes[instructions[register.getPC()]].operation();
+                switch (currentOpcode.getAddressMode()) {
+                    case HLT:
+                        //Halte CPU
+                        break;
+                    case IMPLICIT:
+                        implicit(currentOpcode);
+                        break;
+                    case IMMEDIATE:
+                        immediate(currentOpcode);
+                        break;
+                    case ACCUMULATOR:
+                        //bin mit der reihenfolge nicht sicher aber :
+                        //doAkkumulator() oder so
+                        //execute opcode operation
+                        accumulator(currentOpcode);
+                        break;
+                    case ZEROPAGE:
+                        zeropage(currentOpcode);
+                        break;
+                    case ZEROPAGEX:
+                        zeropagex(currentOpcode);
+                        break;
+                    case ZEROPAGEY:
+                        zeropagey(currentOpcode);
+                        break;
+                    case RELATIVE:
+                        relative(currentOpcode);
+                        break;
+                    case ABSOLUTE:
+                        absolute(currentOpcode);
+                        break;
+                    case ABSOLUTEX:
+                        absolutex(currentOpcode);
+                        break;
+                    case ABSOLUTEY:
+                        absolutey(currentOpcode);
+                        break;
+                    case INDIRECT:
+                        indirect(currentOpcode);
+                        break;
+                    case INDIRECTX:
+                        indirectx(currentOpcode);
+                        break;
+                    case INDIRECTY:
+                        indirecty(currentOpcode);
+                        break;
 
-                    Logger.LOGGER.log(Level.INFO, "CYCLE::"+getCycle()+"  PC::"+ register.getPC() +"  Instruction(HEX)::" + instruction + "  OpcodeName::" + opcodes[instruction].getOpcodeName() + "  OpcodeHexAddress::" + opcodes[instruction].getHexAddress());
-                    register.incrementPC();
-
-                    sleep(5);
-                } catch (InterruptedException | NullPointerException e) {
-                    System.out.println("CYCLE::"+getCycle()+"  PC::"+ register.getPC() +"  Instruction(HEX)::" + instructions[register.getPC()] + "  NOT FOUND IN OPCODES ! ::"+ Arrays.toString(e.getStackTrace()));
-                    //break;
                 }
-                return getCycle() - currentCycle;
-    }
+                register.incrementPC();
+                //opcodes[instructions[register.getPC()]].operation();
 
+                Logger.LOGGER.log(Level.INFO, "CYCLE::" + getCycle() + "  PC::" + register.getPC() + "  Instruction(HEX)::" + instruction + "  OpcodeName::" + opcodes[instruction].getOpcodeName() + "  OpcodeHexAddress::" + opcodes[instruction].getHexAddress());
+                register.incrementPC();
+
+                sleep(5);
+            } catch (InterruptedException | NullPointerException e) {
+                System.out.println("CYCLE::" + getCycle() + "  PC::" + register.getPC() + "  Instruction(HEX)::" + instructions[register.getPC()] + "  NOT FOUND IN OPCODES ! ::" + Arrays.toString(e.getStackTrace()));
+                //break;
+            }
+
+        }
+        decrementCycle(1);
+    }
 
 
     private void implicit(Opcode opcode) {
@@ -404,5 +407,7 @@ of the PC.
     private void incrementCycle(int val) {
         this.cycle += val;
     }
-
+    private void decrementCycle(int val) {
+        this.cycle -= val;
+    }
 }
