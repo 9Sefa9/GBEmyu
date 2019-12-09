@@ -13,10 +13,10 @@ public class Main {
 	private void start() {
 
 		int[] instructions = Helper.readRom(getClass().getResource("/nestest.nes").getPath());
-
-        MemoryMap memoryMap = new MemoryMap();
-		CPU cpu = new CPU(instructions);
 		Bus bus = new Bus();
+        MemoryMap memoryMap = new MemoryMap();
+		CPU cpu = new CPU(bus,instructions);
+
 		bus.link(cpu,memoryMap);
 
 		cpu.start();

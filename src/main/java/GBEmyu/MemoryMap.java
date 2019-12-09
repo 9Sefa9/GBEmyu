@@ -24,7 +24,7 @@ public class MemoryMap {
 
 	private void createMemory() {
 		//setze alle werte von 0(inkl) bis 65535(inkl.)
-		Helper.forSet(memory,0,memory.length);
+		Helper.forSet(memory,0,memory.length,0);
         Logger.LOGGER.log(Level.INFO,"Memory Map created :: "+String.format("0x%04X", memory.length));
 	}
 

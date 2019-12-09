@@ -17,13 +17,13 @@ public class OpcodeBuilder {
     private  Opcode LDAIMMEDIATE =  new Opcode(Flags.AddressModes.IMMEDIATE,"LDAIMMEDIATE", 0xA9,2){
         @Override
         public void operation(int[] operanden){
-            register.setLDA(inst[register.getPC()+1]);
+
         }
     };
     private  Opcode LDAZEROPAGE =  new Opcode(Flags.AddressModes.ZEROPAGE,"LDAZEROPAGE", 0xA5,3){
         @Override
         public void operation(int[] operanden){
-            register.setLDA(inst[register.getPC()+1]);
+
         }
     };
     private  Opcode LDAZEROPAGEX =  new Opcode(Flags.AddressModes.ZEROPAGEX,"LDAZEROPAGEX", 0xB5,4){
@@ -353,7 +353,7 @@ public class OpcodeBuilder {
     private  Opcode DEXIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"DEXIMPLICIT", 0xCA,2){
         @Override
         public void operation(int[] operanden){
-            register.setDEX();
+
         }
     };
 
@@ -363,7 +363,6 @@ public class OpcodeBuilder {
     private  Opcode DEYIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"DEYIMPLICIT", 0x88,2){
         @Override
         public void operation(int[] operanden){
-            register.setDEX();
         }
     };
 
@@ -788,7 +787,7 @@ public class OpcodeBuilder {
     private  Opcode CLDIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"CLDIMPLICIT", 0xD8,2){
         @Override
         public void operation(int[] operanden){
-            register.setCLD();
+
         }
     };
 
@@ -796,7 +795,7 @@ public class OpcodeBuilder {
     private  Opcode CLIIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"CLIIMPLICIT", 0x58,2){
         @Override
         public void operation(int[] operanden){
-            register.setCLD();
+
         }
     };
 
@@ -804,7 +803,7 @@ public class OpcodeBuilder {
     private  Opcode CLVIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"CLVIMPLICIT", 0xB8,2){
         @Override
         public void operation(int[] operanden){
-            register.setCLD();
+
         }
     };
 
@@ -907,7 +906,7 @@ public class OpcodeBuilder {
     private  Opcode SECIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"SECIMPLICIT", 0x38,	2){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
@@ -915,7 +914,6 @@ public class OpcodeBuilder {
     private  Opcode SEDIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"SEDIMPLICIT ", 0xF8,	2){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
         }
     };
 
@@ -923,7 +921,7 @@ public class OpcodeBuilder {
     private  Opcode SEIIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"SEIIMPLICIT", 0x78,	2){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
@@ -933,7 +931,7 @@ public class OpcodeBuilder {
     private  Opcode BCCRELATIVE =  new Opcode(Flags.AddressModes.RELATIVE,"BCCRELATIVE", 0x90,	2){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
@@ -941,7 +939,7 @@ public class OpcodeBuilder {
     private  Opcode BCSRELATIVE =  new Opcode(Flags.AddressModes.RELATIVE,"BCSRELATIVE", 0xB0,	2){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
@@ -991,14 +989,14 @@ public class OpcodeBuilder {
     private  Opcode JMPABSOLUTE =  new Opcode(Flags.AddressModes.ABSOLUTE,"JMPABSOLUTE", 0x4C,	3){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
     private  Opcode JMPINDIRECT =  new Opcode(Flags.AddressModes.INDIRECT,"JMPINDIRECT", 0x6C,	5){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
@@ -1013,14 +1011,14 @@ public class OpcodeBuilder {
     private  Opcode RTIIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"RTIIMPLICIT", 0x40,	6){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
     //RTS
     private  Opcode RTSIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"RTSIMPLICIT", 0x60,	6){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
@@ -1028,7 +1026,7 @@ public class OpcodeBuilder {
     private  Opcode PHAIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"PHAIMPLICIT", 0x48,3){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 
@@ -1050,7 +1048,7 @@ public class OpcodeBuilder {
     private  Opcode PLPIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"PLPIMPLICIT", 0x78,	2){
         @Override
         public void operation(int[] operanden){
-            register.setSEI();
+
         }
     };
 

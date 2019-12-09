@@ -1,5 +1,7 @@
 package GBEmyu.cpu;
 
+import GBEmyu.Bus;
+
 import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
@@ -7,16 +9,18 @@ import static java.lang.Thread.sleep;
 public class CPU {
 
     private Register register;
+    private Bus bus;
     private Flags flags;
     private Opcode[] opcodes;
 
     private int[] instructions;
     private int cycle;
-    public CPU(int[] inst) {
+    public CPU(Bus bus, int[] inst) {
         this.instructions = inst;
         this.flags = new Flags();
-        register = new Register(this.flags);
-        opcodes = new OpcodeBuilder(this.instructions,this.register).getOpcodes();
+        this.bus = bus;
+        this.register = new Register(this,this.bus,this.flags);
+        this.opcodes = new OpcodeBuilder(this.instructions,this.register).getOpcodes();
     }
     public void start() {
         setCycle(0);
@@ -389,6 +393,14 @@ of the PC.
 
     }
 
+    // Reset resets the CPU to its initial powerup state
+    //@TODO Reset implementieren. Eventuell den Mapper auch.
+    private void reset() {
+        // register.setPC(bus.read16(0xFFFC));
+        //   cpu.PC = cpu.Read16(0xFFFC)
+        //   cpu.SP = 0xFD
+        //   cpu.SetFlags(0x24)
+    }
 
     private boolean pageCrossing(int lo, int hi) {
         return (lo & 0xFF00) != (hi & 0xFF00);
@@ -405,5 +417,9 @@ of the PC.
     }
     public void decrementCycle(int val) {
         this.cycle -= val;
+    }
+
+    public int[] getInstructions() {
+        return this.instructions;
     }
 }

@@ -22,13 +22,13 @@ public class Flags {
         INDIRECTY
     }
     public enum ProcessorStatusFlags{
-        CARRY(0),
-        DECIMALMODE(0),
-        INTERRUPTDISABLE(0),
         NEGATIVE(0),
         OVERFLOW(0),
-        ZERO(0);
-
+        BREAKCOMMAND(0),
+        DECIMALMODE(0),
+        INTERRUPTDISABLE(0),
+        ZERO(0),
+        CARRY(0);
         private int val;
         public int getVal(){
             return this.val;
@@ -53,7 +53,9 @@ public class Flags {
     }
 
     //getter
-
+    public int[] getProcessorStatusFlags(){
+return null;
+    }
     //find and set the flag. wichtig für die einzelnen Opcode funktionen.
     public void setProcessorStatusFlag(ProcessorStatusFlags currentFlag, int value) {
         for (ProcessorStatusFlags p : this.processorStatusFlags){

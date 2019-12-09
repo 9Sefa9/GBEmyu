@@ -29,10 +29,10 @@ public class Helper {
 	}
 
 	//helper function to iterate through
-	public static void forSet(int[] address, int from, int to){
+	public static void forSet(int[] address, int from, int to, int value){
 
 		for(int i = from; i<to; i++){
-			address[i] = i;
+			address[i] = value;
 		}
 	}
 	
@@ -57,5 +57,6 @@ public class Helper {
 		
 		return instructions;
 	}
+
 
 }
