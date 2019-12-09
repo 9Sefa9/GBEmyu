@@ -400,10 +400,10 @@ of the PC.
     public void setCycle(int cycle) {
         this.cycle = cycle;
     }
-    private void incrementCycle(int val) {
+    public void incrementCycle(int val) {
         this.cycle += val;
     }
-    private void decrementCycle(int val) {
+    public void decrementCycle(int val) {
         this.cycle -= val;
     }
 }

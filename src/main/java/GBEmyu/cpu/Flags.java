@@ -40,6 +40,13 @@ public class Flags {
             this.val = val;
         }
     }
+    public enum Interrupt{
+        interruptNone,
+        interruptNMI,
+        getInterruptIRQ
+    }
+
+
 
     public Flags(){
         this.processorStatusFlags = ProcessorStatusFlags.values();

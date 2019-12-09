@@ -13,12 +13,15 @@ public class Bus {
     }
     public void write(int address, int val) {
         // TODO: Create this method
+        cpu.incrementCycle(1);
+        this.memoryMap.getMemory()[address] = (val & 0x100);
 
     }
 
-    public int read(int address16) {
+    public int read(int address) {
         // TODO: Create this method
-        return 0;
+        cpu.incrementCycle(1);
+        return this.memoryMap.getMemory()[address];
     }
 }
 
