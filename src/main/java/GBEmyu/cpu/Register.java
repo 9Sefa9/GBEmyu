@@ -15,52 +15,14 @@ public class Register {
     private int sp=0; //Stack Pointer
 
     //AddressMode - wird von den Opcodes eingesetzt. Und in der CPU Loop.  Siehe http://obelisk.me.uk/6502/reference.html
-    public enum AddressModes{
-        HLT,
-        IMPLICIT,
-        ACCUMULATOR,
-        IMMEDIATE,
-        ZEROPAGE,
-        ZEROPAGEX,
-        ZEROPAGEY,
-        RELATIVE,
-        ABSOLUTE,
-        ABSOLUTEX,
-        ABSOLUTEY,
-        INDIRECT,
-        INDIRECTX,
-        INDIRECTY
-    }
+    private Flags flags;
 
-    private Flags[] flags;
-    private enum Flags{
-        CARRY(0),
-        DECIMALMODE(0),
-        INTERRUPTDISABLE(0),
-        NEGATIVE(0),
-        OVERFLOW(0),
-        ZERO(0);
-
-        private int val;
-        public int getVal(){
-            return this.val;
-        }
-        public void setVal(int newV){
-            this.val = newV;
-        }
-        Flags(int val) {
-         this.val = val;
-        }
-    }
-
-
-
-    public Register(){
-        this.flags = Flags.values();
+    public Register(Flags flags){
+    this.flags = flags;
 
     }
 
-    //setters
+    //Register setters
     public void incrementPC() {
         this.pc = (pc + 1) & 0xFFFF; //sicher gehen, dass er 0xFFFF nicht überschreitet.
     }
@@ -84,49 +46,10 @@ public class Register {
         this.s = s;
     }
 
-    //set interrupt disable OpcodeBuilder: $78
-    public void setSEI(){
-        setFlag(Flags.INTERRUPTDISABLE,1);
-    }
-    //clear decimal mode OpcodeBuilder: $D8
-    public void setCLD(){
-        setFlag(Flags.DECIMALMODE,0);
-    }
-    //load accumulator , loads 1 byte of memory into the accumulato setting the zero and negative flags as appropriate
-    public void setLDA(int value8bit) {
-        setA(value8bit);
-        if(getA()==0)
-            setFlag(Flags.ZERO,1);
-
-        if(((getA() >> 7) & 1) == 1)
-            setFlag(Flags.NEGATIVE,1);
-
-    }
-    //decreae X and set flags appropriately
-    public void setDEX(){
-        setX(getX()-1);
-
-        if(getX()==0)
-            setFlag(Flags.ZERO,1);
-
-        if(((getX() >> 7) & 1) == 1)
-            setFlag(Flags.NEGATIVE,1);
-    }
-    //find and set the flag
-    private void setFlag(Flags currentFlag, int value) {
-        for (Flags f : this.flags){
-            if(f.name().equals(currentFlag.name())){
-                f.setVal(value);
-                return;
-            }
-        }
-    }
-
-    //getters
+    //Register getters
     public int getSP() {
         return this.sp;
     }
-
     public int getPC(){
         return this.pc;
     }
@@ -145,6 +68,49 @@ public class Register {
     public int getX() {
         return x;
     }
+
+    // Operations according to opcode
+    public void kilX(){
+        //void hlt()
+      //  {
+            //some call it KIL
+            //halt the CPU, reset needed to continue
+            //operation
+	            /*   opcode 0x02, 0x12, 0x22, 0x32,
+	                 0x42, 0x52, 0x62, 0x72, 0x92, 0xB2,
+	                 0xD2, 0xF2
+	                 */
+      //  }
+    }
+    public void setSEI(){
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,1);
+    }
+
+    public void setCLD(){
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,0);
+    }
+
+    public void setLDA(int value8bit) {
+        setA(value8bit);
+        if(getA()==0)
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,1);
+
+        if(((getA() >> 7) & 1) == 1)
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,1);
+
+    }
+    //decreae X and set flags appropriately
+    public void setDEX(){
+        setX(getX()-1);
+
+        if(getX()==0)
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,1);
+
+        if(((getX() >> 7) & 1) == 1)
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,1);
+    }
+
+
 
     @Override
     public String toString(){

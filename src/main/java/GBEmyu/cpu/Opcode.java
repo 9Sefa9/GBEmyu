@@ -10,9 +10,9 @@ public class Opcode implements Action {
     private String opcodeName;
     private int hexAddress;
     private int cycle;
-    private Register.AddressModes addressMode;
+    private Flags.AddressModes  addressMode;
 
-    public Opcode(Register.AddressModes addressMode, String opcodeName, int hexAddress, int cycle){
+    public Opcode(Flags.AddressModes addressMode, String opcodeName, int hexAddress, int cycle){
         this.opcodeName = opcodeName;
         this.hexAddress = hexAddress;
         this.addressMode = addressMode;
@@ -27,7 +27,7 @@ public class Opcode implements Action {
     public String getOpcodeName(){
         return this.opcodeName;
     }
-    public Register.AddressModes getAddressMode(){
+    public Flags.AddressModes  getAddressMode(){
         return this.addressMode;
     }
 

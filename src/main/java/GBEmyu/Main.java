@@ -11,10 +11,14 @@ public class Main {
 	}
 
 	private void start() {
-		MemoryMap memoryMap = new MemoryMap();
+
 		int[] instructions = Helper.readRom(getClass().getResource("/nestest.nes").getPath());
 
-		CPU cpu = new CPU(memoryMap,instructions);
-		cpu.init();
+        MemoryMap memoryMap = new MemoryMap();
+		CPU cpu = new CPU(instructions);
+		Bus bus = new Bus();
+		bus.link(cpu,memoryMap);
+
+		cpu.start();
 	}
 }

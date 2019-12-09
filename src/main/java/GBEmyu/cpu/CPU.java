@@ -1,29 +1,24 @@
 package GBEmyu.cpu;
 
-import GBEmyu.MemoryMap;
-import GBEmyu.utilities.Logger;
-
 import java.util.Arrays;
-import java.util.logging.Level;
 
 import static java.lang.Thread.sleep;
-//@TODO BUS Klasse erstellen. Opcode funktionalitäten implementieren.
+//@TODO BUS write und read erstellen, da essenziell für die Opcodes. Dannach: Opcode funktionalitäten implementieren.
 public class CPU {
 
     private Register register;
+    private Flags flags;
     private Opcode[] opcodes;
-    private MemoryMap memoryMap;
-    private int clockspeed;
+
     private int[] instructions;
     private int cycle;
-    public CPU(MemoryMap memoryMap, int[] inst) {
-        this.memoryMap = memoryMap;
+    public CPU(int[] inst) {
         this.instructions = inst;
-        register = new Register();
-        opcodes = new OpcodeBuilder(inst,register).getOpcodes();
-        clockspeed = 0;
+        this.flags = new Flags();
+        register = new Register(this.flags);
+        opcodes = new OpcodeBuilder(this.instructions,this.register).getOpcodes();
     }
-    public void init() {
+    public void start() {
         setCycle(0);
         while(true) {
             clock();
@@ -55,8 +50,7 @@ public class CPU {
                 // opcodes[instructions[register.getPC()]].operation();
                 switch (currentOpcode.getAddressMode()) {
                     case HLT:
-                        //Halte CPU
-
+                        //Halte CPU - nur wie ? keine ahnung.
                         break;
                     case IMPLICIT:
                         implicit(currentOpcode);
@@ -65,9 +59,6 @@ public class CPU {
                         immediate(currentOpcode);
                         break;
                     case ACCUMULATOR:
-                        //bin mit der reihenfolge nicht sicher aber :
-                        //doAkkumulator() oder so
-                        //execute opcode operation
                         accumulator(currentOpcode);
                         break;
                     case ZEROPAGE:
@@ -250,12 +241,13 @@ public class CPU {
          */
 
         register.incrementPC();
-        int[] pointerAddress ={instructions[register.getPC()]};
+        int[] a ={instructions[register.getPC()]};
 
-        int hi = ((pointerAddress[0] & 0xFF) | (pointerAddress[0]+1));
+        int b = ((a[0] & 0xFF) | (a[0]+1) & 0xFF);
 
-        int lo = pointerAddress[instructions[register.getPC()]];
-        int[] value = {(hi << 8 | lo)};
+        int lo = instructions[a[0]];
+        int hi = instructions[b];
+        int[] value = { ((hi & 0xFF) <<8) | (lo & 0xFF) };
         incrementCycle(6);
         currentOpcode.operation(value);
 
@@ -273,10 +265,9 @@ public class CPU {
          */
 
         register.incrementPC();
-        int[] a ={instructions[register.getPC()] +register.getX()};
+        int[] a = {(instructions[register.getPC()] +register.getX())&0xFF};
 
         int b = ((a[0] & 0xFF) | (a[0]+1) & 0xFF);
-
         int lo = instructions[a[0]];
         int hi = instructions[b];
         int[] value = { ((hi & 0xFF) <<8) | (lo & 0xFF) };
