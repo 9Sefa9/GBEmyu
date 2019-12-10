@@ -52,6 +52,7 @@ public class Flags {
 
     public Flags(){
         this.processorStatusFlags = ProcessorStatusFlags.values();
+        this. interruptFlags = Interrupt.interruptNone;
     }
 
     //getter

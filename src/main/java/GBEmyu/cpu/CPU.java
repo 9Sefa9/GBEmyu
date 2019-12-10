@@ -27,7 +27,7 @@ public class CPU {
         while(true) {
             clock();
             try {
-                sleep(10000);
+                sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
