@@ -372,22 +372,22 @@ public class Register {
     }
     // Read16 reads two bytes using Read to return a double-word value
     public int read16(int address){
-        int lo = (cpu.getInstructions()[address]) & 0xFFFF;
-        int hi = (cpu.getInstructions()[((address)+1)]) & 0xFFFF;
-        return hi <<8 | lo;
+        int lo = bus.read(address & 0xFFFF);
+        int hi =  bus.read(address+1 & 0xFFFF);
+        return (hi <<8 | lo) & 0xFFFF;
     }
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
     public int read16bug(int address){
         int a = address;
-        int b = (a | (((a +1) & 0x100) & 0xFFFF));
-        int lo = cpu.getInstructions()[a];
-        int hi = cpu.getInstructions()[b];
-        return (hi & 0xFFFF) <<8 | (lo & 0xFFFF);
+        int b = (a & 0xFF00 | (((a +1) & 0x100) & 0xFFFF));
+        int lo = bus.read(a);
+        int hi = bus.read(b);
+        return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF)) & 0xFFFF;
     }
     // push pushes a byte onto the stack
     private void push(int value){
-       bus.write(0x100|(getSP() & 0xFFFF),value & 0x100);
+       bus.write(0x100|(getSP() & 0xFFFF),value);
         decrementSP();
     }
     // pull pops a byte from the stack
@@ -402,11 +402,11 @@ public class Register {
         push(lo);
     }
     private int pull16(){
-       int lo = pull() & 0xFFFF;
+       int lo = pull();
 
-       int hi = pull() & 0xFFFF;
+       int hi = pull();
 
-       return hi<<8 | lo;
+       return (hi<<8 | lo) & 0xFFFF;
     }
 
 
@@ -449,8 +449,8 @@ public class Register {
     public void incrementPC() {
         this.pc = (pc + 1) & 0xFFFF; //sicher gehen, dass er 0xFFFF nicht überschreitet.
     }
-    public void incrementSP() { this.sp = (sp + 1) & 0xFFFF; }
-    public void decrementSP() { this.sp = (sp - 1) & 0xFFFF; }
+    public void incrementSP() { setSP(sp+1);/*(sp + 1) & 0xFFFF; */}
+    public void decrementSP() { setSP(sp-1);/*(sp - 1) & 0xFFFF; */}
     public void setPC(int pc){this.pc = (pc & 0xFFFF);}
     public void setSP(int sp) {
         this.sp = (sp& 0x100);
@@ -498,7 +498,7 @@ public class Register {
 
     @Override
     public String toString(){
-        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"Registers::: A "+a+" X "+x+" Y "+y+" P "+p+" PC "+pc+" SP "+sp);
+        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"REGISTER CLASS ::: A: "+getA()+" X: "+getX()+" Y: "+getY()+" P: "+getP()+" PC: "+getPC()+" SP: "+getSP());
         return "";
     }
 }

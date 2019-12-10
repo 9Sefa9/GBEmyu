@@ -3,9 +3,10 @@ package GBEmyu.cpu;
 import GBEmyu.Bus;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 
 import static java.lang.Thread.sleep;
-//@TODO BUS write und read erstellen, da essenziell für die Opcodes. Dannach: Opcode funktionalitäten implementieren.
+
 public class CPU {
 
     private Register register;
@@ -15,6 +16,8 @@ public class CPU {
 
     private int[] instructions;
     private int cycle;
+    //einfach nur um zu sehen wie viele zyklen entstehen. Wird nur als print gezeigt.
+    private int cycleCounter;
     public CPU(Bus bus, int[] inst) {
         this.instructions = inst;
         this.flags = new Flags();
@@ -25,9 +28,10 @@ public class CPU {
     public void start() {
         setCycle(0);
         while(true) {
+
             clock();
             try {
-                sleep(100);
+                sleep(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -60,6 +64,7 @@ public class CPU {
                 //Fetch opcode from the current PC address
                 currentOpcode = opcodes[instruction];
                 //Logger.LOGGER.log(Level.INFO,
+                System.out.println("zyklen: "+cycleCounter);
                 System.out.println("\n         MAIN CYCLE::" + getCycle() +" OPCODE Cycle:"+currentOpcode.getCycle()+" AddressMode:  "+currentOpcode.getAddressMode()+"  PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + "  OpcodeName::" + currentOpcode.getOpcodeName() + "  OpcodeHexAddress::" + currentOpcode.getHexAddress()+"\n");
                 // opcodes[instructions[register.getPC()]].operation();
                 switch (currentOpcode.getAddressMode()) {
@@ -107,12 +112,14 @@ public class CPU {
                         break;
 
                 }
+
                 incrementCycle(currentOpcode.getCycle());
+                cycleCounter+=getCycle();
                 register.incrementPC();
 
 
             } catch ( NullPointerException e) {
-                System.out.println("EXCEPTION _________ MAIN CYCLE::" + getCycle() + ""+"OPCODE Cycle:"+currentOpcode.getCycle()+"   PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + " ::\n" + Arrays.toString(e.getStackTrace()));
+                System.out.println("EXCEPTION _________ OPCODE Cycle:"+currentOpcode.getCycle()+"   PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + " ::\n" + Arrays.toString(e.getStackTrace()));
 
             }
 
@@ -454,5 +461,10 @@ of the PC.
 
     public int[] getInstructions() {
         return this.instructions;
+    }
+    @Override
+    public String toString(){
+        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"CPU CLASS :::  Instruction(HEX): "+String.format("%04X",getInstructions()[register.getPC()])+" current opcode: "+opcodes[register.getPC()].getOpcodeName() + " current addressMode: "+opcodes[register.getPC()].getAddressMode()+ " current Cycle: "+opcodes[register.getPC()].getCycle());
+        return "";
     }
 }
