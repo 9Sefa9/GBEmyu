@@ -127,7 +127,7 @@ public class Register {
         setZeroNegativeFlag(o);
         setA(o);
     }
-    public void aslAccumulator(int value){
+    public void aslAccumulator(){
         //Wie gena soll ich nun auf Accumulator kommen ?
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() >> 7)&1);
         int a = getA();
@@ -156,7 +156,7 @@ public class Register {
         setZeroNegativeFlag(o);
         setA(o);
     }
-    public void lsrAccumulator(int value){
+    public void lsrAccumulator(){
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() &1));
         int a = getA();
         setA((a >>=1));
@@ -169,7 +169,7 @@ public class Register {
         bus.write(value, a);
         setZeroNegativeFlag(a);
     }
-    public void rolAccumulator(int value){
+    public void rolAccumulator(){
         int c = Flags.ProcessorStatusFlags.CARRY.getVal();
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() >> 7)&1);
         setA( (getA() << 1) | c);
@@ -184,7 +184,7 @@ public class Register {
         bus.write(value, v);
         setZeroNegativeFlag(v);
     }
-    public void rorAccumulator(int value){
+    public void rorAccumulator(){
         int c = Flags.ProcessorStatusFlags.CARRY.getVal();
         c = getA() & 1;
         setA( ( getA() >> 1) | (c << 7));
@@ -220,11 +220,11 @@ public class Register {
         bus.write(value,val);
         setZeroNegativeFlag(val);
     }
-    public void dex(int value){
+    public void dex(){
         setX(getX()-1);
         setZeroNegativeFlag(getX());
     }
-    public void dey(int value){
+    public void dey(){
         setY(getY()-1);
         setZeroNegativeFlag(getY());
     }
@@ -233,11 +233,11 @@ public class Register {
         bus.write(value, v);
         setZeroNegativeFlag(value);
     }
-    public void inx(int value){
+    public void inx(){
         setX(getX()+1);
         setZeroNegativeFlag(getX());
     }
-    public void iny(int value){
+    public void iny(){
         setY(getY()+1);
         setZeroNegativeFlag(getY());
     }
@@ -248,18 +248,18 @@ public class Register {
         push16(getPC()-1);
         setPC(value);
     }
-    public void pha(int value){
+    public void pha(){
         push(getA());
     }
     public void php(){
         //@todo kann probleme verursachen.
         push(getP());
     }
-    public void pla(int value){
+    public void pla(){
         setA(pull());
         setZeroNegativeFlag(getA());
     }
-    public void plp(int value){
+    public void plp(){
         setP((pull()&0xEF) | 0x20);
     }
     public void rti(){
@@ -372,13 +372,13 @@ public class Register {
     }
     // Read16 reads two bytes using Read to return a double-word value
     public int read16(int address){
-        int lo = cpu.getInstructions()[address & 0xFFFF];
-        int hi = cpu.getInstructions()[(address & 0xFFFF)+1];
+        int lo = (cpu.getInstructions()[address & 0xFFF]) & 0xFFF;
+        int hi = (cpu.getInstructions()[((address)+1)& 0xFFF]) & 0xFFF;
         return hi <<8 | lo;
     }
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
-    private int read16bug(int address){
+    public int read16bug(int address){
         int a = address & 0xFFFF;
         int b = a | ((a +1) & 0xFFFF);
         int lo = cpu.getInstructions()[a];

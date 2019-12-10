@@ -353,7 +353,7 @@ public class OpcodeBuilder {
     private  Opcode DEXIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"DEXIMPLICIT", 0xCA,2){
         @Override
         public void operation(int[] operanden){
-            register.dex(operanden[0]);
+            register.dex();
         }
     };
 
@@ -363,7 +363,7 @@ public class OpcodeBuilder {
     private  Opcode DEYIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"DEYIMPLICIT", 0x88,2){
         @Override
         public void operation(int[] operanden){
-            register.dey(operanden[0]);
+            register.dey();
         }
     };
 
@@ -400,7 +400,7 @@ public class OpcodeBuilder {
     private  Opcode INXIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"INXIMPLICIT", 0xE8,2){
         @Override
         public void operation(int[] operanden){
-            register.inx(operanden[0]);
+            register.inx();
         }
     };
 
@@ -410,7 +410,7 @@ public class OpcodeBuilder {
     private  Opcode INYIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"INYIMPLICIT", 0xC8,2){
         @Override
         public void operation(int[] operanden){
-            register.iny(operanden[0]);
+            register.iny();
         }
     };
 
@@ -549,7 +549,7 @@ public class OpcodeBuilder {
     private  Opcode ASLACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"ASLACCUMULATOR", 0x0A,2){
         @Override
         public void operation(int[] operanden){
-            register.aslAccumulator(operanden[0]);
+            register.aslAccumulator();
         }
     };
 
@@ -627,7 +627,7 @@ public class OpcodeBuilder {
     private  Opcode LSRACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"LSRACCUMULATOR", 0x4A,2){
         @Override
         public void operation(int[] operanden){
-            register.lsrAccumulator(operanden[0]);
+            register.lsrAccumulator();
         }
     };
     private  Opcode LSRZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"LSRZEROPAGE", 0x46,5){
@@ -738,7 +738,7 @@ public class OpcodeBuilder {
     private  Opcode ROLACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"ROLACCUMULATOR", 0x2A,2){
         @Override
         public void operation(int[] operanden){
-            register.rolAccumulator(operanden[0]);
+            register.rolAccumulator();
         }
     };
 
@@ -753,7 +753,7 @@ public class OpcodeBuilder {
     private Opcode RORACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"RORACCUMULATOR", 0x6A,2){
         @Override
         public void operation(int[] operanden){
-            register.rorAccumulator(operanden[0]);
+            register.rorAccumulator();
         }
     };
     private Opcode RORZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"RORZEROPAGEX", 0x76,6){
@@ -1028,7 +1028,7 @@ public class OpcodeBuilder {
     private  Opcode PHAIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"PHAIMPLICIT", 0x48,3){
         @Override
         public void operation(int[] operanden){
-            register.pha(operanden[0]);
+            register.pha();
         }
     };
 
@@ -1043,14 +1043,14 @@ public class OpcodeBuilder {
     private Opcode PLAIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"PLAIMPLICIT", 0x68,4){
         @Override
         public void operation(int[] operanden){
-            register.pla(operanden[0]);
+            register.pla();
         }
     };
     //PLP
     private  Opcode PLPIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"PLPIMPLICIT", 0x78,	2){
         @Override
         public void operation(int[] operanden){
-            register.plp(operanden[0]);
+            register.plp();
         }
     };
 

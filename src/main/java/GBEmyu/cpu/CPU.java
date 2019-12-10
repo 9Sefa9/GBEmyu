@@ -27,7 +27,7 @@ public class CPU {
         while(true) {
             clock();
             try {
-                sleep(1000);
+                sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -112,7 +112,7 @@ public class CPU {
 
 
             } catch ( NullPointerException e) {
-                System.out.println("EXCEPTION _________ MAIN CYCLE::" + getCycle() + ""+"OPCODE Cycle:"+currentOpcode.getCycle()+"   PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + "  NOT FOUND IN OPCODES ! ::" + Arrays.toString(e.getStackTrace()));
+                System.out.println("EXCEPTION _________ MAIN CYCLE::" + getCycle() + ""+"OPCODE Cycle:"+currentOpcode.getCycle()+"   PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + " ::\n" + Arrays.toString(e.getStackTrace()));
 
             }
 
@@ -247,7 +247,8 @@ public class CPU {
 	        return uint16(hi)<<8 | uint16(lo)
 }
          */
-
+        int []value = {register.read16bug(register.read16bug(register.getPC()+1))};
+        /*
         register.incrementPC();
         int[] a ={instructions[register.getPC()]};
 
@@ -256,7 +257,7 @@ public class CPU {
         int lo = instructions[a[0]];
         int hi = instructions[b];
         int[] value = { ((hi & 0xFF) <<8) | (lo & 0xFF) };
-        incrementCycle(6);
+        incrementCycle(6);*/
         currentOpcode.operation(value);
 
     }
@@ -272,6 +273,8 @@ public class CPU {
 }
          */
 
+        int []value = {register.read16bug(register.read16bug(register.getPC()+1)+register.getX())};
+/*
         register.incrementPC();
         int[] a = {(instructions[register.getPC()] +register.getX())&0xFF};
 
@@ -279,7 +282,7 @@ public class CPU {
         int lo = instructions[a[0]];
         int hi = instructions[b];
         int[] value = { ((hi & 0xFF) <<8) | (lo & 0xFF) };
-        incrementCycle(6);
+        incrementCycle(6);*/
         currentOpcode.operation(value);
 
     }
