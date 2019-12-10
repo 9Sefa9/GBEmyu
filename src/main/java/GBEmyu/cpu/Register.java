@@ -372,31 +372,31 @@ public class Register {
     }
     // Read16 reads two bytes using Read to return a double-word value
     public int read16(int address){
-        int lo = (cpu.getInstructions()[address & 0xFFF]) & 0xFFF;
-        int hi = (cpu.getInstructions()[((address)+1)& 0xFFF]) & 0xFFF;
+        int lo = (cpu.getInstructions()[address]) & 0xFFFF;
+        int hi = (cpu.getInstructions()[((address)+1)]) & 0xFFFF;
         return hi <<8 | lo;
     }
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
     public int read16bug(int address){
-        int a = address & 0xFFFF;
-        int b = a | ((a +1) & 0xFFFF);
+        int a = address;
+        int b = (a | (((a +1) & 0x100) & 0xFFFF));
         int lo = cpu.getInstructions()[a];
         int hi = cpu.getInstructions()[b];
         return (hi & 0xFFFF) <<8 | (lo & 0xFFFF);
     }
     // push pushes a byte onto the stack
     private void push(int value){
-       bus.write(0x100|(getSP() & 0xFFF),value);
+       bus.write(0x100|(getSP() & 0xFFFF),value & 0x100);
         decrementSP();
     }
     // pull pops a byte from the stack
     private int pull(){
         incrementSP();
-        return bus.read(0x100|getSP());
+        return bus.read(0x100|getSP() & 0xFFF);
     }
     public void push16(int value){
-        int hi = (value << 8);
+        int hi = (value >> 8);
         int lo = (value & 0xFF);
         push(hi);
         push(lo);
