@@ -17,49 +17,49 @@ public class OpcodeBuilder {
     private  Opcode LDAIMMEDIATE =  new Opcode(Flags.AddressModes.IMMEDIATE,"LDAIMMEDIATE", 0xA9,2){
         @Override
         public void operation(int[] operanden){
-
+                register.lda(operanden[0]);
         }
     };
     private  Opcode LDAZEROPAGE =  new Opcode(Flags.AddressModes.ZEROPAGE,"LDAZEROPAGE", 0xA5,3){
         @Override
         public void operation(int[] operanden){
-
+            register.lda(operanden[0]);
         }
     };
     private  Opcode LDAZEROPAGEX =  new Opcode(Flags.AddressModes.ZEROPAGEX,"LDAZEROPAGEX", 0xB5,4){
         @Override
         public void operation(int[] operanden){
-
+            register.lda(operanden[0]);
         }
     };
     private  Opcode LDAINDIRECTX =  new Opcode(Flags.AddressModes.INDIRECTX,"LDAINDIRECTX", 0xA1,6){
         @Override
         public void operation(int[] operanden){
-
+            register.lda(operanden[0]);
         }
     };
     private  Opcode LDAINDIRECTY =  new Opcode(Flags.AddressModes.INDIRECTY,"LDAINDIRECTY", 0xB1,5){
         @Override
         public void operation(int[] operanden){
-
+            register.lda(operanden[0]);
         }
     };
     private  Opcode LDAABSOLUTE =  new Opcode(Flags.AddressModes.ABSOLUTE,"LDAABSOLUTE", 0xAD,4){
         @Override
         public void operation(int[] operanden){
-
+            register.lda(operanden[0]);
         }
     };
     private  Opcode LDAABSOLUTEX =  new Opcode(Flags.AddressModes.ABSOLUTEX,"LDAABSOLUTEX", 0xBD,4){
         @Override
         public void operation(int[] operanden){
-
+            register.lda(operanden[0]);
         }
     };
     private  Opcode LDAABSOLUTEY =  new Opcode(Flags.AddressModes.ABSOLUTEY,"LDAABSOLUTEY", 0xB9,4){
         @Override
         public void operation(int[] operanden){
-
+            register.lda(operanden[0]);
         }
     };
 
@@ -69,31 +69,31 @@ public class OpcodeBuilder {
     private  Opcode LDXIMMEDIATE=  new Opcode(Flags.AddressModes.IMMEDIATE,"LDXIMMEDIATE", 0xA2,2){
         @Override
         public void operation(int[] operanden){
-
+            register.ldx(operanden[0]);
         }
     };
     private  Opcode LDXZEROPAGE =  new Opcode(Flags.AddressModes.ZEROPAGE,"LDXZEROPAGE", 0xA6,3){
         @Override
         public void operation(int[] operanden){
-
+            register.ldx(operanden[0]);
         }
     };
     private  Opcode LDXZEROPAGEX =  new Opcode(Flags.AddressModes.ZEROPAGEX,"LDXZEROPAGEX", 0xB6,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ldx(operanden[0]);
         }
     };
     private  Opcode LDXABSOLUTE =  new Opcode(Flags.AddressModes.ABSOLUTE,"LDXABSOLUTE", 0xAE,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ldx(operanden[0]);
         }
     };
     private  Opcode LDXABSOLUTEX =  new Opcode(Flags.AddressModes.ABSOLUTEX,"LDXABSOLUTEX", 0xBE,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ldx(operanden[0]);
         }
     };
 
@@ -103,31 +103,31 @@ public class OpcodeBuilder {
     private  Opcode LDYIMMEDIATE=  new Opcode(Flags.AddressModes.IMMEDIATE,"LDYIMMEDIATE", 0xA0,2){
         @Override
         public void operation(int[] operanden){
-
+            register.ldy(operanden[0]);
         }
     };
     private  Opcode LDYZEROPAGE =  new Opcode(Flags.AddressModes.ZEROPAGE,"LDYZEROPAGE", 0xA4,3){
         @Override
         public void operation(int[] operanden){
-
+            register.ldy(operanden[0]);
         }
     };
     private  Opcode LDYZEROPAGEX =  new Opcode(Flags.AddressModes.ZEROPAGEX,"LDYZEROPAGEX", 0xB4,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ldy(operanden[0]);
         }
     };
     private  Opcode LDYABSOLUTE =  new Opcode(Flags.AddressModes.ABSOLUTE,"LDYABSOLUTE", 0xAC,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ldy(operanden[0]);
         }
     };
     private  Opcode LDYABSOLUTEX =  new Opcode(Flags.AddressModes.ABSOLUTEX,"LDYABSOLUTEX", 0xBC,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ldy(operanden[0]);
         }
     };
 
@@ -136,43 +136,43 @@ public class OpcodeBuilder {
     private Opcode STAZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"STAZEROPAGE", 0x85,3){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STAABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"STAABSOLUTE", 0x8D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STAABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"STAABSOLUTEX", 0x9D,5){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STAABSOLUTEY = new Opcode(Flags.AddressModes.ABSOLUTEY,"STAABSOLUTEY", 0x99,5){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STAINDIRECTX= new Opcode(Flags.AddressModes.INDIRECTX,"STAINDIRECTX", 0x81,6){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STAINDIRECTY= new Opcode(Flags.AddressModes.INDIRECTY,"STAINDIRECTY", 0x91,6){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STAZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"STAZEROPAGEX", 0x95,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
 
@@ -181,19 +181,19 @@ public class OpcodeBuilder {
     private Opcode STXZEROPAGE= new Opcode(Flags.AddressModes.ZEROPAGE,"STXZEROPAGE", 0x86,3){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STXZEROPAGEY= new Opcode(Flags.AddressModes.ZEROPAGEY,"STXZEROPAGEY", 0x96,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
     private Opcode STXABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"STXABSOLUTE", 0x8E,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sta(operanden[0]);
         }
     };
 
@@ -203,19 +203,19 @@ public class OpcodeBuilder {
     private Opcode STYZEROPAGE= new Opcode(Flags.AddressModes.ZEROPAGE,"STYZEROPAGE", 0x84,3){
         @Override
         public void operation(int[] operanden){
-
+            register.sty(operanden[0]);
         }
     };
     private Opcode STYZEROPAGEY= new Opcode(Flags.AddressModes.ZEROPAGEY,"STYZEROPAGEY", 0x94,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sty(operanden[0]);
         }
     };
     private Opcode STYABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"STYABSOLUTE", 0x8C,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sty(operanden[0]);
         }
     };
 
@@ -225,7 +225,7 @@ public class OpcodeBuilder {
     private Opcode TAXIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TAXIMPLICIT", 0xAA,2){
         @Override
         public void operation(int[] operanden){
-
+            register.tax();
         }
     };
 
@@ -233,7 +233,7 @@ public class OpcodeBuilder {
     private Opcode TAYIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TAYIMPLICIT", 0xA8,2){
         @Override
         public void operation(int[] operanden){
-
+            register.tay();
         }
     };
 
@@ -241,15 +241,15 @@ public class OpcodeBuilder {
     private Opcode TSXIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TSXIMPLICIT", 0xBA,2){
         @Override
         public void operation(int[] operanden){
-
+            register.tsx();
         }
     };
 
     //TSA
-    private Opcode TSAIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TSAIMPLICIT", 0x8A,2){
+    private Opcode TXAIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TXAIMPLICIT", 0x8A,2){
         @Override
         public void operation(int[] operanden){
-
+            register.tax();
         }
     };
 
@@ -265,7 +265,7 @@ public class OpcodeBuilder {
     private Opcode TYAIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TYAIMPLICIT", 0x98,2){
         @Override
         public void operation(int[] operanden){
-
+            register.tya();
         }
     };
 
@@ -273,49 +273,49 @@ public class OpcodeBuilder {
     private Opcode ADCIMMEDIATE = new Opcode(Flags.AddressModes.IMMEDIATE,"ADCIMMEDIATE", 0x69,2){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
     private Opcode ADCZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"ADCZEROPAGE", 0x65,3){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
     private Opcode ADCZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"ADCZEROPAGEX", 0x75,4){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
     private Opcode ADCABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"ADCABSOLUTE", 0x6D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
     private Opcode ADCABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"ADCABSOLUTEX", 0x7D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
     private Opcode ADCABSOLUTEY = new Opcode(Flags.AddressModes.ABSOLUTEY,"ADCABSOLUTEY", 0x79,4){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
     private Opcode ADCINDIRECTX= new Opcode(Flags.AddressModes.INDIRECTX,"ADCINDIRECTX", 0x61,6){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
     private Opcode ADCINDIRECTY= new Opcode(Flags.AddressModes.INDIRECTY,"ADCINDIRECTY", 0x71,5){
         @Override
         public void operation(int[] operanden){
-
+            register.adc(operanden[0]);
         }
     };
 
@@ -324,25 +324,25 @@ public class OpcodeBuilder {
     private Opcode DECZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"DECZEROPAGEX", 0xD6,6){
         @Override
         public void operation(int[] operanden){
-
+            register.dec(operanden[0]);
         }
     };
     private Opcode DECZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"DECZEROPAGE", 0xC6,5){
         @Override
         public void operation(int[] operanden){
-
+            register.dec(operanden[0]);
         }
     };
     private Opcode DECABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"DECABSOLUTE", 0xCE,6){
         @Override
         public void operation(int[] operanden){
-
+            register.dec(operanden[0]);
         }
     };
     private Opcode DECABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"DECABSOLUTEX", 0xDE,7){
         @Override
         public void operation(int[] operanden){
-
+            register.dec(operanden[0]);
         }
     };
 
@@ -353,7 +353,7 @@ public class OpcodeBuilder {
     private  Opcode DEXIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"DEXIMPLICIT", 0xCA,2){
         @Override
         public void operation(int[] operanden){
-
+            register.dex(operanden[0]);
         }
     };
 
@@ -363,6 +363,7 @@ public class OpcodeBuilder {
     private  Opcode DEYIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"DEYIMPLICIT", 0x88,2){
         @Override
         public void operation(int[] operanden){
+            register.dey(operanden[0]);
         }
     };
 
@@ -373,25 +374,25 @@ public class OpcodeBuilder {
     private  Opcode INCZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"INCZEROPAGE", 0xE6,5){
         @Override
         public void operation(int[] operanden){
-
+            register.inc(operanden[0]);
         }
     };
     private  Opcode INCZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"INCZEROPAGEX", 0xF6,6){
         @Override
         public void operation(int[] operanden){
-
+            register.inc(operanden[0]);
         }
     };
     private  Opcode INCABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"INCABSOLUTE", 0xEE,6){
         @Override
         public void operation(int[] operanden){
-
+            register.inc(operanden[0]);
         }
     };
     private  Opcode INCABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"INCABSOLUTEX", 0xFE,7){
         @Override
         public void operation(int[] operanden){
-
+            register.inc(operanden[0]);
         }
     };
 
@@ -399,7 +400,7 @@ public class OpcodeBuilder {
     private  Opcode INXIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"INXIMPLICIT", 0xE8,2){
         @Override
         public void operation(int[] operanden){
-
+            register.inx(operanden[0]);
         }
     };
 
@@ -409,7 +410,7 @@ public class OpcodeBuilder {
     private  Opcode INYIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"INYIMPLICIT", 0xC8,2){
         @Override
         public void operation(int[] operanden){
-
+            register.iny(operanden[0]);
         }
     };
 
@@ -419,49 +420,49 @@ public class OpcodeBuilder {
     private  Opcode SBCIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"SBCIMPLICIT", 0xE9,2){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
     private  Opcode SBCZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"SBCZEROPAGE", 0xE5,3){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
     private  Opcode SBCZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"SBCZEROPAGEX", 0xF5,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
     private  Opcode SBCABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"SBCABSOLUTE", 0xED,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
     private  Opcode SBCABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"SBCABSOLUTEX", 0xFD,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
     private  Opcode SBCABSOLUTEY = new Opcode(Flags.AddressModes.ABSOLUTEY,"SBCABSOLUTEY", 0xF9,4){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
     private  Opcode SBCINDIRECTX = new Opcode(Flags.AddressModes.INDIRECTX,"SBCINDIRECTX", 0xE1,6){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
     private  Opcode SBCINDIRECTY = new Opcode(Flags.AddressModes.INDIRECTY,"SBCINDIRECTY", 0xF1,5){
         @Override
         public void operation(int[] operanden){
-
+            register.sbc(operanden[0]);
         }
     };
 
@@ -471,49 +472,49 @@ public class OpcodeBuilder {
     private  Opcode ANDIMMEDIATE = new Opcode(Flags.AddressModes.IMMEDIATE,"ANDIMMEDIATE", 0x29,2){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
     private  Opcode ANDZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"ANDZEROPAGE", 0x25,3){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
     private  Opcode ANDZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"ANDZEROPAGEX", 0x35,4){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
     private  Opcode ANDABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"ANDABSOLUTE", 0x2D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
     private  Opcode ANDABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"ANDABSOLUTEX", 0x3D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
     private  Opcode ANDABSOLUTEY = new Opcode(Flags.AddressModes.ABSOLUTEY,"ANDABSOLUTEY", 0x39,4){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
     private  Opcode ANDINDIRECTX = new Opcode(Flags.AddressModes.INDIRECTX,"ANDINDIRECTX", 0x21,6){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
     private  Opcode ANDINDIRECTY = new Opcode(Flags.AddressModes.INDIRECTY,"ANDINDIRECTY", 0x31,5){
         @Override
         public void operation(int[] operanden){
-
+            register.and(operanden[0]);
         }
     };
 
@@ -523,32 +524,32 @@ public class OpcodeBuilder {
     private  Opcode ASLABSOLUTEX= new Opcode(Flags.AddressModes.ABSOLUTEX,"ASLABSOLUTEX", 0x1E,7){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
         }
     };
 
     private  Opcode ASLZEROPAGEX= new Opcode(Flags.AddressModes.ZEROPAGEX,"ASLZEROPAGEX", 0x16,6){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
         }
     };
     private  Opcode ASLZEROPAGE= new Opcode(Flags.AddressModes.ZEROPAGE,"ASLZEROPAGE", 0x06,5){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
         }
     };
     private  Opcode ASLABSOLUTE= new Opcode(Flags.AddressModes.ABSOLUTE,"ASLABSOLUTE", 0x0E,6){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
         }
     };
     private  Opcode ASLACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"ASLACCUMULATOR", 0x0A,2){
         @Override
         public void operation(int[] operanden){
-
+            register.aslAccumulator(operanden[0]);
         }
     };
 
@@ -559,13 +560,13 @@ public class OpcodeBuilder {
     private  Opcode BITZEROPAGE= new Opcode(Flags.AddressModes.ZEROPAGE,"BITZEROPAGE", 0x24,3){
         @Override
         public void operation(int[] operanden){
-
+            register.bit(operanden[0]);
         }
     };
     private  Opcode BITABSOLUTE= new Opcode(Flags.AddressModes.ABSOLUTE,"BITABSOLUTE", 0x2C,4){
         @Override
         public void operation(int[] operanden){
-
+            register.bit(operanden[0]);
         }
     };
 
@@ -575,49 +576,49 @@ public class OpcodeBuilder {
     private  Opcode EORIMMEDIATE = new Opcode(Flags.AddressModes.IMMEDIATE,"EORIMMEDIATE", 0x49,2){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
     private  Opcode EORABSOLUTE= new Opcode(Flags.AddressModes.ABSOLUTE,"EORABSOLUTE", 0x4D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
     private  Opcode EORABSOLUTEX= new Opcode(Flags.AddressModes.ABSOLUTEX,"EORABSOLUTEX", 0x5D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
     private  Opcode EORABSOLUTEY= new Opcode(Flags.AddressModes.ABSOLUTE,"EORABSOLUTEY", 0x59,4){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
     private  Opcode EORZEROPAGEX= new Opcode(Flags.AddressModes.ZEROPAGEX,"EORZEROPAGEX", 0x55,4){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
     private  Opcode EORZEROPAGE= new Opcode(Flags.AddressModes.ZEROPAGE,"EORZEROPAGE", 0x45,3){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
     private  Opcode EORINDIRECTX= new Opcode(Flags.AddressModes.INDIRECTX,"EORINDIRECTX", 0x41,6){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
     private  Opcode EORINDIRECTY= new Opcode(Flags.AddressModes.INDIRECTY,"EORINDIRECTY", 0x51,5){
         @Override
         public void operation(int[] operanden){
-
+            register.eor(operanden[0]);
         }
     };
 
@@ -626,31 +627,31 @@ public class OpcodeBuilder {
     private  Opcode LSRACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"LSRACCUMULATOR", 0x4A,2){
         @Override
         public void operation(int[] operanden){
-
+            register.lsrAccumulator(operanden[0]);
         }
     };
     private  Opcode LSRZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"LSRZEROPAGE", 0x46,5){
         @Override
         public void operation(int[] operanden){
-
+            register.lsr(operanden[0]);
         }
     };
     private  Opcode LSRZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"LSRZEROPAGEX", 0x56,6){
         @Override
         public void operation(int[] operanden){
-
+            register.lsr(operanden[0]);
         }
     };
     private  Opcode LSRABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"LSRABSOLUTE", 0x4E,6){
         @Override
         public void operation(int[] operanden){
-
+            register.lsr(operanden[0]);
         }
     };
     private  Opcode LSRABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"LSRABSOLUTEX", 0x5E,7){
         @Override
         public void operation(int[] operanden){
-
+            register.lsr(operanden[0]);
         }
     };
 
@@ -660,50 +661,50 @@ public class OpcodeBuilder {
     private  Opcode ORAABSOLUTEY = new Opcode(Flags.AddressModes.ABSOLUTEY,"ORAABSOLUTEY", 0x19,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
     private  Opcode ORAABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"ORAABSOLUTEX", 0x1D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
     private  Opcode ORAINDIRECTY = new Opcode(Flags.AddressModes.INDIRECTY,"ORAINDIRECTY", 0x11,5){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
 
     private  Opcode ORAZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"ORAZEROPAGEX", 0x15,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
     private  Opcode ORAINDIRECTX = new Opcode(Flags.AddressModes.INDIRECTX,"ORAINDIRECTX", 0x01,6){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
     private  Opcode ORAZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"ORAZEROPAGE", 0x05,3){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
     private  Opcode ORAABSOLUTE= new Opcode(Flags.AddressModes.ABSOLUTE,"ORAABSOLUTE", 0x0D,4){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
     private  Opcode ORAIMMEDIATE= new Opcode(Flags.AddressModes.IMMEDIATE,"ORAIMMEDIATE", 0x09,2){
         @Override
         public void operation(int[] operanden){
-
+            register.ora(operanden[0]);
         }
     };
 
@@ -713,31 +714,31 @@ public class OpcodeBuilder {
     private  Opcode ROLZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"ROLZEROPAGE", 0x26,5){
         @Override
         public void operation(int[] operanden){
-
+            register.rol(operanden[0]);
         }
     };
     private  Opcode ROLZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"ROLZEROPAGEX", 0x36,6){
         @Override
         public void operation(int[] operanden){
-
+            register.rol(operanden[0]);
         }
     };
     private  Opcode ROLABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"ROLABSOLUTE", 0x2E,6){
         @Override
         public void operation(int[] operanden){
-
+            register.rol(operanden[0]);
         }
     };
     private  Opcode ROLABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"ROLABSOLUTEX", 0x3E,7){
         @Override
         public void operation(int[] operanden){
-
+            register.rol(operanden[0]);
         }
     };
     private  Opcode ROLACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"ROLACCUMULATOR", 0x2A,2){
         @Override
         public void operation(int[] operanden){
-
+            register.rolAccumulator(operanden[0]);
         }
     };
 
@@ -746,31 +747,31 @@ public class OpcodeBuilder {
     private Opcode RORZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"RORZEROPAGE", 0x66,5){
         @Override
         public void operation(int[] operanden){
-
+            register.ror(operanden[0]);
         }
     };
     private Opcode RORACCUMULATOR = new Opcode(Flags.AddressModes.ACCUMULATOR,"RORACCUMULATOR", 0x6A,2){
         @Override
         public void operation(int[] operanden){
-
+            register.rorAccumulator(operanden[0]);
         }
     };
     private Opcode RORZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"RORZEROPAGEX", 0x76,6){
         @Override
         public void operation(int[] operanden){
-
+            register.ror(operanden[0]);
         }
     };
     private Opcode RORABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"RORABSOLUTEX", 0x7E,7){
         @Override
         public void operation(int[] operanden){
-
+            register.ror(operanden[0]);
         }
     };
     private Opcode RORABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"RORABSOLUTE", 0x6E,6){
         @Override
         public void operation(int[] operanden){
-
+            register.ror(operanden[0]);
         }
     };
 
@@ -779,7 +780,7 @@ public class OpcodeBuilder {
     private  Opcode CLCIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"CLCIMPLICIT", 0x18,2){
         @Override
         public void operation(int[] operanden){
-
+            register.clc();
         }
     };
 
@@ -787,7 +788,7 @@ public class OpcodeBuilder {
     private  Opcode CLDIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"CLDIMPLICIT", 0xD8,2){
         @Override
         public void operation(int[] operanden){
-
+            register.cld();
         }
     };
 
@@ -795,7 +796,7 @@ public class OpcodeBuilder {
     private  Opcode CLIIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"CLIIMPLICIT", 0x58,2){
         @Override
         public void operation(int[] operanden){
-
+            register.cli();
         }
     };
 
@@ -803,7 +804,7 @@ public class OpcodeBuilder {
     private  Opcode CLVIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"CLVIMPLICIT", 0xB8,2){
         @Override
         public void operation(int[] operanden){
-
+            register.clv();
         }
     };
 
@@ -813,50 +814,50 @@ public class OpcodeBuilder {
     private  Opcode CMPABSOLUTEY = new Opcode(Flags.AddressModes.ABSOLUTEY,"CMPABSOLUTEY", 0xD9,4){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
     private  Opcode CMPINDIRECTY = new Opcode(Flags.AddressModes.INDIRECTY,"CMPINDIRECTY", 0xD1,5){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
     private  Opcode CMPABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"CMPABSOLUTEX", 0xDD,4){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
     private  Opcode CMPABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"CMPABSOLUTE", 0xCD,4){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
     private  Opcode CMPINDIRECTX = new Opcode(Flags.AddressModes.INDIRECTX,"CMPINDIRECTX", 0xC1,6){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
 
     private  Opcode CMPIMMEDIATE = new Opcode(Flags.AddressModes.IMMEDIATE,"CMPIMMEDIATE", 0xC9,2){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
     private  Opcode CMPZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"CMPZEROPAGE", 0xC5,3){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
     private  Opcode CMPZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"CMPZEROPAGEX", 0xD5,4){
         @Override
         public void operation(int[] operanden){
-
+            register.cmp(operanden[0]);
         }
     };
 
@@ -865,19 +866,19 @@ public class OpcodeBuilder {
     private  Opcode CPXIMMEDIATE = new Opcode(Flags.AddressModes.IMMEDIATE,"CPXIMMEDIATE", 0xE0,2){
         @Override
         public void operation(int[] operanden){
-
+            register.cpx(operanden[0]);
         }
     };
     private  Opcode CPXZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"CPXZEROPAGE", 0xE4,3){
         @Override
         public void operation(int[] operanden){
-
+            register.cpx(operanden[0]);
         }
     };
     private  Opcode CPXABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"CPXABSOLUTE", 0xEC,4){
         @Override
         public void operation(int[] operanden){
-
+            register.cpx(operanden[0]);
         }
     };
 
@@ -886,19 +887,19 @@ public class OpcodeBuilder {
     private  Opcode CPYIMMEDIATE = new Opcode(Flags.AddressModes.IMMEDIATE,"CPYIMMEDIATE", 0xC0,2){
         @Override
         public void operation(int[] operanden){
-
+            register.cpy(operanden[0]);
         }
     };
     private  Opcode CPYZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"CPYZEROPAGE", 0xC4,3){
         @Override
         public void operation(int[] operanden){
-
+            register.cpy(operanden[0]);
         }
     };
     private  Opcode CPYABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"CPYABSOLUTE", 0xCC,4){
         @Override
         public void operation(int[] operanden){
-
+            register.cpy(operanden[0]);
         }
     };
 
@@ -906,7 +907,7 @@ public class OpcodeBuilder {
     private  Opcode SECIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"SECIMPLICIT", 0x38,	2){
         @Override
         public void operation(int[] operanden){
-
+            register.sec();
         }
     };
 
@@ -914,6 +915,7 @@ public class OpcodeBuilder {
     private  Opcode SEDIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"SEDIMPLICIT ", 0xF8,	2){
         @Override
         public void operation(int[] operanden){
+            register.sed();
         }
     };
 
@@ -921,7 +923,7 @@ public class OpcodeBuilder {
     private  Opcode SEIIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"SEIIMPLICIT", 0x78,	2){
         @Override
         public void operation(int[] operanden){
-
+            register.sei();
         }
     };
 
@@ -931,7 +933,7 @@ public class OpcodeBuilder {
     private  Opcode BCCRELATIVE =  new Opcode(Flags.AddressModes.RELATIVE,"BCCRELATIVE", 0x90,	2){
         @Override
         public void operation(int[] operanden){
-
+            register.bcc(operanden[0]);
         }
     };
 
@@ -939,7 +941,7 @@ public class OpcodeBuilder {
     private  Opcode BCSRELATIVE =  new Opcode(Flags.AddressModes.RELATIVE,"BCSRELATIVE", 0xB0,	2){
         @Override
         public void operation(int[] operanden){
-
+            register.bcs(operanden[0]);
         }
     };
 
@@ -947,56 +949,56 @@ public class OpcodeBuilder {
     private Opcode BEQRELATIVE = new Opcode(Flags.AddressModes.RELATIVE,"BEQRELATIVE", 0xF0,2){
         @Override
         public void operation(int[] operanden){
-
+            register.beq(operanden[0]);
         }
     };
     //BMI
     private Opcode BMIRELATIVE = new Opcode(Flags.AddressModes.RELATIVE,"BMIRELATIVE", 0x30,2){
         @Override
         public void operation(int[] operanden){
-
+            register.bmi(operanden[0]);
         }
     };
     //BNE
     private Opcode BNERELATIVE = new Opcode(Flags.AddressModes.RELATIVE,"BNERELATIVE", 0xD0,2){
         @Override
         public void operation(int[] operanden){
-
+            register.bne(operanden[0]);
         }
     };
     //BPL
     private  Opcode BPLRELATIVE = new Opcode(Flags.AddressModes.RELATIVE,"BPLRELATIVE", 0x10,2){
         @Override
         public void operation(int[] operanden){
-
+            register.bpl(operanden[0]);
         }
     };
     //BVC
     private  Opcode BVCRELATIVE = new Opcode(Flags.AddressModes.RELATIVE,"BVCRELATIVE", 0x50,2){
         @Override
         public void operation(int[] operanden){
-
+            register.bvc(operanden[0]);
         }
     };
     //BVS
     private  Opcode BVSRELATIVE = new Opcode(Flags.AddressModes.RELATIVE,"BVSRELATIVE", 0x70,2){
         @Override
         public void operation(int[] operanden){
-
+            register.bvs(operanden[0]);
         }
     };
     //JMP
     private  Opcode JMPABSOLUTE =  new Opcode(Flags.AddressModes.ABSOLUTE,"JMPABSOLUTE", 0x4C,	3){
         @Override
         public void operation(int[] operanden){
-
+            register.jmp(operanden[0]);
         }
     };
 
     private  Opcode JMPINDIRECT =  new Opcode(Flags.AddressModes.INDIRECT,"JMPINDIRECT", 0x6C,	5){
         @Override
         public void operation(int[] operanden){
-
+            register.jmp(operanden[0]);
         }
     };
 
@@ -1004,21 +1006,21 @@ public class OpcodeBuilder {
     private Opcode JSRABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"JSRABSOLUTE", 0x20,6){
         @Override
         public void operation(int[] operanden){
-
+            register.jsr(operanden[0]);
         }
     };
     //RTI
     private  Opcode RTIIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"RTIIMPLICIT", 0x40,	6){
         @Override
         public void operation(int[] operanden){
-
+            register.rti();
         }
     };
     //RTS
     private  Opcode RTSIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"RTSIMPLICIT", 0x60,	6){
         @Override
         public void operation(int[] operanden){
-
+            register.rts();
         }
     };
 
@@ -1026,7 +1028,7 @@ public class OpcodeBuilder {
     private  Opcode PHAIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"PHAIMPLICIT", 0x48,3){
         @Override
         public void operation(int[] operanden){
-
+            register.pha(operanden[0]);
         }
     };
 
@@ -1034,21 +1036,21 @@ public class OpcodeBuilder {
     private  Opcode PHPIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"PHPIMPLICIT", 0x08,3){
         @Override
         public void operation(int[] operanden){
-
+            register.php();
         }
     };
     //PLA
     private Opcode PLAIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"PLAIMPLICIT", 0x68,4){
         @Override
         public void operation(int[] operanden){
-
+            register.pla(operanden[0]);
         }
     };
     //PLP
     private  Opcode PLPIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"PLPIMPLICIT", 0x78,	2){
         @Override
         public void operation(int[] operanden){
-
+            register.plp(operanden[0]);
         }
     };
 
@@ -1056,14 +1058,14 @@ public class OpcodeBuilder {
     private  Opcode BRKIMPLICIT =  new Opcode(Flags.AddressModes.IMPLICIT,"BRKIMPLICIT", 0x00,7){
         @Override
         public void operation(int[] operanden){
-
+            register.brk();
         }
     };
     //NOP
     private  Opcode NOPIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"NOPIMPLICIT", 0xEA,2){
         @Override
         public void operation(int[] operanden){
-
+            register.nop();
         }
     };
 
@@ -1387,7 +1389,7 @@ public class OpcodeBuilder {
         opcodes[0x87] = NOPIMPLICIT;
         opcodes[0x88] = DEYIMPLICIT;
         opcodes[0x89] = NOPIMPLICIT;
-        opcodes[0x8A] = TSAIMPLICIT;
+        opcodes[0x8A] = TXAIMPLICIT;
         opcodes[0x8B] = NOPIMPLICIT;
         opcodes[0x8C] = STYABSOLUTE;
         opcodes[0x8D] = STAABSOLUTE;
@@ -1402,7 +1404,7 @@ public class OpcodeBuilder {
         opcodes[0x95] = STAZEROPAGEX;
         opcodes[0x96] = STXZEROPAGEY;
         opcodes[0x97] = NOPIMPLICIT;
-        opcodes[0x98] = NOPIMPLICIT;
+        opcodes[0x98] = TYAIMPLICIT;
         opcodes[0x99] = STAABSOLUTEY;
         opcodes[0x9A] = TXSIMPLICIT;
         opcodes[0x9B] = NOPIMPLICIT;
@@ -1451,7 +1453,7 @@ public class OpcodeBuilder {
         opcodes[0xC3] = NOPIMPLICIT;
         opcodes[0xC4] = CPYZEROPAGE;
         opcodes[0xC5] = CMPZEROPAGE;
-        opcodes[0xC6] = NOPIMPLICIT;
+        opcodes[0xC6] = DECZEROPAGE;
         opcodes[0xC7] = NOPIMPLICIT;
         opcodes[0xC8] = INYIMPLICIT;
         opcodes[0xC9] = CMPIMMEDIATE;
@@ -1459,7 +1461,7 @@ public class OpcodeBuilder {
         opcodes[0xCB] = NOPIMPLICIT;
         opcodes[0xCC] = CPYABSOLUTE;
         opcodes[0xCD] = CMPABSOLUTE;
-        opcodes[0xCE] = NOPIMPLICIT;
+        opcodes[0xCE] = DECABSOLUTE;
         opcodes[0xCF] = NOPIMPLICIT;
 
         opcodes[0xD0] = BNERELATIVE;
@@ -1476,7 +1478,7 @@ public class OpcodeBuilder {
         opcodes[0xDB] = NOPIMPLICIT;
         opcodes[0xDC] = NOPIMPLICIT;
         opcodes[0xDD] = CMPABSOLUTEX;
-        opcodes[0xDE] = NOPIMPLICIT;
+        opcodes[0xDE] = DECABSOLUTEX;
         opcodes[0xDF] = NOPIMPLICIT;
 
         opcodes[0xE0] = CPXIMMEDIATE;

@@ -3,6 +3,7 @@ package GBEmyu.cpu;
 public class Flags {
     //Objects of enums
     private ProcessorStatusFlags[] processorStatusFlags;
+    private Interrupt interruptFlags;
 
     //enums
     public enum AddressModes{
@@ -28,7 +29,8 @@ public class Flags {
         DECIMALMODE(0),
         INTERRUPTDISABLE(0),
         ZERO(0),
-        CARRY(0);
+        CARRY(0),
+        UNKNOWN(0);
         private int val;
         public int getVal(){
             return this.val;
@@ -43,7 +45,7 @@ public class Flags {
     public enum Interrupt{
         interruptNone,
         interruptNMI,
-        getInterruptIRQ
+        interruptIRQ;
     }
 
 
@@ -64,6 +66,12 @@ return null;
                 return;
             }
         }
+    }
+    public void setInterruptFlags(Interrupt flag){
+        this.interruptFlags = flag;
+    }
+    public Interrupt getInterruptFlag() {
+        return this.interruptFlags;
     }
 
 

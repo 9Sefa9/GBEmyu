@@ -8,9 +8,10 @@ public class RightShiftLeftShift {
        // }
 
         //System.out.println(a+20 & 128);
-        int b = 250;
-        System.out.println((b >> 7) & 1);
-         System.out.println((""+(b & 0x80)));
+        int b = 0x80;
+
+        //System.out.println((b >> 7) & 1);
+         System.out.println((""+((b >> 7) & 1)));
 
     }
 }

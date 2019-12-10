@@ -27,7 +27,7 @@ public class CPU {
         while(true) {
             clock();
             try {
-                sleep(1);
+                sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -45,6 +45,16 @@ public class CPU {
 
             Opcode currentOpcode = null;
             try {
+                switch (flags.getInterruptFlag()){
+                    case interruptNMI:
+                        nmi();
+                        break;
+                    case interruptIRQ:
+                        irq();
+                        break;
+                }
+
+                flags.setInterruptFlags(Flags.Interrupt.interruptNone);
 
                 instruction = instructions[register.getPC()];
                 //Fetch opcode from the current PC address
@@ -170,13 +180,7 @@ public class CPU {
 	            return hi<<8 | lo
 }
              */
-
-            register.incrementPC();
-            int lo = instructions[register.getPC()];
-            register.incrementPC();
-            int hi = instructions[register.getPC()];
-
-            int[] value ={ (hi <<8 | lo)};
+            int[] value = {register.read16(register.getPC()+1)};
             currentOpcode.operation(value);
 
     }
@@ -396,12 +400,38 @@ of the PC.
     // Reset resets the CPU to its initial powerup state
     //@TODO Reset implementieren. Eventuell den Mapper auch.
     private void reset() {
+        register.setPC(register.read16(0xFFFC));
+        register.setSP(0xFD);
+        register.setP(0x24);
         // register.setPC(bus.read16(0xFFFC));
         //   cpu.PC = cpu.Read16(0xFFFC)
         //   cpu.SP = 0xFD
         //   cpu.SetFlags(0x24)
     }
-
+    //non maskable interrupt. tritt auf beim nächsten cycle.
+    public void triggerNMI(){
+        flags.setInterruptFlags(Flags.Interrupt.interruptNMI);
+    }
+    //sorgt für ein IRQ interrupt beim nächsten cycle.
+    public void triggerIRQ(){
+        if(Flags.ProcessorStatusFlags.INTERRUPTDISABLE.getVal() == 0){
+            flags.setInterruptFlags(Flags.Interrupt.interruptIRQ);
+        }
+    }
+    public void nmi(){
+        register.push16(register.getPC());
+        register.php();
+        register.setPC(register.read16(0xFFFA));
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,1);
+        incrementCycle(7);
+    }
+    public void irq(){
+        register.push16(register.getPC());
+        register.php();
+        register.setPC(register.read16(0xFFFE));
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,1);
+        incrementCycle(7);
+    }
     private boolean pageCrossing(int lo, int hi) {
         return (lo & 0xFF00) != (hi & 0xFF00);
     }
