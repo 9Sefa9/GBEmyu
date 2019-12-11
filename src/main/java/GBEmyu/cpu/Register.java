@@ -10,8 +10,8 @@ public class Register {
     private int x;
     private int y;
     private int p; //status register
-    private int pc=0; //Program counter
-    private int sp=0; //Stack Pointer
+    private int pc; //Program counter
+    private int sp; //Stack Pointer
 
     private Flags flags;
     private Bus bus;
@@ -450,6 +450,9 @@ public class Register {
         this.pc = (pc + 1) & 0xFFFF; //sicher gehen, dass er 0xFFFF nicht überschreitet.
     }
     public void incrementSP() { setSP(sp+1);/*(sp + 1) & 0xFFFF; */}
+    public void incrementPC(int value){
+        setPC(value);
+    }
     public void decrementSP() { setSP(sp-1);/*(sp - 1) & 0xFFFF; */}
     public void setPC(int pc){this.pc = (pc & 0xFFFF);}
     public void setSP(int sp) {
@@ -496,9 +499,4 @@ public class Register {
         return x;
     }
 
-    @Override
-    public String toString(){
-        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"REGISTER CLASS ::: A: "+getA()+" X: "+getX()+" Y: "+getY()+" P: "+getP()+" PC: "+getPC()+" SP: "+getSP());
-        return "";
-    }
 }

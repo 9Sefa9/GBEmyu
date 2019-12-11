@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import static java.lang.Thread.sleep;
 
 public class CPU {
-
+//@TODO: Memory Mapper 1 verstehen und anwenden.
     private Register register;
     private Bus bus;
     private Flags flags;
@@ -26,12 +26,20 @@ public class CPU {
         this.opcodes = new OpcodeBuilder(this.instructions,this.register).getOpcodes();
     }
     public void start() {
+        //Am Anfang sind erstmal keine Zyklen.
         setCycle(0);
+        //NUR ZUM TESTEN ERSTMAL!:
+        register.incrementPC(16);
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         while(true) {
 
             clock();
             try {
-                sleep(0);
+                sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -64,8 +72,7 @@ public class CPU {
                 //Fetch opcode from the current PC address
                 currentOpcode = opcodes[instruction];
                 //Logger.LOGGER.log(Level.INFO,
-                System.out.println("zyklen: "+cycleCounter);
-                System.out.println("\n         MAIN CYCLE::" + getCycle() +" OPCODE Cycle:"+currentOpcode.getCycle()+" AddressMode:  "+currentOpcode.getAddressMode()+"  PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + "  OpcodeName::" + currentOpcode.getOpcodeName() + "  OpcodeHexAddress::" + currentOpcode.getHexAddress()+"\n");
+
                 // opcodes[instructions[register.getPC()]].operation();
                 switch (currentOpcode.getAddressMode()) {
                     case HLT:
@@ -114,7 +121,11 @@ public class CPU {
                 }
 
                 incrementCycle(currentOpcode.getCycle());
-                cycleCounter+=getCycle();
+                //+1 weil wir jetz tin diesem moment noch in einer Clock sind. später wird es ja decrementiert... Nicht vergessen: cycleCounter ist nur zu Debug zwecken.
+                cycleCounter+=(getCycle()+1);
+                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD ::: A: "+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP()+" PC: "+register.getPC()+" CYC: "+cycleCounter+"\n" +
+                        "OPCODE Cycle: "+currentOpcode.getCycle()+" AddressMode: "+currentOpcode.getAddressMode()+"  PC: " + register.getPC() + "  Instruction(HEX): " + String.format("%04X",instructions[register.getPC()]) + "  OpcodeName:" + currentOpcode.getOpcodeName() + "  OpcodeHexAddress:" + currentOpcode.getHexAddress());
+
                 register.incrementPC();
 
 
@@ -187,7 +198,14 @@ public class CPU {
 	            return hi<<8 | lo
 }
              */
+            //so war das standardmässig.
             int[] value = {register.read16(register.getPC()+1)};
+
+
+            //int lo = getInstructions()[((register.getPC() + 1)& 0xFFFF)];
+            //int hi = getInstructions()[((register.getPC() + 1)+1 & 0xFFFF)];
+            //int []value = {(hi <<8 | lo) & 0xFFFF};
+            //System.out.println(value[0]);
             currentOpcode.operation(value);
 
     }
@@ -464,7 +482,7 @@ of the PC.
     }
     @Override
     public String toString(){
-        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"CPU CLASS :::  Instruction(HEX): "+String.format("%04X",getInstructions()[register.getPC()])+" current opcode: "+opcodes[register.getPC()].getOpcodeName() + " current addressMode: "+opcodes[register.getPC()].getAddressMode()+ " current Cycle: "+opcodes[register.getPC()].getCycle());
+        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"TOSTRING: CPU CLASS :::  Instruction(HEX): "+String.format("%04X",getInstructions()[register.getPC()])+" current opcode: "+opcodes[getInstructions()[register.getPC()]].getOpcodeName() + " current addressMode: "+opcodes[register.getPC()].getAddressMode()+ " current Cycle: "+opcodes[register.getPC()].getCycle());
         return "";
     }
 }
