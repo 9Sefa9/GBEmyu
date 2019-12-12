@@ -13,12 +13,14 @@ public class Bus {
     }
 
     public void write(int address, int val) {
-        this.memoryMap.getMemory()[address] = (val & 0x100);
+        this.memoryMap.write(address,val);
+
 
     }
 
     public int read(int address) {
-        return this.memoryMap.getMemory()[(address & 0x100)];
+        return this.memoryMap.read(address);
+
     }
 
 }
