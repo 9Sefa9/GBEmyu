@@ -31,7 +31,7 @@ public class CPU {
         //NUR ZUM TESTEN ERSTMAL!:
         register.incrementPC(16);
         try {
-            sleep(1000);
+            sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(100);
+                sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -199,8 +199,10 @@ public class CPU {
 }
              */
             //so war das standardmässig.
-            int[] value = {register.read16(register.getPC()+1)};
 
+
+            int[] value = {register.read16(register.getPC()+1)};
+            System.out.println(value[0]);
 
             //int lo = getInstructions()[((register.getPC() + 1)& 0xFFFF)];
             //int hi = getInstructions()[((register.getPC() + 1)+1 & 0xFFFF)];
@@ -440,12 +442,13 @@ of the PC.
     public void triggerNMI(){
         flags.setInterruptFlags(Flags.Interrupt.interruptNMI);
     }
-    //sorgt für ein IRQ interrupt beim nächsten cycle.
+    //sorgt für ein interrupt beim nächsten cycle.
     public void triggerIRQ(){
         if(Flags.ProcessorStatusFlags.INTERRUPTDISABLE.getVal() == 0){
             flags.setInterruptFlags(Flags.Interrupt.interruptIRQ);
         }
     }
+    //wird von der PPU generiert.
     public void nmi(){
         register.push16(register.getPC());
         register.php();

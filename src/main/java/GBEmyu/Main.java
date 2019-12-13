@@ -12,7 +12,7 @@ public class Main {
 
 	private void start() {
 
-		int[] instructions = Helper.readRom(getClass().getResource("/nestest.nes").getPath());
+		int[] instructions = Helper.readRom(getClass().getResource("/cpu_dummy_reads.nes").getPath());
 		Bus bus = new Bus();
         MemoryMap memoryMap = new MemoryMap();
 		CPU cpu = new CPU(bus,instructions);

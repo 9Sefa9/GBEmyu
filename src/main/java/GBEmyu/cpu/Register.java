@@ -372,6 +372,7 @@ public class Register {
     }
     // Read16 reads two bytes using Read to return a double-word value
     public int read16(int address){
+
         int lo = bus.read(address & 0xFFFF);
         int hi =  bus.read(address+1 & 0xFFFF);
         return (hi <<8 | lo) & 0xFFFF;
@@ -451,7 +452,7 @@ public class Register {
     }
     public void incrementSP() { setSP(sp+1);/*(sp + 1) & 0xFFFF; */}
     public void incrementPC(int value){
-        setPC(value);
+        this.pc = (pc + value) & 0xFFFF;
     }
     public void decrementSP() { setSP(sp-1);/*(sp - 1) & 0xFFFF; */}
     public void setPC(int pc){this.pc = (pc & 0xFFFF);}
