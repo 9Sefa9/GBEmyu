@@ -18,7 +18,6 @@ public class Main {
 
 	private void start() {
 		Mapper0 mapper0 = new Mapper0();
-		int[] instructions = readINes(getClass().getResource("/nestest.nes").getPath());
 		mapper0.load(getClass().getResource("/nestest.nes").getPath());
 		Bus bus = new Bus();
 

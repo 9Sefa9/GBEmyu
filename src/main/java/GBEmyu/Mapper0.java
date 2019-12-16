@@ -1,5 +1,6 @@
 package GBEmyu;
 
+import GBEmyu.cpu.Flags;
 import GBEmyu.utilities.Helper;
 import GBEmyu.utilities.Logger;
 
@@ -7,8 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 //TODO read und write entsprechend der manual programmieren...
 public class Mapper0 {
@@ -26,7 +25,71 @@ public class Mapper0 {
 	    //erstellt komplette Speicher.
         cpuMemoryMap = new int[0x10000];
 		createMemory();
+		writePRG();
+		writeCHR();
+		//TODO LoadBatterRam()
+
 	}
+
+
+    private void writePRG() {
+	    if(this.unit.getPrgRomSize()>2){
+            try {
+                throw new Exception("PRG-ROM SIZE OVER 2 !");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+	    if(this.unit.getPrgRomSize()>0){
+            // Load the two first banks into memory.
+            for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
+                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
+            }
+            for (int i=0; i<this.unit.getPrgBanks().get(1).length;i++){
+                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
+            }
+        }else{
+            // Load the one bank into both memory locations:
+            for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
+                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
+            }
+            for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
+                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
+            }
+        }
+
+
+    }
+
+    private void writeCHR() {
+        if(this.unit.getChrRomSize()>2){
+            try {
+                throw new Exception("CHR-ROM SIZE OVER 2 !");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(this.unit.getChrRomSize()>0){
+            // Load the two first banks into memory.
+            for (int i=0; i<this.unit.getChrBanks().get(0).length;i++){
+                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
+            }
+            for (int i=0; i<this.unit.getChrBanks().get(1).length;i++){
+                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
+            }
+        }else{
+            // Load the one bank into both memory locations:
+            for (int i=0; i<this.unit.getChrBanks().get(0).length;i++){
+                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
+            }
+            for (int i=0; i<this.unit.getChrBanks().get(0).length;i++){
+                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
+            }
+        }
+    }
+
     // read file
     public void load(final String nesPath) {
         File rom=null;
@@ -40,7 +103,7 @@ public class Mapper0 {
             fis.read(romBuffer);
 
         } catch (IOException e) {
-            LOGGER.log (Level.WARNING, "Failed to open file!");
+            Logger.LOGGER.log(Level.WARNING, "Failed to open file!");
             e.printStackTrace();
         }
         finally{
@@ -63,16 +126,6 @@ public class Mapper0 {
     }
 
 
-    /*
-    copyArrayElements: function(src, srcPos, dest, destPos, length) {
-        for (var i = 0; i < length; ++i) {
-            dest[destPos + i] = src[srcPos + i];
-        }
-    },
-*/
-
-//#######################################-----RAM SECTION-----#####################################
-
     private void createMemory() {
     //setze alle werte mit 0 von 0(inkl) bis 65535(inkl ?.)
     Helper.forSet(cpuMemoryMap,0,cpuMemoryMap.length,0);
@@ -91,6 +144,7 @@ public class Mapper0 {
         getCpuMemoryMap()[(address+ptr) & 0x800] = value;
 
     }
+
     public int read(int address) {
         if(address < 0x2000){
             //RAM
@@ -125,7 +179,9 @@ public class Mapper0 {
 
         }else if( address <0x4020){
             //I/O Registers
-            //  mirrorIO();
+            if(address <=0x2007 && address>0x2000) {
+                mirrorIO(address, val);
+            }
 
         }
         else if(address <0x6000){
@@ -138,13 +194,25 @@ public class Mapper0 {
         }
         else if(address <0x10000){
             //PRG-RAM
-            write(address,val);
+            getCpuMemoryMap()[address] = val;
         }
     }
-    private void mirrorIO() {
+    private void mirrorIO(int address, int value) {
+        /*
+        The memory mapped I/O registers are located at $2000-$401F. Locations $2000-$2007 are mirrored every 8 bytes
+        in the region $2008-$3FFF and the remaining registers follow this mirroring.
+        */
 
+        //TODO Könnte probleme verursachen!
+        int ptr = 8;
+        int addressTemp = address;
+        while(addressTemp+ptr<0x3FFF){
+            addressTemp+=ptr;
+            getCpuMemoryMap()[(addressTemp) & 0x401F] = value;
+
+        }
     }
-//#################################################################################################
+//#########################################--GETTERS--########################################################
 
     public int[] getInstructions() {
         return this.allInstructions;
