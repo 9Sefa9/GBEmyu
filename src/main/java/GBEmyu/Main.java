@@ -17,8 +17,7 @@ public class Main {
 	}
 
 	private void start() {
-		Mapper0 mapper0 = new Mapper0();
-		mapper0.load(getClass().getResource("/nestest.nes").getPath());
+		Mapper0 mapper0 = new Mapper0(getClass().getResource("/nestest.nes").getPath());
 		Bus bus = new Bus();
 
 		CPU cpu = new CPU(bus, mapper0.getInstructions());

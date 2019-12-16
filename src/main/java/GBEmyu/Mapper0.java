@@ -21,12 +21,16 @@ public class Mapper0 {
 	//private PPU ppu;
 
 	
-	public Mapper0() {
+	public Mapper0(final String nesPath) {
 	    //erstellt komplette Speicher.
         cpuMemoryMap = new int[0x10000];
-		createMemory();
+        Logger.LOGGER.log(Level.INFO,"Memory Map created :: "+String.format("0x%04X", cpuMemoryMap.length));
+		this.unit = load(nesPath);
+        Logger.LOGGER.log(Level.INFO,"NesUnit created :: ");
 		writePRG();
+        Logger.LOGGER.log(Level.INFO,"PRG Mapping done :: ");
 		writeCHR();
+        Logger.LOGGER.log(Level.INFO,"PRG Mapping done :: ");
 		//TODO LoadBatterRam()
 
 	}
@@ -41,7 +45,7 @@ public class Mapper0 {
             }
         }
 
-	    if(this.unit.getPrgRomSize()>0){
+	    if(this.unit.getPrgRomSize()>1){
             // Load the two first banks into memory.
             for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
                 write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
@@ -55,7 +59,7 @@ public class Mapper0 {
                 write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
             }
             for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
-                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
+                write(0xC000+i,this.unit.getPrgBanks().get(0)[i]);
             }
         }
 
@@ -63,35 +67,26 @@ public class Mapper0 {
     }
 
     private void writeCHR() {
-        if(this.unit.getChrRomSize()>2){
-            try {
-                throw new Exception("CHR-ROM SIZE OVER 2 !");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if(this.unit.getChrRomSize()>0){
-            // Load the two first banks into memory.
-            for (int i=0; i<this.unit.getChrBanks().get(0).length;i++){
-                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
-            }
-            for (int i=0; i<this.unit.getChrBanks().get(1).length;i++){
-                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
-            }
-        }else{
-            // Load the one bank into both memory locations:
-            for (int i=0; i<this.unit.getChrBanks().get(0).length;i++){
-                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
-            }
-            for (int i=0; i<this.unit.getChrBanks().get(0).length;i++){
-                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
-            }
-        }
+       /* SIEHE loadCHRROM unter :  https://github.com/bfirsh/jsnes/blob/master/src/mappers.js
+       loadCHRROM: function() {
+    // console.log("Loading CHR ROM..");
+    if (this.nes.rom.vromCount > 0) {
+      if (this.nes.rom.vromCount === 1) {
+        this.loadVromBank(0, 0x0000);
+        this.loadVromBank(0, 0x1000);
+      } else {
+        this.loadVromBank(0, 0x0000);
+        this.loadVromBank(1, 0x1000);
+      }
+    } else {
+      //System.out.println("There aren't any CHR-ROM banks..");
+    }
+  },
+        */
     }
 
     // read file
-    public void load(final String nesPath) {
+    public NesUnit load(final String nesPath) {
         File rom=null;
         byte[] romBuffer=null;
         FileInputStream fis=null;
@@ -122,15 +117,9 @@ public class Mapper0 {
         //wichtig um später drauf zugreifen zu können.
         this.allInstructions = allInstructions ;
         //INes Format anwenden und zugreifbar machen.
-        this.unit = new NesUnit(this.allInstructions);
+        return new NesUnit(this.allInstructions);
     }
 
-
-    private void createMemory() {
-    //setze alle werte mit 0 von 0(inkl) bis 65535(inkl ?.)
-    Helper.forSet(cpuMemoryMap,0,cpuMemoryMap.length,0);
-    Logger.LOGGER.log(Level.INFO,"Memory Map created :: "+String.format("0x%04X", cpuMemoryMap.length));
-}
     private void mirrorRam(int address, int value) {
 	    // 0x123 => 0x923 => B23 => 1923
         int ptr = 0x800;

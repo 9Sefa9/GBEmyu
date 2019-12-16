@@ -27,6 +27,7 @@ public class NesUnit {
 
     public NesUnit(int []allInstructions) {
         prgBanks = new ArrayList<>();
+        chrBanks = new ArrayList<>();
 		this.allInstructions = allInstructions;
 		process(this.allInstructions);
 	}
@@ -65,8 +66,8 @@ public class NesUnit {
 		return this;
 	}
     private void createPRGRom() {
-        for (int i = 0; i < this.prgBanks.size(); i++) {
-            this.prgBanks.set(i, new int[16384]);
+        for (int i = 0; i < this.prgRomSize; i++) {
+            this.prgBanks.add(i, new int[16384]);
         }
         //Initialisiere die ersten beiden banks.
         int offset = 16; //weil die ersten 16 header sind.
@@ -82,8 +83,8 @@ public class NesUnit {
         }
     }
     private void createCHRRom() {
-        for (int i = 0; i < this.chrBanks.size(); i++) {
-            this.chrBanks.set(i, new int[4096]);
+        for (int i = 0; i < this.chrRomSize; i++) {
+            this.chrBanks.add(i, new int[4096]);
         }
         //Initialisiere die ersten beiden banks.
         int offset = 16; //weil die ersten 16 header sind.

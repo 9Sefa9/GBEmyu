@@ -483,7 +483,7 @@ public class Register {
         return this.sp;
     }
     public int getPC(){
-        return this.pc;
+        return this.pc & 0xFFFF;
     }
     public int getA() { return a; }
     public int getP() {
