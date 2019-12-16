@@ -7,6 +7,7 @@ import GBEmyu.utilities.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 //TODO read und write entsprechend der manual programmieren...
@@ -46,20 +47,24 @@ public class Mapper0 {
         }
 
 	    if(this.unit.getPrgRomSize()>1){
+            int[] prgBank0 = this.unit.getPrgBanks().get(0);
+            int[] prgBank1 = this.unit.getPrgBanks().get(1);
             // Load the two first banks into memory.
-            for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
-                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
+            for (int i=0; i<prgBank0.length;i++){
+                write(0x8000+i,prgBank0[i]);
             }
-            for (int i=0; i<this.unit.getPrgBanks().get(1).length;i++){
-                write(0xC000+i,this.unit.getPrgBanks().get(1)[i]);
+            for (int i=0; i<prgBank1.length;i++){
+                write(0xC000+i,prgBank1[i]);
             }
         }else{
             // Load the one bank into both memory locations:
-            for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
-                write(0x8000+i,this.unit.getPrgBanks().get(0)[i]);
+            int[] prgBank = this.unit.getPrgBanks().get(0);
+
+            for (int i=0; i<prgBank.length;i++){
+                write(0x8000+i,prgBank[i]);
             }
-            for (int i=0; i<this.unit.getPrgBanks().get(0).length;i++){
-                write(0xC000+i,this.unit.getPrgBanks().get(0)[i]);
+            for (int i=0; i<prgBank.length;i++){
+                write(0xC000+i,prgBank[i]);
             }
         }
 

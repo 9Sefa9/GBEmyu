@@ -70,7 +70,7 @@ public class NesUnit {
             this.prgBanks.add(i, new int[16384]);
         }
         //Initialisiere die ersten beiden banks.
-        int offset = 16; //weil die ersten 16 header sind.
+        int offset = 16; //weil die ersten 16 header sind, fangen wir auch ab 16 an.
         for (int i = 0; i < getPrgRomSize(); i++) {
             for (int j = 0; j < 16384; j++) {
                 if (offset + j >= allInstructions.length) {

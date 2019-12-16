@@ -27,7 +27,7 @@ public class CPU {
     }
     public void start() {
         //Am anfang soll man ResetInterrupt aufrufen (IRQ). laut https://github.com/bfirsh/jsnes/blob/master/src/mappers.js
-        triggerIRQ();
+
         //Am Anfang sind erstmal keine Zyklen.
         setCycle(0);
         try {
@@ -202,7 +202,7 @@ public class CPU {
 
 
             int[] value = {register.read16(register.getPC()+1)};
-            System.out.println(value[0]);
+
 
             //int lo = getInstructions()[((register.getPC() + 1)& 0xFFFF)];
             //int hi = getInstructions()[((register.getPC() + 1)+1 & 0xFFFF)];
