@@ -172,4 +172,7 @@ public class NesUnit {
     public void setMapperType(int mapperType) {
         this.mapperType = mapperType;
     }
+    public String toString(){
+        return "CHR-ROM-SIZE: "+getChrRomSize()+" PRG-ROM-SIZE: "+prgRomSize+" ";
+    }
 }

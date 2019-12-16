@@ -25,13 +25,14 @@ public class Mapper0 {
 	public Mapper0(final String nesPath) {
 	    //erstellt komplette Speicher.
         cpuMemoryMap = new int[0x10000];
-        Logger.LOGGER.log(Level.INFO,"Memory Map created :: "+String.format("0x%04X", cpuMemoryMap.length));
+        Logger.LOGGER.log(Level.INFO,"Create Memory Map...:: "+String.format("0x%04X", cpuMemoryMap.length));
 		this.unit = load(nesPath);
-        Logger.LOGGER.log(Level.INFO,"NesUnit created :: ");
+        Logger.LOGGER.log(Level.INFO,"NesUnit created :: "+this.unit);
 		writePRG();
-        Logger.LOGGER.log(Level.INFO,"PRG Mapping done :: ");
+        Logger.LOGGER.log(Level.INFO,"PRG Mapping done.");
 		writeCHR();
-        Logger.LOGGER.log(Level.INFO,"PRG Mapping done :: ");
+        Logger.LOGGER.log(Level.INFO,"CHR Mapping done.");
+        Logger.LOGGER.log(Level.INFO,"Memory Map succesfully created!");
 		//TODO LoadBatterRam()
 
 	}
@@ -58,13 +59,13 @@ public class Mapper0 {
             }
         }else{
             // Load the one bank into both memory locations:
-            int[] prgBank = this.unit.getPrgBanks().get(0);
+            int[] prgBank0 = this.unit.getPrgBanks().get(0);
 
-            for (int i=0; i<prgBank.length;i++){
-                write(0x8000+i,prgBank[i]);
+            for (int i=0; i<prgBank0.length;i++){
+                write(0x8000+i,prgBank0[i]);
             }
-            for (int i=0; i<prgBank.length;i++){
-                write(0xC000+i,prgBank[i]);
+            for (int i=0; i<prgBank0.length;i++){
+                write(0xC000+i,prgBank0[i]);
             }
         }
 
@@ -146,7 +147,6 @@ public class Mapper0 {
 
         }else if( address <0x4020){
             //I/O Registers
-
             return getCpuMemoryMap()[address];
         }
         else if( address <0x6000){

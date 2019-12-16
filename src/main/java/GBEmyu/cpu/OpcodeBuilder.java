@@ -3,7 +3,6 @@ package GBEmyu.cpu;
 public class OpcodeBuilder {
     private Opcode[] opcodes;
     private Register register;
-    private int[] inst;
 
 /*Bemerkungen:
     1. Die einzelnen cyclen NICHT in der jeweilige Operation verwenden und sie der haupt cycle erhöhen! Denn in der CPU klasse wird sowieso am ende
@@ -1231,9 +1230,8 @@ public class OpcodeBuilder {
 
         }
     };
-    public OpcodeBuilder(int[] inst, Register register){
+    public OpcodeBuilder(Register register){
         this.register = register;
-        this.inst = inst;
         opcodes = new Opcode[0x100];
         buildOpcodes();
     }

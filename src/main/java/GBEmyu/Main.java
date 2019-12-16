@@ -20,7 +20,7 @@ public class Main {
 		Mapper0 mapper0 = new Mapper0(getClass().getResource("/nestest.nes").getPath());
 		Bus bus = new Bus();
 
-		CPU cpu = new CPU(bus, mapper0.getInstructions());
+		CPU cpu = new CPU(bus);
 
 		bus.link(cpu, mapper0);
 

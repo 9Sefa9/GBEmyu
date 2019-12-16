@@ -13,25 +13,24 @@ public class CPU {
     private Bus bus;
     private Flags flags;
     private Opcode[] opcodes;
-
-    private int[] instructions;
+    private Opcode currentOpcode;
+   // private int[] instructions;
     private int cycle;
     //einfach nur um zu sehen wie viele zyklen entstehen. Wird nur als print gezeigt.
-    private int cycleCounter;
-    public CPU(Bus bus, int[] inst) {
-        this.instructions = inst;
+    public CPU(Bus bus) {
+       // this.instructions = inst;
         this.flags = new Flags();
         this.bus = bus;
         this.register = new Register(this,this.bus,this.flags);
-        this.opcodes = new OpcodeBuilder(this.instructions,this.register).getOpcodes();
+        this.opcodes = new OpcodeBuilder(this.register).getOpcodes();
     }
     public void start() {
         //Am anfang soll man ResetInterrupt aufrufen (IRQ). laut https://github.com/bfirsh/jsnes/blob/master/src/mappers.js
-        register.setPC(0xC000);
+        register.setPC(49152);
         //Am Anfang sind erstmal keine Zyklen.
         setCycle(0);
         try {
-            sleep(5);
+            sleep(0);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -39,7 +38,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(5);
+                sleep(150);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -55,7 +54,7 @@ public class CPU {
         if (getCycle() == 0) {
             int instruction;
 
-            Opcode currentOpcode = null;
+             currentOpcode = null;
             try {
                 switch (flags.getInterruptFlag()){
                     case interruptNMI:
@@ -69,7 +68,8 @@ public class CPU {
                 flags.setInterruptFlags(Flags.Interrupt.interruptNone);
 
                 //liest vielleicht nicht mehr vom ROm, sondern direkt aus dem RAM ???
-                instruction = instructions[register.getPC()];
+                instruction = bus.read(register.getPC());
+
                 //Fetch opcode from the current PC address
                 currentOpcode = opcodes[instruction];
                 //Logger.LOGGER.log(Level.INFO,
@@ -122,17 +122,16 @@ public class CPU {
                 }
 
                 incrementCycle(currentOpcode.getCycle());
-                //+1 weil wir jetz tin diesem moment noch in einer Clock sind. später wird es ja decrementiert... Nicht vergessen: cycleCounter ist nur zu Debug zwecken.
-                cycleCounter+=(getCycle()+1);
-                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD ::: A: "+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP()+" PC: "+register.getPC()+" CYC: "+cycleCounter+"\n" +
-                        "OPCODE Cycle: "+currentOpcode.getCycle()+" AddressMode: "+currentOpcode.getAddressMode()+"  PC: " + register.getPC() + "  Instruction(HEX): " + String.format("%04X",instructions[register.getPC()]) + "  OpcodeName:" + currentOpcode.getOpcodeName() + "  OpcodeHexAddress:" + currentOpcode.getHexAddress());
+
+                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD ::: A: "+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP()+" PC: "+ " Cycle: "+(getCycle()+1)+
+                        "  AddressMode: "+currentOpcode.getAddressMode()+"  Instruction(HEX): " + String.format("%04X",currentOpcode.getHexAddress()) +"  Instruction(DEC)):" + currentOpcode.getHexAddress()+"  Name: "+ currentOpcode.getOpcodeName());
+
 
                 register.incrementPC();
 
 
             } catch ( NullPointerException e) {
-                System.out.println("EXCEPTION _________ OPCODE Cycle:"+currentOpcode.getCycle()+"   PC::" + register.getPC() + "  Instruction(HEX)::" + String.format("%04X",instructions[register.getPC()]) + " ::\n" + Arrays.toString(e.getStackTrace()));
-
+               e.printStackTrace();
             }
 
         }
@@ -175,7 +174,7 @@ public class CPU {
         2 cycles
          */
         register.incrementPC();
-        int[] fetchValue = {instructions[register.getPC()]};
+        int[] fetchValue = {bus.read(register.getPC())};
         incrementCycle(2);
         opcode.operation(fetchValue);
 
@@ -225,9 +224,9 @@ public class CPU {
          */
 
         register.incrementPC();
-        int lo = instructions[register.getPC()];
+        int lo = bus.read(register.getPC());
         register.incrementPC();
-        int hi = instructions[register.getPC()];
+        int hi = bus.read(register.getPC());
 
         int[] value ={ (hi <<8 | lo) + register.getX()};
 
@@ -248,9 +247,9 @@ public class CPU {
     private void absolutey(Opcode currentOpcode){
 
         register.incrementPC();
-        int lo = instructions[register.getPC()];
+        int lo = bus.read(register.getPC());
         register.incrementPC();
-        int hi = instructions[register.getPC()];
+        int hi = bus.read(register.getPC());
 
         int[] value ={ (hi <<8 | lo) + register.getY()};
 
@@ -322,12 +321,12 @@ public class CPU {
              */
 
         register.incrementPC();
-        int[] a ={instructions[register.getPC()] +register.getY()};
+        int[] a ={bus.read(register.getPC()) +register.getY()};
 
         int b = ((a[0] & 0xFF) | (a[0]+1) & 0xFF);
 
-        int lo = instructions[a[0]];
-        int hi = instructions[b];
+        int lo = bus.read(a[0]);
+        int hi = bus.read(b);
         int[] value = { ((hi & 0xFF) <<8) | (lo & 0xFF) };
         if(pageCrossing(a[0] - register.getY(), a[0])){
             incrementCycle(6);
@@ -351,7 +350,7 @@ public class CPU {
     */
 
         register.incrementPC();
-        int offset = instructions[register.getPC()];
+        int offset = bus.read(register.getPC());
         int []value=new int[1];
         if(offset < 0x80)
             value[0] = register.getPC() + 2 +offset;
@@ -382,7 +381,7 @@ of the PC.
         //auf meine weise gelöst. Vllt. klappt es ohne diese anleitung oben.
 
         register.incrementPC();
-        int[] fetchValue = {instructions[register.getPC()]};
+        int[] fetchValue = {bus.read(register.getPC())};
         incrementCycle(3);
         currentOpcode.operation(fetchValue);
         register.incrementPC();
@@ -409,7 +408,7 @@ of the PC.
         //ich lass das erstmal so... @TODO muss aber auf jeden fall mal betrachtet werden.
 
         register.incrementPC();
-        int[] fetchValue = {instructions[register.getPC()]};
+        int[] fetchValue = {bus.read(register.getPC())};
         fetchValue[0] = (fetchValue[0] + register.getX()) & 0xFF;
         incrementCycle(4);
         currentOpcode.operation(fetchValue);
@@ -421,7 +420,7 @@ of the PC.
 
         //auf meine weise gelöst. Vllt. klappt es ohne diese anleitung oben.
         register.incrementPC();
-        int[] fetchValue = {instructions[register.getPC()]};
+        int[] fetchValue = {bus.read(register.getPC())};
         fetchValue[0] = (fetchValue[0] + register.getY()) & 0xFF;
         incrementCycle(4);
         currentOpcode.operation(fetchValue);
@@ -481,12 +480,9 @@ of the PC.
         this.cycle -= val;
     }
 
-    public int[] getInstructions() {
-        return this.instructions;
-    }
     @Override
     public String toString(){
-        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"TOSTRING: CPU CLASS :::  Instruction(HEX): "+String.format("%04X",getInstructions()[register.getPC()])+" current opcode: "+opcodes[getInstructions()[register.getPC()]].getOpcodeName() + " current addressMode: "+opcodes[register.getPC()].getAddressMode()+ " current Cycle: "+opcodes[register.getPC()].getCycle());
+        GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"TOSTRING: CPU CLASS :::  Instruction(HEX): "+String.format("%04X",bus.read(register.getPC()))+" current opcode: "+opcodes[bus.read(register.getPC())].getOpcodeName() + " current addressMode: "+opcodes[register.getPC()].getAddressMode()+ " current Cycle: "+opcodes[register.getPC()].getCycle());
         return "";
     }
 }
