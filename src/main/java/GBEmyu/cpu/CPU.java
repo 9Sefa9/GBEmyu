@@ -27,7 +27,7 @@ public class CPU {
     }
     public void start() {
         //Am anfang soll man ResetInterrupt aufrufen (IRQ). laut https://github.com/bfirsh/jsnes/blob/master/src/mappers.js
-
+        register.setPC(0xC000);
         //Am Anfang sind erstmal keine Zyklen.
         setCycle(0);
         try {
@@ -68,6 +68,7 @@ public class CPU {
 
                 flags.setInterruptFlags(Flags.Interrupt.interruptNone);
 
+                //liest vielleicht nicht mehr vom ROm, sondern direkt aus dem RAM ???
                 instruction = instructions[register.getPC()];
                 //Fetch opcode from the current PC address
                 currentOpcode = opcodes[instruction];
@@ -300,7 +301,7 @@ public class CPU {
 }
          */
 
-        int []value = {register.read16bug(register.read16bug(register.getPC()+1)+register.getX())};
+        int []value = {register.read16bug(register.getPC()+1)+register.getX()};
 /*
         register.incrementPC();
         int[] a = {(instructions[register.getPC()] +register.getX())&0xFF};
