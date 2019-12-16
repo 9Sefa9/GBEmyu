@@ -4,22 +4,22 @@ import GBEmyu.cpu.CPU;
 
 public class Bus {
     private CPU cpu;
-    private MemoryMap memoryMap;
+    private Mapper0 mapper0;
 
 
-    public void link(CPU cpu, MemoryMap memoryMap) {
+    public void link(CPU cpu, Mapper0 mapper0) {
         this.cpu = cpu;
-        this.memoryMap = memoryMap;
+        this.mapper0 = mapper0;
     }
 
     public void write(int address, int val) {
-        this.memoryMap.write(address,val);
+        this.mapper0.write(address,val);
 
 
     }
 
     public int read(int address) {
-        return this.memoryMap.read(address);
+        return this.mapper0.read(address);
 
     }
 

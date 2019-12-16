@@ -1,7 +1,13 @@
 package GBEmyu;
 
 import GBEmyu.cpu.CPU;
-import GBEmyu.utilities.Helper;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class Main {
 
@@ -11,14 +17,35 @@ public class Main {
 	}
 
 	private void start() {
-
-		int[] instructions = Helper.readRom(getClass().getResource("/cpu_dummy_reads.nes").getPath());
+		Mapper0 mapper0 = new Mapper0();
+		int[] instructions = readINes(getClass().getResource("/nestest.nes").getPath());
+		mapper0.load(getClass().getResource("/nestest.nes").getPath());
 		Bus bus = new Bus();
-        MemoryMap memoryMap = new MemoryMap();
-		CPU cpu = new CPU(bus,instructions);
 
-		bus.link(cpu,memoryMap);
+		CPU cpu = new CPU(bus, mapper0.getInstructions());
+
+		bus.link(cpu, mapper0);
 
 		cpu.start();
+	}
+	// read rom method - provisorisch TODO in naher zukunf ändern.
+	public int[] readINes(final String nesPath) {
+
+		File rom = new File(nesPath);
+		byte[] romBuffer = new byte[(int) rom.length()];
+		FileInputStream fis=null;
+		try {
+			fis = new FileInputStream(rom);
+			fis.read(romBuffer);
+		} catch (IOException e) {
+			LOGGER.log (Level.WARNING, "Failed to open file!");
+			e.printStackTrace();
+		}
+
+		int[] instructions = new int[romBuffer.length];
+		for (int i = 0; i < romBuffer.length; i++) {
+			instructions[i] = (short) (romBuffer[i] & 0xFF);
+		}
+		return instructions;
 	}
 }

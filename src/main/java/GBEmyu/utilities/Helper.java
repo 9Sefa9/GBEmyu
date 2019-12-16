@@ -35,28 +35,5 @@ public class Helper {
 			address[i] = value;
 		}
 	}
-	
-	// read rom method
-	public static int[] readRom(final String path) {
-		
-		File rom = new File(path);
-		byte[] rom_buf = new byte[(int) rom.length()];
-		FileInputStream stream;
-		try {
-			stream = new FileInputStream(rom);
-			stream.read(rom_buf);
-		} catch (IOException e) {
-			LOGGER.log (Level.WARNING, "Failed to open file!");
-			e.printStackTrace();
-		}
-		int[] instructions = new int[rom_buf.length];
-		
-		for (int i = 0; i < rom_buf.length; i++) {
-			instructions[i] = (short) (rom_buf[i] & 0xFF);
-		}
-		
-		return instructions;
-	}
-
 
 }

@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import static java.lang.Thread.sleep;
 
 public class CPU {
-//@TODO: Memory Mapper 1 verstehen und anwenden.
+//@TODO: Memory Mapper0 1 verstehen und anwenden.
     private Register register;
     private Bus bus;
     private Flags flags;
@@ -428,7 +428,7 @@ of the PC.
     }
 
     // Reset resets the CPU to its initial powerup state
-    //@TODO Reset implementieren. Eventuell den Mapper auch.
+    //@TODO Reset implementieren. Eventuell den Mapper0 auch.
     private void reset() {
         register.setPC(register.read16(0xFFFC));
         register.setSP(0xFD);
