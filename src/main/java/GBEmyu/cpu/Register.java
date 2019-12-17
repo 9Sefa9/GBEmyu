@@ -40,12 +40,15 @@ public class Register {
 
     }
     public void sta(int address){
+        cpu.incrementCycle(1);
         bus.write(address, getA());
     }
     public void stx(int address){
+        cpu.incrementCycle(1);
         bus.write(address, getX());
     }
     public void sty(int address){
+        cpu.incrementCycle(1);
         bus.write(address, getY());
     }
     public void tax(){
@@ -140,6 +143,7 @@ public class Register {
         int a = value;
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(a >> 7)&1);
         a <<=1;
+        cpu.incrementCycle(1);
         bus.write(value, a);
         setZeroNegativeFlag(a);
     }
@@ -166,6 +170,7 @@ public class Register {
         int a = value;
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(a &1));
         a >>=1;
+        cpu.incrementCycle(1);
         bus.write(value, a);
         setZeroNegativeFlag(a);
     }
@@ -181,6 +186,7 @@ public class Register {
         int v = value;
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(v >> 7)&1);
         v = (v << 1) | c;
+        cpu.incrementCycle(1);
         bus.write(value, v);
         setZeroNegativeFlag(v);
     }
@@ -196,6 +202,7 @@ public class Register {
         int value = v;
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY, value & 1);
         value = (value >> 1) | (c << 7 );
+        cpu.incrementCycle(1);
         bus.write(v, value);
         setZeroNegativeFlag(value);
     }
@@ -217,6 +224,8 @@ public class Register {
     }
     public void dec(int value){
         int val = value-1;
+        cpu.incrementCycle(1);
+        cpu.incrementCycle(1);
         bus.write(value,val);
         setZeroNegativeFlag(val);
     }
@@ -230,6 +239,7 @@ public class Register {
     }
     public void inc(int value){
         int v = value +1;
+        cpu.incrementCycle(1);
         bus.write(value, v);
         setZeroNegativeFlag(value);
     }
@@ -372,7 +382,7 @@ public class Register {
     }
     // Read16 reads two bytes using Read to return a double-word value
     public int read16(int address){
-
+        cpu.incrementCycle(2);
         int lo = bus.read(address & 0xFFFF);
         int hi =  bus.read(address+1 & 0xFFFF);
         return (hi <<8 | lo) & 0xFFFF;
@@ -382,18 +392,21 @@ public class Register {
     public int read16bug(int address){
         int a = address;
         int b = (a & 0xFF00 | (((a +1) & 0x100) & 0xFFFF));
+        cpu.incrementCycle(2);
         int lo = bus.read(a);
         int hi = bus.read(b);
         return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF)) & 0xFFFF;
     }
     // push pushes a byte onto the stack
     private void push(int value){
+        cpu.incrementCycle(1);
        bus.write(0x100|(getSP() & 0xFFFF),value);
         decrementSP();
     }
     // pull pops a byte from the stack
     private int pull(){
         incrementSP();
+        cpu.incrementCycle(1);
         return bus.read(0x100|getSP() & 0xFFF);
     }
     public void push16(int value){

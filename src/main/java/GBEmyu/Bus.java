@@ -13,12 +13,14 @@ public class Bus {
     }
 
     public void write(int address, int val) {
+
         this.mapper0.write(address,val);
 
 
     }
 
     public int read(int address) {
+
         return this.mapper0.read(address);
 
     }
