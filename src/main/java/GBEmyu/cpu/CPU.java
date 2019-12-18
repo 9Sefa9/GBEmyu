@@ -33,7 +33,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(500);
+                sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -118,9 +118,9 @@ public class CPU {
 
                 }
 
-                incrementCycle(currentOpcode.getCycle());
+                incrementCycle(currentOpcode.getCycle()+1);
 
-                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD ::: A: "+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP()+" PC: "+ register.getPC()+" Cycle: "+(getCycle()+1)+
+                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD ::: A: "+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP()+" PC: "+ register.getPC()+" Cycle: "+(getCycle())+
                         "  AddressMode: "+currentOpcode.getAddressMode()+"  Instruction(HEX): " + String.format("%04X000",currentOpcode.getHexAddress()) +"  Instruction(DEC)):" + currentOpcode.getHexAddress()+"  Name: "+ currentOpcode.getOpcodeName());
 
 
@@ -170,9 +170,9 @@ public class CPU {
         value fetched.
         2 cycles
          */
-
-        int[] fetchValue = {register.getPC()+1};
-        incrementCycle(3);
+        register.incrementPC();
+        int[] fetchValue = {register.getPC()};
+        incrementCycle(2);
         opcode.operation(fetchValue);
 
     }
@@ -197,15 +197,18 @@ public class CPU {
              */
             //so war das standardmässig.
 
-
-            int[] value = {register.read16(register.getPC()+1)};
-
-
             //int lo = getInstructions()[((register.getPC() + 1)& 0xFFFF)];
             //int hi = getInstructions()[((register.getPC() + 1)+1 & 0xFFFF)];
             //int []value = {(hi <<8 | lo) & 0xFFFF};
             //System.out.println(value[0]);
+
+        //so war das standardmäßig 18.12.2019
+        //incrementCycle(4);
+        int[] value = {register.read16(register.getPC()+1) & 0xFFFF};
+
             currentOpcode.operation(value);
+
+
 
     }
     private void absolutex(Opcode currentOpcode){
@@ -411,7 +414,7 @@ of the PC.
         incrementCycle(1);
         int[] fetchValue = {bus.read(register.getPC()+1) & 0xFFFF };
         currentOpcode.operation(fetchValue);
-        //register.incrementPC();
+        register.incrementPC();
 
     }
     private void zeropagex(Opcode currentOpcode) {

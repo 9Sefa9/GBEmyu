@@ -139,8 +139,8 @@ public class Register {
 
     }
     public void asl(int value){
-        //Wie gena soll ich nun auf Accumulator kommen ?
-        int a = value;
+
+        int a = bus.read(value);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(a >> 7)&1);
         a <<=1;
         cpu.incrementCycle(1);
@@ -383,8 +383,8 @@ public class Register {
     // Read16 reads two bytes using Read to return a double-word value
     public int read16(int address){
         cpu.incrementCycle(2);
-        int lo = bus.read(address & 0xFFFF);
-        int hi =  bus.read(address+1 & 0xFFFF);
+        int lo = bus.read(address )& 0xFFFF;
+        int hi =  bus.read(address+1)& 0xFFFF;
         return (hi <<8 | lo) & 0xFFFF;
     }
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
@@ -393,9 +393,9 @@ public class Register {
         int a = address;
         int b = (a & 0xFF00 | (((a +1) & 0x100) & 0xFFFF));
         cpu.incrementCycle(2);
-        int lo = bus.read(a);
-        int hi = bus.read(b);
-        return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF)) & 0xFFFF;
+        int lo = bus.read(a) & 0xFFFF;
+        int hi = bus.read(b) & 0xFFFF;
+        return (hi <<8 | lo) & 0xFFFF;
     }
     // push pushes a byte onto the stack
     private void push(int value){
