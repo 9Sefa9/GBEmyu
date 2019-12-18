@@ -139,7 +139,8 @@ public class Register {
 
     }
     public void asl(int value){
-
+        //weil read und write.
+        cpu.incrementCycle(2);
         int a = bus.read(value);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(a >> 7)&1);
         a <<=1;
@@ -400,7 +401,7 @@ public class Register {
     // push pushes a byte onto the stack
     private void push(int value){
         cpu.incrementCycle(1);
-       bus.write(0x100|(getSP() & 0xFFFF),value);
+        bus.write(0x100|(getSP()),value);
         decrementSP();
     }
     // pull pops a byte from the stack
@@ -410,8 +411,8 @@ public class Register {
         return bus.read(0x100|getSP() & 0xFFF);
     }
     public void push16(int value){
-        int hi = (value >> 8);
-        int lo = (value & 0xFF);
+        int hi = (value >> 8) & 0x80;
+        int lo = (value & 0xFF) & 0x80;
         push(hi);
         push(lo);
     }

@@ -33,7 +33,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(100);
+                sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -380,12 +380,14 @@ public class CPU {
 
        // register.incrementPC();
         incrementCycle(1);
-        int offset = bus.read(register.getPC()+1);
+
+        int offset = bus.read(register.getPC()+1) & 0xFFFF;
         int []value=new int[1];
         if(offset < 0x80)
             value[0] = register.getPC() + 2 +offset;
         else
             value[0] = register.getPC() +2 + offset - 0x100;
+        register.incrementPC();
         currentOpcode.operation(value);
     }
 
