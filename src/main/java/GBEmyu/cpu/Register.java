@@ -25,17 +25,17 @@ public class Register {
 
     // Operations according to opcode - vorwiegend aus https://github.com/fogleman/nes/blob/e8f89a2f2d8ab90ff85e41810db8c9829cff3bb8/nes/cpu.go#L302 entnommen.
     public void lda(int value8bit) {
-        setA(value8bit);
+        setA(bus.read(value8bit));
         setZeroNegativeFlag(getA());
 
     }
     public void ldx(int value8bit) {
-        setX(value8bit);
+        setX(bus.read(value8bit));
         setZeroNegativeFlag(getX());
 
     }
     public void ldy(int value8bit) {
-        setY(value8bit);
+        setY(bus.read(value8bit));
         setZeroNegativeFlag(getY());
 
     }
@@ -387,7 +387,7 @@ public class Register {
         cpu.incrementCycle(2);
         int lo = bus.read(address )& 0xFFFF;
         int hi =  bus.read(address+1)& 0xFFFF;
-        return (hi <<8 | lo) & 0xFFFF;
+        return (hi <<8 | lo);
     }
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
@@ -413,7 +413,7 @@ public class Register {
     }
     public void push16(int value){
         int hi = (value >> 8) & 0x80;
-        int lo = (value & 0xFF) & 0x80;
+        int lo = (value & 0xFF);
         push(hi);
         push(lo);
     }
