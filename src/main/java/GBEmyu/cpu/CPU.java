@@ -171,7 +171,8 @@ public class CPU {
         2 cycles
          */
         register.incrementPC();
-        int[] fetchValue = {register.getPC()};
+        int[] fetchValue = {bus.read(register.getPC())};
+       // register.incrementPC();
         incrementCycle(2);
         opcode.operation(fetchValue);
 
@@ -377,8 +378,9 @@ public class CPU {
 			    address = cpu.PC + 2 + offset - 0x100
 		        }
     */
+        //ursprünglich nicht da gewesen
+        //register.incrementPC();
 
-       // register.incrementPC();
         incrementCycle(1);
 
         int offset = bus.read(register.getPC()+1) & 0xFFFF;
@@ -387,7 +389,7 @@ public class CPU {
             value[0] = register.getPC() + 2 +offset;
         else
             value[0] = register.getPC() +2 + offset - 0x100;
-        register.incrementPC();
+       //unbedingt beibehalten oder ändern.! register.incrementPC();
         currentOpcode.operation(value);
     }
 

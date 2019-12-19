@@ -376,7 +376,8 @@ public class Register {
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,1);
         }
 
-        if(((v & 0x80) != 0)){
+        //war vorher 0x80 !
+        if(((v & 0xFF) != 0)){
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,1);
         }
 
@@ -470,16 +471,21 @@ public class Register {
     }
     public void decrementSP() { setSP(sp-1);/*(sp - 1) & 0xFFFF; */}
     public void setPC(int pc){this.pc = (pc & 0xFFFF);}
+    // versuche 0x100 in 0xFF zu ändern.
+    // versuche 0x100 in 0xFF zu ändern.
     public void setSP(int sp) {
         this.sp = (sp& 0x100);
     }
+    // versuche 0x100 in 0xFF zu ändern.
     public void setA(int a) { this.a = (a & 0x100); }
     public void setX(int x) {
         this.x = (x & 0x100);
     }
+    // versuche 0x100 in 0xFF zu ändern.
     public void setY(int y) {
         this.y = (y & 0x100);
     }
+    // versuche 0x100 in 0xFF zu ändern.
     public void setP(int p) {
         this.p = (p & 0x80);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(p >> 0) & 1);
@@ -494,12 +500,12 @@ public class Register {
 
     //Register getters
     public int getSP() {
-        return this.sp;
+        return this.sp & 0x100;
     }
     public int getPC(){
         return this.pc & 0xFFFF;
     }
-    public int getA() { return a; }
+    public int getA() { return a & 0x100; }
     public int getP() {
         int sum=0;
         for(Flags.ProcessorStatusFlags value : Flags.ProcessorStatusFlags.values()){
