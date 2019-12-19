@@ -377,7 +377,7 @@ public class Register {
         }
 
         //war vorher 0x80 !
-        if(((v & 0xFF) != 0)){
+        if(((v & 0x80) != 0)){
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,1);
         }
 

@@ -414,12 +414,16 @@ of the PC.
          */
         //auf meine weise gelöst. Vllt. klappt es ohne diese anleitung oben.
 
-
+        /*
         incrementCycle(1);
         int[] fetchValue = {bus.read(register.getPC()+1) & 0xFFFF };
         currentOpcode.operation(fetchValue);
         register.incrementPC();
-
+         */
+        int[] val = {(bus.read(register.getPC()+1)) & 0xFFFF};
+        register.incrementPC();
+        incrementCycle(3);
+        currentOpcode.operation(val);
     }
     private void zeropagex(Opcode currentOpcode) {
         /*
@@ -442,7 +446,7 @@ of the PC.
         //ich lass das erstmal so... @TODO muss aber auf jeden fall mal betrachtet werden.
 
         incrementCycle(1);
-        int[] fetchValue = {(bus.read(register.getPC()+1)+ register.getX()) & 0xff };
+        int[] fetchValue = {(bus.read(register.getPC()+1)+ register.getX()) & 0xFF };
         incrementCycle(4);
         currentOpcode.operation(fetchValue);
 
@@ -454,7 +458,7 @@ of the PC.
         //auf meine weise gelöst. Vllt. klappt es ohne diese anleitung oben.
 
         incrementCycle(1);
-        int[] fetchValue = {(bus.read(register.getPC()+1)+ register.getY()) & 0xff };
+        int[] fetchValue = {(bus.read(register.getPC()+1)+ register.getY()) & 0xFF };
         incrementCycle(4);
         currentOpcode.operation(fetchValue);
 
