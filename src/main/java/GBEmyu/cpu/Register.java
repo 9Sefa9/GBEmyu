@@ -84,12 +84,10 @@ public class Register {
         setZeroNegativeFlag(a);
         setA(a);
     }
-
     public void cli(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,0); }
     public void clv(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,0); }
     public void sec(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1); }
     public void sed(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,1); }
-
     public void sei(){
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,1);
     }
@@ -133,20 +131,21 @@ public class Register {
     public void aslAccumulator(){
         //Wie gena soll ich nun auf Accumulator kommen ?
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() >> 7)&1);
-        int a = getA();
-        setA((a <<=1));
+      //  int a = getA();
+        this.a = ((this.a << 1) & 0x100);
+      //  setA(a << 1);
         setZeroNegativeFlag(getA());
 
     }
-    public void asl(int value){
+    public void asl(int address){
         //weil read und write.
         cpu.incrementCycle(2);
-        int a = bus.read(value);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(a >> 7)&1);
-        a <<=1;
+        int value = bus.read(address);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(value >> 7)&1);
+        value <<=1;
         cpu.incrementCycle(1);
-        bus.write(value, a);
-        setZeroNegativeFlag(a);
+        bus.write(address, value);
+        setZeroNegativeFlag(value);
     }
     public void bit(int value){
         int v = value;
@@ -254,6 +253,8 @@ public class Register {
     }
     public void jmp(int value){
         setPC(value);
+        //existeirt normalerweise nicht. Der Register wrid aber im Cycle erhöht. SOllte aber nicht.
+       // decrementPC(1);
     }
     public void jsr(int value){
         push16(getPC()-1);
@@ -315,13 +316,13 @@ public class Register {
     }
     public void bmi(int value){
         if(Flags.ProcessorStatusFlags.NEGATIVE.getVal() !=0){
-            setPC(value);
+            setPC(value);;
             addBranchCycles(value);
         }
     }
     public void bne(int value){
         if(Flags.ProcessorStatusFlags.ZERO.getVal() ==0){
-            setPC(value);
+            setPC(value);;
             addBranchCycles(value);
         }
     }
@@ -392,37 +393,37 @@ public class Register {
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
     public int read16bug(int address){
-        int a = address;
-        int b = (a & 0xFF00 | (((a +1) & 0x100) & 0xFFFF));
+        int a = address & 0xFFFF;
+        int b = (a & 0xFF00 | (((a&0x80)+1) & 0xFFFF));
         cpu.incrementCycle(2);
-        int lo = bus.read(a) & 0xFFFF;
-        int hi = bus.read(b) & 0xFFFF;
-        return (hi <<8 | lo) & 0xFFFF;
+        int lo = bus.read(a);
+        int hi = bus.read(b);
+        return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF)) ;
     }
     // push pushes a byte onto the stack
     private void push(int value){
         cpu.incrementCycle(1);
-        bus.write(0x100|(getSP()),value);
+        bus.write(0x100|(getSP()) & 0xFFFF,value);
         decrementSP();
     }
     // pull pops a byte from the stack
     private int pull(){
         incrementSP();
         cpu.incrementCycle(1);
-        return bus.read(0x100|getSP() & 0xFFF);
+        return bus.read(0x100|getSP() & 0xFFFF);
     }
     public void push16(int value){
         int hi = (value >> 8) & 0x80;
-        int lo = (value & 0xFF);
+        int lo = (value & 0xFF) & 0x80;
         push(hi);
         push(lo);
     }
     private int pull16(){
-       int lo = pull();
+       int lo = pull() & 0xFFFF;
 
-       int hi = pull();
+       int hi = pull() & 0xFFFF;
 
-       return (hi<<8 | lo) & 0xFFFF;
+       return (hi<<8 | lo);
     }
 
 
@@ -468,6 +469,9 @@ public class Register {
     public void incrementSP() { setSP(sp+1);/*(sp + 1) & 0xFFFF; */}
     public void incrementPC(int value){
         this.pc = (pc + value) & 0xFFFF;
+    }
+    public void decrementPC(int value){
+        this.pc = (pc - value) & 0xFFFF;
     }
     public void decrementSP() { setSP(sp-1);/*(sp - 1) & 0xFFFF; */}
     public void setPC(int pc){this.pc = (pc & 0xFFFF);}
@@ -519,5 +523,6 @@ public class Register {
     public int getX() {
         return x;
     }
+
 
 }

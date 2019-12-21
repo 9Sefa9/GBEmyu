@@ -33,7 +33,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(20);
+                sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -171,7 +171,8 @@ public class CPU {
         2 cycles
          */
         register.incrementPC();
-        int[] fetchValue = {bus.read(register.getPC())};
+        //TODO +1 wurde nach hinzugefügt. Wieder entfernen ?
+        int[] fetchValue = {bus.read(register.getPC()+1)};
        // register.incrementPC();
         incrementCycle(2);
         opcode.operation(fetchValue);
@@ -205,7 +206,7 @@ public class CPU {
 
         //so war das standardmäßig 18.12.2019
         //incrementCycle(4);
-        int[] value = {register.read16(register.getPC()+1) & 0xFFFF};
+        int[] value = {register.read16(register.getPC()+1)};
 
             currentOpcode.operation(value);
 
@@ -271,7 +272,7 @@ public class CPU {
 
         currentOpcode.operation(value);
         */
-        int addr =register.read16(register.getPC()+1) +(register.getY()& 0xFFFF);
+        int addr =register.read16(register.getPC()+1) + (register.getY()& 0xFFFF);
 
         if(pageCrossing(addr-(register.getY()& 0xFFFF),addr)){
             incrementCycle(5);
@@ -319,7 +320,7 @@ public class CPU {
 }
          */
 
-        int []value = {register.read16bug((bus.read(register.getPC()+1))+register.getX() & 0xFFFF)};
+        int []value = {register.read16bug((bus.read(register.getPC()+1))+register.getX())};
 /*
         register.incrementPC();
         int[] a = {(instructions[register.getPC()] +register.getX())&0xFF};
@@ -357,7 +358,7 @@ public class CPU {
         }
         */
 
-        int []value = {register.read16bug((bus.read(register.getPC()+1))+register.getY() & 0xFFFF)};
+        int []value = {register.read16bug((bus.read(register.getPC()+1)&0xFFFF)+(register.getY()& 0xFFFF))};
         if(pageCrossing(value[0]-register.getY(), value[0])){
             incrementCycle(6);
             currentOpcode.operation(value);
@@ -386,7 +387,7 @@ public class CPU {
         int offset = bus.read(register.getPC()+1) & 0xFFFF;
         int []value=new int[1];
         if(offset < 0x80)
-            value[0] = register.getPC() + 2 +offset;
+            value[0] = register.getPC() + 2 + offset;
         else
             value[0] = register.getPC() +2 + offset - 0x100;
        //unbedingt beibehalten oder ändern.! register.incrementPC();

@@ -1153,46 +1153,52 @@ public class OpcodeBuilder {
     private Opcode SLOABSOLUTEY = new Opcode(Flags.AddressModes.ABSOLUTEY,"SLOABSOLUTEY", 0x1B,7){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
+            register.ora(operanden[0]);
         }
     };
     private Opcode SLOZEROPAGEX = new Opcode(Flags.AddressModes.ZEROPAGEX,"SLOZEROPAGEX", 0x17,6){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
+            register.ora(operanden[0]);
         }
     };
     private Opcode SLOABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"SLOABSOLUTE", 0x0F,6){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
+            register.ora(operanden[0]);
         }
     };
     private Opcode SLOABSOLUTEX = new Opcode(Flags.AddressModes.ABSOLUTEX,"SLOABSOLUTEX", 0x1F,7){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
+            register.ora(operanden[0]);
         }
     };
     private Opcode SLOZEROPAGE = new Opcode(Flags.AddressModes.ZEROPAGE,"SLOZEROPAGE", 0x07,5){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
+            register.ora(operanden[0]);
         }
     };
     private Opcode SLOINDIRECTX = new Opcode(Flags.AddressModes.INDIRECTX,"SLOINDIRECTX", 0x03,3){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
+            register.ora(operanden[0]);
         }
     };
     private Opcode SLOINDIRECTY = new Opcode(Flags.AddressModes.INDIRECTY,"SLOINDIRECTY", 0x13,8){
         @Override
         public void operation(int[] operanden){
-
+            register.asl(operanden[0]);
+            register.ora(operanden[0]);
         }
     };
-
 
 
 
