@@ -253,12 +253,14 @@ public class Register {
     }
     public void jmp(int value){
         setPC(value);
-        //existeirt normalerweise nicht. Der Register wrid aber im Cycle erhöht. SOllte aber nicht.
-       // decrementPC(1);
+        //decrement existeirt normalerweise nicht. Der Register wrid aber im Cycle erhöht. Somit ist es dann im gejumpten addressraum + 1. Das soll aber nicht sein.
+        decrementPC(1);
     }
     public void jsr(int value){
         push16(getPC()-1);
         setPC(value);
+        //decrement existeirt normalerweise nicht. Der Register wrid aber im Cycle erhöht. Somit ist es dann im gejumpten addressraum + 1. Das soll aber nicht sein.
+        decrementPC(1);
     }
     public void pha(){
         push(getA());
@@ -306,6 +308,7 @@ public class Register {
         if(Flags.ProcessorStatusFlags.CARRY.getVal() !=0){
             setPC(value);
             addBranchCycles(value);
+            decrementPC(1);
         }
     }
     public void beq(int value){

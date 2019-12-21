@@ -33,7 +33,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(300);
+                sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -120,8 +120,8 @@ public class CPU {
 
                 incrementCycle(currentOpcode.getCycle()+1);
 
-                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD ::: A: "+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP()+" PC: "+ register.getPC()+" Cycle: "+(getCycle())+
-                        "  AddressMode: "+currentOpcode.getAddressMode()+"  Instruction(HEX): " + String.format("%04X000",currentOpcode.getHexAddress()) +"  Instruction(DEC)):" + currentOpcode.getHexAddress()+"  Name: "+ currentOpcode.getOpcodeName());
+                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD :::  Name: "+ currentOpcode.getOpcodeName()+
+                        "  AddressMode: "+currentOpcode.getAddressMode()+" PC: "+ register.getPC()+"  Instruction(HEX): " + String.format("%04X000",currentOpcode.getHexAddress()) +" Cycle: "+(getCycle())+"  Instruction(DEC)):" + currentOpcode.getHexAddress()+" A:"+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP());
 
 
                 register.incrementPC();
@@ -389,8 +389,9 @@ public class CPU {
         if(offset < 0x80)
             value[0] = register.getPC() + 2 + offset;
         else
-            value[0] = register.getPC() +2 + offset - 0x100;
+            value[0] = register.getPC() + 2 + offset - 0x100;
        //unbedingt beibehalten oder ändern.! register.incrementPC();
+
         currentOpcode.operation(value);
     }
 
