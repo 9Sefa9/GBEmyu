@@ -306,20 +306,19 @@ public class Register {
     }
     //TODO DAS MUSS GELÖST WERDEN!
     public void bcs(int value){
-        if(Flags.ProcessorStatusFlags.CARRY.getVal() !=0){
-            setPC(value);
+        if(Flags.ProcessorStatusFlags.CARRY.getVal() == 1){
             addBranchCycles(value);
-            decrementPC(1);
+            setPC(value);
         }
     }
     public void beq(int value){
-        if(Flags.ProcessorStatusFlags.ZERO.getVal() !=0){
+        if(Flags.ProcessorStatusFlags.ZERO.getVal() ==1){
             setPC(value);
             addBranchCycles(value);
         }
     }
     public void bmi(int value){
-        if(Flags.ProcessorStatusFlags.NEGATIVE.getVal() !=0){
+        if(Flags.ProcessorStatusFlags.NEGATIVE.getVal() ==1){
             setPC(value);;
             addBranchCycles(value);
         }
@@ -343,7 +342,7 @@ public class Register {
         }
     }
     public void bvs(int value){
-        if(Flags.ProcessorStatusFlags.OVERFLOW.getVal() !=0){
+        if(Flags.ProcessorStatusFlags.OVERFLOW.getVal() ==1){
             setPC(value);
             addBranchCycles(value);
         }
