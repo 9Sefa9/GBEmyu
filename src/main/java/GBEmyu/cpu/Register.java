@@ -304,6 +304,7 @@ public class Register {
             addBranchCycles(value);
         }
     }
+    //TODO DAS MUSS GELÖST WERDEN!
     public void bcs(int value){
         if(Flags.ProcessorStatusFlags.CARRY.getVal() !=0){
             setPC(value);
