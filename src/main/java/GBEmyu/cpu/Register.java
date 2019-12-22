@@ -299,20 +299,20 @@ public class Register {
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,0);
     }
     public void bcc(int value){
-        if(Flags.ProcessorStatusFlags.CARRY.getVal() ==0){
+        if(Flags.ProcessorStatusFlags.CARRY.getVal() ==0) {
             setPC(value);
             addBranchCycles(value);
         }
     }
     //TODO DAS MUSS GELÖST WERDEN!
     public void bcs(int value){
-        if(Flags.ProcessorStatusFlags.CARRY.getVal() == 1){
+        if(Flags.ProcessorStatusFlags.CARRY.getVal() == 1) {
             addBranchCycles(value);
             setPC(value);
         }
     }
     public void beq(int value){
-        if(Flags.ProcessorStatusFlags.ZERO.getVal() ==1){
+        if(Flags.ProcessorStatusFlags.ZERO.getVal() !=0) {
             setPC(value);
             addBranchCycles(value);
         }
@@ -378,11 +378,15 @@ public class Register {
     private void setZeroNegativeFlag(int v) {
         if((v & 0xFF) == 0){
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,1);
+        }else{
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,0);
         }
 
         //war vorher 0x80 !
         if(((v & 0x80) != 0)){
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,1);
+        }else{
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,0);
         }
 
     }
@@ -391,33 +395,33 @@ public class Register {
         cpu.incrementCycle(2);
         int lo = bus.read(address )& 0xFFFF;
         int hi =  bus.read(address+1)& 0xFFFF;
-        return (hi <<8 | lo);
+        return (hi <<8 | lo) & 0xFFFF;
     }
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
     public int read16bug(int address){
-        int a = address & 0xFFFF;
-        int b = (a & 0xFF00 | (((a&0x80)+1) & 0xFFFF));
+        int a = address;
+        int b = (a & 0xFF00 | (((a&0xFF)+1) & 0xFFFF));
         cpu.incrementCycle(2);
         int lo = bus.read(a);
         int hi = bus.read(b);
-        return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF)) ;
+        return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF))  & 0xFFFF;
     }
     // push pushes a byte onto the stack
     private void push(int value){
         cpu.incrementCycle(1);
-        bus.write(0x100|(getSP()) & 0xFFFF,value);
+        bus.write(0x100|(getSP()) & 0xFFFF,(value & 0xFF));
         decrementSP();
     }
     // pull pops a byte from the stack
     private int pull(){
         incrementSP();
         cpu.incrementCycle(1);
-        return bus.read(0x100|getSP() & 0xFFFF);
+        return (bus.read(0x100|getSP() & 0xFFFF)) & 0xFF;
     }
     public void push16(int value){
-        int hi = (value >> 8) & 0x80;
-        int lo = (value & 0xFF) & 0x80;
+        int hi = ((value & 0xFFFF) >> 8) & 0xFF;
+        int lo = ((value & 0xFFFF) & 0xFF) & 0xFF;
         push(hi);
         push(lo);
     }
@@ -426,7 +430,7 @@ public class Register {
 
        int hi = pull() & 0xFFFF;
 
-       return (hi<<8 | lo);
+       return (hi<<8 | lo) & 0xFFFF;
     }
 
 

@@ -180,19 +180,19 @@ public class OpcodeBuilder {
     private Opcode STXZEROPAGE= new Opcode(Flags.AddressModes.ZEROPAGE,"STXZEROPAGE", 0x86,3){
         @Override
         public void operation(int[] operanden){
-            register.sta(operanden[0]);
+            register.stx(operanden[0]);
         }
     };
     private Opcode STXZEROPAGEY= new Opcode(Flags.AddressModes.ZEROPAGEY,"STXZEROPAGEY", 0x96,4){
         @Override
         public void operation(int[] operanden){
-            register.sta(operanden[0]);
+            register.stx(operanden[0]);
         }
     };
     private Opcode STXABSOLUTE = new Opcode(Flags.AddressModes.ABSOLUTE,"STXABSOLUTE", 0x8E,4){
         @Override
         public void operation(int[] operanden){
-            register.sta(operanden[0]);
+            register.stx(operanden[0]);
         }
     };
 
@@ -248,7 +248,7 @@ public class OpcodeBuilder {
     private Opcode TXAIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TXAIMPLICIT", 0x8A,2){
         @Override
         public void operation(int[] operanden){
-            register.tax();
+            register.txa();
         }
     };
 
@@ -256,7 +256,7 @@ public class OpcodeBuilder {
     private Opcode TXSIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"TXSIMPLICIT", 0x9A,2){
         @Override
         public void operation(int[] operanden){
-
+            register.txs();
         }
     };
 

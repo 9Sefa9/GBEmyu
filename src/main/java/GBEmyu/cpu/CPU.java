@@ -61,8 +61,6 @@ public class CPU {
                         break;
                 }
 
-                flags.setInterruptFlags(Flags.Interrupt.interruptNone);
-
                 //liest vielleicht nicht mehr vom ROm, sondern direkt aus dem RAM ???
                 incrementCycle(1);
                 instruction = bus.read(register.getPC());
