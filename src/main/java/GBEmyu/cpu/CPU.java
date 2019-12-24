@@ -33,7 +33,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(250);
+                sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -267,7 +267,7 @@ public class CPU {
     }
 
     // Reset resets the CPU to its initial powerup state
-    //@TODO Reset implementieren. Eventuell den Mapper0 auch.
+
     private void reset() {
         incrementCycle(1);
         register.setPC(register.read16(0xFFFC));

@@ -300,21 +300,27 @@ public class Register {
     }
     public void bcc(int value){
         if(Flags.ProcessorStatusFlags.CARRY.getVal() ==0) {
-            setPC(value);
             addBranchCycles(value);
+            setPC(value-1);
+        }else{
+            setPC(value-4);
         }
     }
     //TODO DAS MUSS GELÖST WERDEN!
     public void bcs(int value){
         if(Flags.ProcessorStatusFlags.CARRY.getVal() == 1) {
             addBranchCycles(value);
-            setPC(value);
+            setPC(value-1);
+        }else{
+            setPC(value-4);
         }
     }
     public void beq(int value){
-        if(Flags.ProcessorStatusFlags.ZERO.getVal() !=0) {
-            setPC(value);
+        if(Flags.ProcessorStatusFlags.ZERO.getVal()==1) {
             addBranchCycles(value);
+            setPC(value-1);
+        }else{
+            setPC(value-1);
         }
     }
     public void bmi(int value){
