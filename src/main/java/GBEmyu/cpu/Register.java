@@ -298,33 +298,27 @@ public class Register {
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,1);
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,0);
     }
+    //TODO DIE BRNACHES MÜSSEN GEFIXXT WERDEN!
     public void bcc(int value){
         if(Flags.ProcessorStatusFlags.CARRY.getVal() ==0) {
             addBranchCycles(value);
-            setPC(value-1);
-        }else{
-            setPC(value-4);
+            setPC(value);
         }
     }
-    //TODO DAS MUSS GELÖST WERDEN!
+
     public void bcs(int value){
-        if(Flags.ProcessorStatusFlags.CARRY.getVal() == 1) {
+        if(Flags.ProcessorStatusFlags.CARRY.getVal() != 0) {
             addBranchCycles(value);
-            setPC(value-1);
-        }else{
-            setPC(value-4);
+            setPC(value);
         }
     }
     public void beq(int value){
-        if(Flags.ProcessorStatusFlags.ZERO.getVal()==1) {
+        if(Flags.ProcessorStatusFlags.ZERO.getVal()!=0) {
             addBranchCycles(value);
-            setPC(value-1);
-        }else{
-            setPC(value-1);
         }
     }
     public void bmi(int value){
-        if(Flags.ProcessorStatusFlags.NEGATIVE.getVal() ==1){
+        if(Flags.ProcessorStatusFlags.NEGATIVE.getVal() !=0){
             setPC(value);;
             addBranchCycles(value);
         }
@@ -348,7 +342,7 @@ public class Register {
         }
     }
     public void bvs(int value){
-        if(Flags.ProcessorStatusFlags.OVERFLOW.getVal() ==1){
+        if(Flags.ProcessorStatusFlags.OVERFLOW.getVal() !=0){
             setPC(value);
             addBranchCycles(value);
         }
