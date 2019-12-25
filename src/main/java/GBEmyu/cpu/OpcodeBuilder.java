@@ -416,7 +416,7 @@ public class OpcodeBuilder {
 
 
     //SBC
-    private  Opcode SBCIMPLICIT = new Opcode(Flags.AddressModes.IMPLICIT,"SBCIMPLICIT", 0xE9,2){
+    private  Opcode SBCIMPLICIT = new Opcode(Flags.AddressModes.IMMEDIATE,"SBCIMMEDIATE", 0xE9,2){
         @Override
         public void operation(int[] operanden){
             register.sbc(operanden[0]);

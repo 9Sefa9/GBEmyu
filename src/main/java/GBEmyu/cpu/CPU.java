@@ -118,8 +118,8 @@ public class CPU {
 
                 incrementCycle(currentOpcode.getCycle()+1);
 
-                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD :::  Name: "+ currentOpcode.getOpcodeName()+
-                        "  AddressMode: "+currentOpcode.getAddressMode()+" PC: "+ register.getPC()+"  Instruction(HEX): " + String.format("%04X000",currentOpcode.getHexAddress()) +" Cycle: "+(getCycle())+"  Instruction(DEC)):" + currentOpcode.getHexAddress()+" A:"+register.getA()+" X: "+register.getX()+" Y: "+register.getY()+" P: "+register.getP()+" SP:"+register.getSP());
+                GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD :::  Name:  "+ currentOpcode.getOpcodeName()+
+                        "  AddressMode:  "+currentOpcode.getAddressMode()+" PC(DECIMAL):  "+ register.getPC()+" PC(HEX):  "+String.format("%4X",register.getPC())+"  Instruction(HEX): " + String.format("%08X",currentOpcode.getHexAddress()) +" Cycle: "+(getCycle())+" A:  "+register.getA()+" X:  "+register.getX()+" Y:  "+register.getY()+" P:  "+register.getP()+" SP:  "+register.getSP());
 
 
                 register.incrementPC();
@@ -138,6 +138,7 @@ public class CPU {
 
 
         incrementCycle(2);
+        //int[] test ={0};
         opcode.operation(null);
 
     }

@@ -125,8 +125,9 @@ public class Register {
     }
     public void and(int value){
         int o = value & getA();
-        setZeroNegativeFlag(o);
         setA(o);
+        setZeroNegativeFlag(o);
+
     }
     public void aslAccumulator(){
         //Wie gena soll ich nun auf Accumulator kommen ?
