@@ -5,6 +5,8 @@ public class Flags {
     private ProcessorStatusFlags[] processorStatusFlags;
     private Interrupt interruptFlags;
 
+
+
     //enums
     public enum AddressModes{
         HLT,
@@ -59,6 +61,9 @@ public class Flags {
     }
     public int getProcessorStatusFlag(ProcessorStatusFlags currentFlag) {
         return Flags.ProcessorStatusFlags.valueOf(currentFlag.name()).getVal();
+    }
+    public ProcessorStatusFlags[] getProcessorStatusFlagArray() {
+        return Flags.ProcessorStatusFlags.values();
     }
     public void setInterruptFlags(Interrupt flag){
         this.interruptFlags = flag;

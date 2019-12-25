@@ -286,66 +286,92 @@ public class Register {
     }
     public void sbc(int value){
        int a = getA();
-       int b = value;
         int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
-        setA(a-b-(1-c));
+        setA(a- value -(1-c));
         setZeroNegativeFlag(getA());
 
-        if( (a-b-(1-c))>=0)
+        if( (a- value -(1-c))>=0)
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
 
-        if( ((a^b)&0x80) != 0 && ((a^getA())&0x80) != 0)
+        if( ((a^ value)&0x80) != 0 && ((a^getA())&0x80) != 0)
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,1);
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,0);
     }
     //TODO DIE BRNACHES MÜSSEN GEFIXXT WERDEN!
     public void bcc(int value){
-        if(Flags.ProcessorStatusFlags.CARRY.getVal() ==0) {
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY) ==0) {
             addBranchCycles(value);
             setPC(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
         }
     }
 
     public void bcs(int value){
-        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY) != 0) {
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY) == 1) {
             addBranchCycles(value);
             setPC(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
         }
     }
+    //todo geändert zu ==0, war aber != 0. und decrement entfernt.
     public void beq(int value){
-        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) !=0) {
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) ==0) {
             addBranchCycles(value);
-        }
-    }
-    public void bmi(int value){
-        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE) !=0){
-            setPC(value);;
-            addBranchCycles(value);
+            setPC(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
         }
     }
     public void bne(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) ==0){
             setPC(value);;
             addBranchCycles(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
         }
     }
+    public void bmi(int value){
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE) !=0){
+            setPC(value);;
+            addBranchCycles(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
+        }
+    }
+
     public void bpl(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE) ==0){
             setPC(value);
             addBranchCycles(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
         }
     }
     public void bvc(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW) ==0){
             setPC(value);
             addBranchCycles(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
         }
     }
     public void bvs(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW) !=0){
             setPC(value);
             addBranchCycles(value);
+            decrementPC(1);
+        }else{
+            incrementPC(1);
         }
     }
     public void clc(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0); }
@@ -486,21 +512,21 @@ public class Register {
     // versuche 0x100 in 0xFF zu ändern.
     // versuche 0x100 in 0xFF zu ändern.
     public void setSP(int sp) {
-        this.sp = (sp& 0x100);
+        this.sp = (sp& 0xFF);
     }
     // versuche 0x100 in 0xFF zu ändern.
-    public void setA(int a) { this.a = (a & 0x100); }
+    public void setA(int a) { this.a = (a & 0xFF); }
     public void setX(int x) {
-        this.x = (x & 0x100);
+        this.x = (x & 0xFF);
     }
     // versuche 0x100 in 0xFF zu ändern.
     public void setY(int y) {
-        this.y = (y & 0x100);
+        this.y = (y & 0xFF);
     }
     // versuche 0x100 in 0xFF zu ändern.
     public void setP(int p) {
-        this.p = (p & 0x80);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(p >> 0) & 1);
+        this.p = (p & 0xFF);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(p & 1));
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,(p >> 1) & 1);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,(p >> 2) & 1);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,(p >> 3) & 1);
@@ -512,15 +538,15 @@ public class Register {
 
     //Register getters
     public int getSP() {
-        return this.sp & 0x100;
+        return this.sp & 0xFF;
     }
     public int getPC(){
         return this.pc & 0xFFFF;
     }
-    public int getA() { return a & 0x100; }
+    public int getA() { return a & 0xFF; }
     public int getP() {
         int sum=0;
-        for(Flags.ProcessorStatusFlags value : Flags.ProcessorStatusFlags.values()){
+        for(Flags.ProcessorStatusFlags value : flags.getProcessorStatusFlagArray()){
             sum = sum + value.getVal();
         }
         return sum;
