@@ -286,15 +286,16 @@ public class Register {
     }
     public void sbc(int value){
        int a = getA();
-        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
-        setA(a- value -(1-c));
+       int b = bus.read(value);
+       int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
+        setA(a-b-(1-c));
         setZeroNegativeFlag(getA());
 
-        if( (a- value -(1-c))>=0)
+        if( ((a)- (b) -(1-c))>=0)
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
 
-        if( ((a^ value)&0x80) != 0 && ((a^getA())&0x80) != 0)
+        if( ((a^ b)&0x80) != 0 && ((a^getA())&0x80) != 0)
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,1);
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,0);
     }

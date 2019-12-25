@@ -33,7 +33,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(10);
+                sleep(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
