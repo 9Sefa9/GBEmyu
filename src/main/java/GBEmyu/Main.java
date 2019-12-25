@@ -7,7 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import static GBEmyu.utilities.Logger.LOGGER;
+
 
 public class Main {
 

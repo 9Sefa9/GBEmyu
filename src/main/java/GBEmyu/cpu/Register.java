@@ -2,8 +2,6 @@ package GBEmyu.cpu;
 
 import GBEmyu.Bus;
 
-import java.util.logging.Level;
-
 public class Register {
     //register
     private int a; // accumulator

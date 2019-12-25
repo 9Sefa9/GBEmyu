@@ -1,17 +1,5 @@
 package GBEmyu.utilities;
 
-import sun.util.logging.PlatformLogger;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Locale;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-
 public class Helper {
 
 	/*
