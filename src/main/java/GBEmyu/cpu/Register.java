@@ -286,6 +286,7 @@ public class Register {
     }
     public void sbc(int value){
        int a = getA();
+
        int b = bus.read(value);
        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         setA(a-b-(1-c));

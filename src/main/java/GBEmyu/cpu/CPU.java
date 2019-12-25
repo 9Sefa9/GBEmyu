@@ -133,7 +133,7 @@ public class CPU {
         decrementCycle(1);
     }
 
-
+    //TODO SBC nimmt parameter entgegen, den ich nicht kenne ? => CBB4  E9 40     SBC #$40
     private void implicit(Opcode opcode) {
 
 
