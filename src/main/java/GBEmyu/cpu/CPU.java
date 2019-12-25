@@ -145,9 +145,7 @@ public class CPU {
     private void immediate(Opcode opcode) {
 
         register.incrementPC();
-        //TODO +1 wurde nach hinzugefügt. Wieder entfernen ?
         int[] fetchValue = {bus.read(register.getPC()+1)};
-       // register.incrementPC();
         incrementCycle(2);
         opcode.operation(fetchValue);
 
@@ -307,6 +305,7 @@ public class CPU {
     private boolean pageCrossing(int lo, int hi) {
         return (lo & 0xFF00) != (hi & 0xFF00);
     }
+
     public int getCycle() {
         return cycle;
     }

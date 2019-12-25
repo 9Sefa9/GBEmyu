@@ -71,16 +71,18 @@ public class Register {
     }
     public void tya(){
         int y = getY();
-        setZeroNegativeFlag(y);
         setA(y);
+        setZeroNegativeFlag(y);
+
     }
     public void nop(){
         //keine operation.
     }
     public void ora(int value){
         int a = value | getA();
-        setZeroNegativeFlag(a);
         setA(a);
+        setZeroNegativeFlag(getA());
+
     }
     public void cli(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,0); }
     public void clv(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,0); }
@@ -89,50 +91,48 @@ public class Register {
     public void sei(){
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,1);
     }
+    public void clc(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0); }
+    public void cld(){
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,0);
+    }
     public void brk(){
-        //@todo kann probleme verursachen.
         push16(getPC());
         php();
         sei();
         setPC(read16(0xFFFE));
     }
     public void cmp(int value){
-        int a = getA();
-        setZeroNegativeFlag(a - value);
-        if (a >= value)
-            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
-
-        else flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
+        int v = bus.read(value);
+        compare(getA(),v);
 
     }
     public void cpx(int value){
-        int x = getX();
-        setZeroNegativeFlag(x - value);
-        if (x >= value)
-            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
-
-        else flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
+        int v = bus.read(value);
+        compare(getX(),v);
     }
     public void cpy(int value){
+        /*
         int y = getY();
         setZeroNegativeFlag(y - value);
         if (y >= value)
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
 
         else flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
+        */
+        int v = bus.read(value);
+        compare(getY(),v);
     }
+
     public void and(int value){
-        int o = value & getA();
-        setA(o);
-        setZeroNegativeFlag(o);
+        setA(value & getA());
+        setZeroNegativeFlag(getA());
 
     }
     public void aslAccumulator(){
-        //Wie gena soll ich nun auf Accumulator kommen ?
+
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() >> 7)&1);
-      //  int a = getA();
-        this.a = ((this.a << 1) & 0x100);
-      //  setA(a << 1);
+        setA(getA()<<1);
+        //this.a = ((this.a << 1) & 0x100);
         setZeroNegativeFlag(getA());
 
     }
@@ -147,26 +147,57 @@ public class Register {
         setZeroNegativeFlag(value);
     }
     public void bit(int value){
-        int v = value;
+        /*
+        func (cpu *CPU) setZ(value byte) {
+	if value == 0 {
+		cpu.Z = 1
+	} else {
+		cpu.Z = 0
+	}
+}
+
+// setN sets the negative flag if the argument is negative (high bit is set)
+func (cpu *CPU) setN(value byte) {
+	if value&0x80 != 0 {
+		cpu.N = 1
+	} else {
+		cpu.N = 0
+	}
+}
+         */
+
+        int v = bus.read(value);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,(v >> 6) & 1);
-        //TODO Misstrauisch. Weil wir hier eiskalt ne adresse in die Flag schreiben.
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,(v & getA()));
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,v);
+
+        //setZeroFlag
+        if((v & getA())==0){
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,1);
+        }else{
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,0);
+        }
+
+        //setNegativeFlag
+        if((v & 0x80) != 0){
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,1);
+        }else{
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,0);
+        }
+
 
     }
     public void eor(int value){
-        int o = value ^ getA();
-        setZeroNegativeFlag(o);
+        int o = bus.read(value) ^ getA();
         setA(o);
+        setZeroNegativeFlag(getA());
+
     }
     public void lsrAccumulator(){
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() &1));
-        int a = getA();
-        setA((a >>=1));
+        setA(getA()>>1);
         setZeroNegativeFlag(getA());
     }
     public void lsr(int value){
-        int a = value;
+        int a = bus.read(value);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(a &1));
         a >>=1;
         cpu.incrementCycle(1);
@@ -182,24 +213,24 @@ public class Register {
     }
     public void rol(int value){
         int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
-        int v = value;
+        int v = bus.read(value);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(v >> 7)&1);
         v = (v << 1) | c;
         cpu.incrementCycle(1);
         bus.write(value, v);
         setZeroNegativeFlag(v);
     }
-    //TODO wird probleme bereiten.
+
     public void rorAccumulator(){
         int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
-        c = getA() & 1;
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() & 1));
         setA( ( getA() >> 1) | (c << 7));
         setZeroNegativeFlag(getA());
 
     }
     public void ror(int v){
         int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
-        int value = v;
+        int value = bus.read(v);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY, value & 1);
         value = (value >> 1) | (c << 7 );
         cpu.incrementCycle(1);
@@ -208,7 +239,7 @@ public class Register {
     }
     public void adc(int value){
         int a = getA();
-        int b = value;
+        int b = bus.read(value);
         int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         setA(a+b+c);
         setZeroNegativeFlag(getA());
@@ -223,9 +254,8 @@ public class Register {
 
     }
     public void dec(int value){
-        int val = value-1;
-        cpu.incrementCycle(1);
-        cpu.incrementCycle(1);
+        int val = bus.read(value)-1;
+        cpu.incrementCycle(2);
         bus.write(value,val);
         setZeroNegativeFlag(val);
     }
@@ -238,17 +268,19 @@ public class Register {
         setZeroNegativeFlag(getY());
     }
     public void inc(int value){
-        int v = value +1;
+        int v = bus.read(value)+1;
         cpu.incrementCycle(1);
         bus.write(value, v);
         setZeroNegativeFlag(value);
     }
     public void inx(){
-        setX(getX()+1);
+        int newX = getX()+1;
+        setX(newX);
         setZeroNegativeFlag(getX());
     }
     public void iny(){
-        setY(getY()+1);
+        int newY = getY()+1;
+        setY(newY);
         setZeroNegativeFlag(getY());
     }
     public void jmp(int value){
@@ -266,8 +298,8 @@ public class Register {
         push(getA());
     }
     public void php(){
-        //@todo kann probleme verursachen.
-        push(getP());
+
+        push(getP() | 0x10);
     }
     public void pla(){
         setA(pull());
@@ -329,6 +361,7 @@ public class Register {
             incrementPC(1);
         }
     }
+    //TODO C8C0 den itibaren kontorllieren et.
     public void bne(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) ==0){
             setPC(value);;
@@ -340,7 +373,7 @@ public class Register {
     }
     public void bmi(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE) !=0){
-            setPC(value);;
+            setPC(value);
             addBranchCycles(value);
             decrementPC(1);
         }else{
@@ -375,10 +408,7 @@ public class Register {
             incrementPC(1);
         }
     }
-    public void clc(){ flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0); }
-    public void cld(){
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,0);
-    }
+
 
 
 
@@ -558,6 +588,13 @@ public class Register {
     public int getX() {
         return x;
     }
-
+    private void compare(int a, int value8bit) {
+        setZeroNegativeFlag(a - value8bit);
+        if(a >= value8bit){
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
+        } else {
+            flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
+        }
+    }
 
 }
