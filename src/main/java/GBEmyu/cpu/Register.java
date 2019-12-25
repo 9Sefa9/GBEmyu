@@ -175,14 +175,14 @@ public class Register {
         setZeroNegativeFlag(a);
     }
     public void rolAccumulator(){
-        int c = Flags.ProcessorStatusFlags.CARRY.getVal();
+        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() >> 7)&1);
         setA( (getA() << 1) | c);
         setZeroNegativeFlag(getA());
 
     }
     public void rol(int value){
-        int c = Flags.ProcessorStatusFlags.CARRY.getVal();
+        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         int v = value;
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(v >> 7)&1);
         v = (v << 1) | c;
@@ -190,15 +190,16 @@ public class Register {
         bus.write(value, v);
         setZeroNegativeFlag(v);
     }
+    //TODO wird probleme bereiten.
     public void rorAccumulator(){
-        int c = Flags.ProcessorStatusFlags.CARRY.getVal();
+        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         c = getA() & 1;
         setA( ( getA() >> 1) | (c << 7));
         setZeroNegativeFlag(getA());
 
     }
     public void ror(int v){
-        int c = Flags.ProcessorStatusFlags.CARRY.getVal();
+        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         int value = v;
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY, value & 1);
         value = (value >> 1) | (c << 7 );
@@ -209,7 +210,7 @@ public class Register {
     public void adc(int value){
         int a = getA();
         int b = value;
-        int c = Flags.ProcessorStatusFlags.CARRY.getVal();
+        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         setA(a+b+c);
         setZeroNegativeFlag(getA());
         if( (a + b +c) > 0xFF)
@@ -286,7 +287,7 @@ public class Register {
     public void sbc(int value){
        int a = getA();
        int b = value;
-        int c = Flags.ProcessorStatusFlags.CARRY.getVal();
+        int c = flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY);
         setA(a-b-(1-c));
         setZeroNegativeFlag(getA());
 
@@ -307,42 +308,42 @@ public class Register {
     }
 
     public void bcs(int value){
-        if(Flags.ProcessorStatusFlags.CARRY.getVal() != 0) {
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY) != 0) {
             addBranchCycles(value);
             setPC(value);
         }
     }
     public void beq(int value){
-        if(Flags.ProcessorStatusFlags.ZERO.getVal()!=0) {
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) !=0) {
             addBranchCycles(value);
         }
     }
     public void bmi(int value){
-        if(Flags.ProcessorStatusFlags.NEGATIVE.getVal() !=0){
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE) !=0){
             setPC(value);;
             addBranchCycles(value);
         }
     }
     public void bne(int value){
-        if(Flags.ProcessorStatusFlags.ZERO.getVal() ==0){
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) ==0){
             setPC(value);;
             addBranchCycles(value);
         }
     }
     public void bpl(int value){
-        if(Flags.ProcessorStatusFlags.NEGATIVE.getVal() ==0){
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE) ==0){
             setPC(value);
             addBranchCycles(value);
         }
     }
     public void bvc(int value){
-        if(Flags.ProcessorStatusFlags.OVERFLOW.getVal() ==0){
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW) ==0){
             setPC(value);
             addBranchCycles(value);
         }
     }
     public void bvs(int value){
-        if(Flags.ProcessorStatusFlags.OVERFLOW.getVal() !=0){
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW) !=0){
             setPC(value);
             addBranchCycles(value);
         }

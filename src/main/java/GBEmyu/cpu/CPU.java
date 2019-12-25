@@ -284,7 +284,7 @@ public class CPU {
     }
     //sorgt für ein interrupt beim nächsten cycle.
     public void triggerIRQ(){
-        if(Flags.ProcessorStatusFlags.INTERRUPTDISABLE.getVal() == 0){
+        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE) == 0){
             flags.setInterruptFlags(Flags.Interrupt.interruptIRQ);
         }
     }

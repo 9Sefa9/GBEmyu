@@ -48,25 +48,17 @@ public class Flags {
         interruptIRQ;
     }
 
-
-
     public Flags(){
         this.processorStatusFlags = ProcessorStatusFlags.values();
         this. interruptFlags = Interrupt.interruptNone;
     }
 
-    //getter
-    public int[] getProcessorStatusFlags(){
-return null;
-    }
     //find and set the flag. wichtig für die einzelnen Opcode funktionen.
     public void setProcessorStatusFlag(ProcessorStatusFlags currentFlag, int value) {
-        for (ProcessorStatusFlags p : this.processorStatusFlags){
-            if(p.name().equals(currentFlag.name())){
-                p.setVal(value);
-                return;
-            }
-        }
+        Flags.ProcessorStatusFlags.valueOf(currentFlag.name()).setVal(value);
+    }
+    public int getProcessorStatusFlag(ProcessorStatusFlags currentFlag) {
+        return Flags.ProcessorStatusFlags.valueOf(currentFlag.name()).getVal();
     }
     public void setInterruptFlags(Interrupt flag){
         this.interruptFlags = flag;
