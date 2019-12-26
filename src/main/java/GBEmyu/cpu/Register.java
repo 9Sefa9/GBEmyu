@@ -314,6 +314,7 @@ func (cpu *CPU) setN(value byte) {
     }
     public void rts(){
         setPC(pull16()+1);
+
     }
     public void sbc(int value){
        int a = getA();

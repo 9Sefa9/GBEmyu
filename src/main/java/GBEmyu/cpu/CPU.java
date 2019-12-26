@@ -119,7 +119,7 @@ public class CPU {
                 incrementCycle(currentOpcode.getCycle()+1);
 
                 GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD :::  Name:  "+ currentOpcode.getOpcodeName()+
-                        "  AddressMode:  "+currentOpcode.getAddressMode()+" PC(DECIMAL):  "+ register.getPC()+" PC(HEX):  "+String.format("%4X",register.getPC())+"  Instruction(HEX): " + String.format("%08X",currentOpcode.getHexAddress()) +" Cycle: "+(getCycle())+" A:  "+register.getA()+" X:  "+register.getX()+" Y:  "+register.getY()+" P:  "+register.getP()+" SP:  "+register.getSP());
+                        "  AddressMode:  "+currentOpcode.getAddressMode()+" PC(DECIMAL):  "+ register.getPC()+" PC(HEX):  "+String.format("%4X",register.getPC())+"  Instruction(HEX): " + String.format("%2X",currentOpcode.getHexAddress()) +" Cycle: "+(getCycle())+" A:  "+register.getA()+" X:  "+register.getX()+" Y:  "+register.getY()+" P:  "+register.getP()+" SP:  "+register.getSP());
 
 
                 register.incrementPC();
@@ -133,7 +133,7 @@ public class CPU {
         decrementCycle(1);
     }
 
-    //TODO SBC nimmt parameter entgegen, den ich nicht kenne ? => CBB4  E9 40     SBC #$40
+    //TODO RTSImplicit. problem beim Übergang ?  => CBBF
     private void implicit(Opcode opcode) {
 
 
@@ -272,21 +272,8 @@ public class CPU {
         register.setPC(register.read16(0xFFFC));
         register.setSP(0xFD);
         register.setP(0x24);
-        // register.setPC(bus.read16(0xFFFC));
-        //   cpu.PC = cpu.Read16(0xFFFC)
-        //   cpu.SP = 0xFD
-        //   cpu.SetFlags(0x24)
     }
-    //non maskable interrupt. tritt auf beim nächsten cycle.
-    public void triggerNMI(){
-        flags.setInterruptFlags(Flags.Interrupt.interruptNMI);
-    }
-    //sorgt für ein interrupt beim nächsten cycle.
-    public void triggerIRQ(){
-        if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE) == 0){
-            flags.setInterruptFlags(Flags.Interrupt.interruptIRQ);
-        }
-    }
+
     //wird von der PPU generiert.
     public void nmi(){
         register.push16(register.getPC());
