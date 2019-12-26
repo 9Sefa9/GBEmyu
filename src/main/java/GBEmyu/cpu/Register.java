@@ -581,8 +581,6 @@ func (cpu *CPU) setN(value byte) {
         for(Flags.ProcessorStatusFlags value : flags.getProcessorStatusFlagArray()){
             sum = value.getVal() + sum;
         }
-        System.out.println(sum);
-
         int binToZahl=0;
         int p=0;
         for(int i = sum.length()-1; i>=0; i--){

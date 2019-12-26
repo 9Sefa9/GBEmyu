@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.logging.Level;
 
 import static java.lang.Thread.sleep;
-
+//TODO Zyklen müssen irgendwie angepasst werden. Es stimmt nicht mit dem NesLog überein ?
 public class CPU {
-//@TODO: Memory Mapper0 1 verstehen und anwenden.
+
     private Register register;
     private Bus bus;
     private Flags flags;
@@ -35,7 +35,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(250);
+                sleep(0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
