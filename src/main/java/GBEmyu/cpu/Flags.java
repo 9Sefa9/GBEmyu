@@ -25,14 +25,15 @@ public class Flags {
         INDIRECTY
     }
     public enum ProcessorStatusFlags{
-        NEGATIVE(0),
-        OVERFLOW(0),
-        BREAKCOMMAND(0),
-        DECIMALMODE(0),
-        INTERRUPTDISABLE(0),
-        ZERO(0),
         CARRY(0),
-        UNKNOWN(0);
+        ZERO(0),
+        INTERRUPTDISABLE(0),
+        DECIMALMODE(0),
+        BREAKCOMMAND(0),
+        UNKNOWN(0),
+        OVERFLOW(0),
+        NEGATIVE(0);
+
         private int val;
         public int getVal(){
             return this.val;

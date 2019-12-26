@@ -25,15 +25,17 @@ public class CPU {
     }
     public void start() {
         //Am anfang soll man ResetInterrupt aufrufen (IRQ). laut https://github.com/bfirsh/jsnes/blob/master/src/mappers.js
+
         register.setPC(0xC000);
-        //Am Anfang sind erstmal keine Zyklen.
-        setCycle(0);
+        register.setP(0x24);
+        register.setSP(0xfd);
+
 
         while(true) {
 
             clock();
             try {
-                sleep(0);
+                sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

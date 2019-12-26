@@ -1,6 +1,7 @@
 package GBEmyu.cpu;
 
 import GBEmyu.Bus;
+import GBEmyu.utilities.Helper;
 
 public class Register {
     //register
@@ -557,7 +558,6 @@ func (cpu *CPU) setN(value byte) {
     }
     // versuche 0x100 in 0xFF zu ändern.
     public void setP(int p) {
-        this.p = (p & 0xFF);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(p & 1));
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,(p >> 1) & 1);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,(p >> 2) & 1);
@@ -577,11 +577,24 @@ func (cpu *CPU) setN(value byte) {
     }
     public int getA() { return a & 0xFF; }
     public int getP() {
-        int sum=0;
+        String sum="";
         for(Flags.ProcessorStatusFlags value : flags.getProcessorStatusFlagArray()){
-            sum = sum + value.getVal();
+            sum = value.getVal() + sum;
         }
-        return sum;
+        System.out.println(sum);
+
+        int binToZahl=0;
+        int p=0;
+        for(int i = sum.length()-1; i>=0; i--){
+            if(sum.charAt(i)=='0') {
+                p+=1;
+            }else{
+                binToZahl+= Math.pow(2,p);
+                p+=1;
+            }
+        }
+
+        return binToZahl;
     }
     public int getY() {
         return y;
