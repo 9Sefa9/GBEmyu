@@ -315,7 +315,6 @@ func (cpu *CPU) setN(value byte) {
     }
     public void rts(){
         setPC(pull16()+1);
-       // decrementPC(1);
     }
     public void sbc(int value){
        int a = getA();
@@ -558,14 +557,14 @@ func (cpu *CPU) setN(value byte) {
     }
     // versuche 0x100 in 0xFF zu ändern.
     public void setP(int p) {
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(p & 1));
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,(p >> 1) & 1);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,(p >> 2) & 1);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,(p >> 3) & 1);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.BREAKCOMMAND,(p >> 4) & 1);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.UNKNOWN,(p >> 5) & 1);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,(p >> 6) & 1);
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,(p >> 7) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,((p & 0xFF) & 1));
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,((p & 0xFF) >> 1) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,((p & 0xFF) >> 2) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,((p & 0xFF) >> 3) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.BREAKCOMMAND,((p & 0xFF) >> 4) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.UNKNOWN,((p & 0xFF) >> 5) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,((p & 0xFF) >> 6) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,((p & 0xFF) >> 7) & 1);
     }
 
     //Register getters
@@ -601,8 +600,8 @@ func (cpu *CPU) setN(value byte) {
         return x;
     }
     private void compare(int a, int value8bit) {
-        setZeroNegativeFlag(a - value8bit);
-        if(a >= value8bit){
+        setZeroNegativeFlag(a - (value8bit& 0xFF));
+        if(a >= (value8bit & 0xFF)){
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
         } else {
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
