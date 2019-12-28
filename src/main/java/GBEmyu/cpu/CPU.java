@@ -25,17 +25,17 @@ public class CPU {
     }
     public void start() {
         //Am anfang soll man ResetInterrupt aufrufen (IRQ). laut https://github.com/bfirsh/jsnes/blob/master/src/mappers.js
-
-        register.setPC(0xC000);
-        register.setP(0x24);
-        register.setSP(0xfd);
+       // reset();
+        //register.setPC(0xC000);
+        //register.setP(0x24);
+       // register.setSP(0xfd);
 
 
         while(true) {
 
             clock();
             try {
-                sleep(0);
+                sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -121,7 +121,7 @@ public class CPU {
                 incrementCycle(currentOpcode.getCycle()+1);
 
                 GBEmyu.utilities.Logger.LOGGER.log(Level.INFO,"\n\nCLOCK METHOD :::  Name:  "+ currentOpcode.getOpcodeName()+
-                        "  AddressMode:  "+currentOpcode.getAddressMode()+" PC(DECIMAL):  "+ register.getPC()+" PC(HEX):  "+String.format("%4X",register.getPC())+"  Instruction(HEX): " + String.format("%2X",currentOpcode.getHexAddress()) +" Cycle: "+(getCycle())+" A:  "+register.getA()+" X:  "+register.getX()+" Y:  "+register.getY()+" P:  "+register.getP()+" SP:  "+register.getSP());
+                        "  AddressMode:  "+currentOpcode.getAddressMode()+" PC(DECIMAL):  "+ register.getPC()+" PC(HEX):  "+String.format("%4X",register.getPC()-1)+"  Instruction(HEX): " + String.format("%2X",currentOpcode.getHexAddress()) +" Cycle: "+(getCycle())+" A:  "+register.getA()+" X:  "+register.getX()+" Y:  "+register.getY()+" P:  "+register.getP()+" SP:  "+register.getSP());
 
 
                 register.incrementPC();

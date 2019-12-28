@@ -315,7 +315,7 @@ func (cpu *CPU) setN(value byte) {
     }
     public void rts(){
         setPC(pull16()+1);
-
+       // decrementPC(1);
     }
     public void sbc(int value){
        int a = getA();
@@ -477,7 +477,7 @@ func (cpu *CPU) setN(value byte) {
     private int pull(){
         incrementSP();
         cpu.incrementCycle(1);
-        return (bus.read(0x100|getSP() & 0xFFFF)) & 0xFF;
+        return (bus.read(0x100|getSP() & 0xFFFF));
     }
     public void push16(int value){
         int hi = ((value & 0xFFFF) >> 8) & 0xFF;

@@ -178,13 +178,17 @@ public class Mapper0 {
             }
 
         }
+        //TODO expansion ROm ist leer ?
         else if(address <0x6000){
             //Expansion ROM
-
+            System.out.println("EROM");
+            getCpuMemoryMap()[address] = val;
         }
+        //TODO SRAM auch ?
         else if(address <0x8000){
             //SRAM
-
+            System.out.println("SROM");
+            getCpuMemoryMap()[address] = val;
         }
         else if(address <0x10000){
             //PRG-RAM
