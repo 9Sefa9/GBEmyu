@@ -35,7 +35,7 @@ public class CPU {
 
             clock();
             try {
-                sleep(0);
+                sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -230,12 +230,11 @@ public class CPU {
         int []value=new int[1];
         if(offset < 0x80) {
             value[0] = register.getPC() + 2 + offset;
-            currentOpcode.operation(value);
         }
         else{
             value[0] = register.getPC() + 2 + offset - 0x100;
-            currentOpcode.operation(value);
         }
+        currentOpcode.operation(value);
 
     }
 
@@ -250,6 +249,7 @@ public class CPU {
 
         incrementCycle(1);
         int[] fetchValue = {((bus.read(register.getPC()+1)+ register.getX()) & 0xFFFF) & 0xFF };
+        register.incrementPC();
         incrementCycle(4);
         currentOpcode.operation(fetchValue);
 
@@ -262,6 +262,7 @@ public class CPU {
 
         incrementCycle(1);
         int[] fetchValue = {((bus.read(register.getPC()+1)+ register.getY()) & 0xFFFF) & 0xFF };
+        register.incrementPC();
         incrementCycle(4);
         currentOpcode.operation(fetchValue);
 

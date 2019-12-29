@@ -332,7 +332,7 @@ func (cpu *CPU) setN(value byte) {
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,1);
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,0);
     }
-    //TODO DIE BRNACHES MÜSSEN GEFIXXT WERDEN!
+
     public void bcc(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY) ==0) {
             addBranchCycles(value);
@@ -362,7 +362,6 @@ func (cpu *CPU) setN(value byte) {
             incrementPC(1);
         }
     }
-    //TODO C8C0 den itibaren kontorllieren et.
     public void bne(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) ==0){
             setPC(value);;
@@ -410,10 +409,6 @@ func (cpu *CPU) setN(value byte) {
         }
     }
 
-
-
-
-    //ILLEGALE OPCODE FUNKTIONALITÄTEN:
     public void kilX(){
         //void hlt()
         //  {
@@ -459,7 +454,7 @@ func (cpu *CPU) setN(value byte) {
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
     public int read16bug(int address){
-        int a = address;
+        int a = address & 0xFFFF;
         int b = (a & 0xFF00 | (((a&0xFF)+1) & 0xFFFF));
         cpu.incrementCycle(2);
         int lo = bus.read(a);
@@ -469,14 +464,14 @@ func (cpu *CPU) setN(value byte) {
     // push pushes a byte onto the stack
     private void push(int value){
         cpu.incrementCycle(1);
-        bus.write(0x100|(getSP()) & 0xFFFF,(value & 0xFF));
+        bus.write((0x100|(getSP()) & 0xFFFF),(value & 0xFF));
         decrementSP();
     }
     // pull pops a byte from the stack
     private int pull(){
         incrementSP();
         cpu.incrementCycle(1);
-        return (bus.read(0x100|getSP() & 0xFFFF));
+        return (bus.read(0x100|(getSP() & 0xFFFF)));
     }
     public void push16(int value){
         int hi = ((value & 0xFFFF) >> 8) & 0xFF;
@@ -489,7 +484,7 @@ func (cpu *CPU) setN(value byte) {
 
        int hi = pull() & 0xFFFF;
 
-       return (hi<<8 | lo) & 0xFFFF;
+       return (hi<<8 | lo);
     }
 
 
@@ -594,7 +589,7 @@ func (cpu *CPU) setN(value byte) {
         return binToZahl;
     }
     public int getY() {
-        return y;
+        return y & 0xFF;
     }
     public int getX() {
         return x;
