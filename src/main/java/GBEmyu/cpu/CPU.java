@@ -203,15 +203,15 @@ public class CPU {
 
     }
     private void indirectx(Opcode currentOpcode){
-
-        int []value = {register.read16bug((bus.read(register.getPC()+1))+register.getX())};
+        //address = cpu.read16bug(uint16(cpu.Read(cpu.PC+1) + cpu.X))
+        int []value = {register.read16bug((bus.read(register.getPC()+1)+register.getX()) & 0xFFFF)};
         currentOpcode.operation(value);
 
     }
     private void indirecty(Opcode currentOpcode){
 
 
-        int []value = {register.read16bug((bus.read(register.getPC()+1)&0xFFFF)+(register.getY()& 0xFFFF))};
+        int []value = {register.read16bug(((bus.read(register.getPC()+1)&0xFFFF)&0xFFFF)+(register.getY()& 0xFFFF))};
         if(pageCrossing(value[0]-register.getY(), value[0])){
             incrementCycle(6);
             currentOpcode.operation(value);
@@ -240,7 +240,7 @@ public class CPU {
 
     private void zeropage(Opcode currentOpcode) {
 
-        int[] val = {((bus.read(register.getPC()+1)) & 0xFFFF) & 0xFFFF};
+        int[] val = {(bus.read(register.getPC()+1)) & 0xFFFF};
         register.incrementPC();
         incrementCycle(3);
         currentOpcode.operation(val);
@@ -248,7 +248,7 @@ public class CPU {
     private void zeropagex(Opcode currentOpcode) {
 
         incrementCycle(1);
-        int[] fetchValue = {((bus.read(register.getPC()+1)+ register.getX()) & 0xFFFF) & 0xFF };
+        int[] fetchValue = {((bus.read(register.getPC()+1)+register.getX()) & 0xFFFF) & 0xFF };
         register.incrementPC();
         incrementCycle(4);
         currentOpcode.operation(fetchValue);
@@ -261,7 +261,7 @@ public class CPU {
         //auf meine weise gelöst. Vllt. klappt es ohne diese anleitung oben.
 
         incrementCycle(1);
-        int[] fetchValue = {((bus.read(register.getPC()+1)+ register.getY()) & 0xFFFF) & 0xFF };
+        int[] fetchValue = {((bus.read(register.getPC()+1)+register.getY()) & 0xFFFF) & 0xFF };
         register.incrementPC();
         incrementCycle(4);
         currentOpcode.operation(fetchValue);

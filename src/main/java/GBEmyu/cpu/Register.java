@@ -147,24 +147,6 @@ public class Register {
         setZeroNegativeFlag(value);
     }
     public void bit(int value){
-        /*
-        func (cpu *CPU) setZ(value byte) {
-	if value == 0 {
-		cpu.Z = 1
-	} else {
-		cpu.Z = 0
-	}
-}
-
-// setN sets the negative flag if the argument is negative (high bit is set)
-func (cpu *CPU) setN(value byte) {
-	if value&0x80 != 0 {
-		cpu.N = 1
-	} else {
-		cpu.N = 0
-	}
-}
-         */
 
         int v = bus.read(value);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,(v >> 6) & 1);
@@ -470,7 +452,7 @@ func (cpu *CPU) setN(value byte) {
     private int pull(){
         incrementSP();
         cpu.incrementCycle(1);
-        return (bus.read(0x100|(getSP() & 0xFFFF)));
+        return (bus.read(0x100|(getSP() & 0xFFFF))) & 0xFF;
     }
     public void push16(int value){
         int hi = ((value & 0xFFFF) >> 8) & 0xFF;
@@ -483,7 +465,7 @@ func (cpu *CPU) setN(value byte) {
 
        int hi = pull() & 0xFFFF;
 
-       return (hi<<8 | lo);
+       return (hi<<8 | lo) & 0xFFFF;
     }
 
 
@@ -585,7 +567,7 @@ func (cpu *CPU) setN(value byte) {
             }
         }
 
-        return binToZahl & 0xFF;
+        return binToZahl;
     }
     public int getY() {
         return y & 0xFF;
