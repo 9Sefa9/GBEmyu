@@ -133,7 +133,6 @@ public class Register {
 
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,(getA() >> 7)&1);
         setA(getA()<<1);
-        //this.a = ((this.a << 1) & 0x100);
         setZeroNegativeFlag(getA());
 
     }
@@ -586,13 +585,13 @@ func (cpu *CPU) setN(value byte) {
             }
         }
 
-        return binToZahl;
+        return binToZahl & 0xFF;
     }
     public int getY() {
         return y & 0xFF;
     }
     public int getX() {
-        return x;
+        return x & 0xFF;
     }
     private void compare(int a, int value8bit) {
         setZeroNegativeFlag(a - (value8bit& 0xFF));
