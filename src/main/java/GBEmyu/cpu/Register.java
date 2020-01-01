@@ -8,7 +8,7 @@ public class Register {
     private int a; // accumulator
     private int x;
     private int y;
-    private int p; //status register
+   // private int p; //status register
     private int pc; //Program counter
     private int sp; //Stack Pointer
 
@@ -71,16 +71,15 @@ public class Register {
         setSP(getX());
     }
     public void tya(){
-        int y = getY();
-        setA(y);
-        setZeroNegativeFlag(y);
+        setA(getY());
+        setZeroNegativeFlag(getA());
 
     }
     public void nop(){
         //keine operation.
     }
     public void ora(int value){
-        int a = value | getA();
+        int a = bus.read(value) | getA();
         setA(a);
         setZeroNegativeFlag(getA());
 
@@ -125,7 +124,7 @@ public class Register {
     }
 
     public void and(int value){
-        setA(value & getA());
+        setA(bus.read(value) & getA());
         setZeroNegativeFlag(getA());
 
     }
@@ -253,7 +252,7 @@ public class Register {
         int v = bus.read(value)+1;
         cpu.incrementCycle(1);
         bus.write(value, v);
-        setZeroNegativeFlag(value);
+        setZeroNegativeFlag(v);
     }
     public void inx(){
         int newX = getX()+1;
@@ -296,6 +295,7 @@ public class Register {
     }
     public void rts(){
         setPC(pull16()+1);
+
     }
     public void sbc(int value){
        int a = getA();
@@ -305,7 +305,7 @@ public class Register {
         setA(a-b-(1-c));
         setZeroNegativeFlag(getA());
 
-        if( ((a)- (b) -(1-c))>=0)
+        if( (a- b -(1-c))>=0)
             flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,1);
         else  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,0);
 
@@ -345,7 +345,7 @@ public class Register {
     }
     public void bne(int value){
         if(flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) ==0){
-            setPC(value);;
+            setPC(value);
             addBranchCycles(value);
             decrementPC(1);
         }else{
@@ -428,19 +428,19 @@ public class Register {
     // Read16 reads two bytes using Read to return a double-word value
     public int read16(int address){
         cpu.incrementCycle(2);
-        int lo = bus.read(address )& 0xFFFF;
+        int lo = bus.read(address)& 0xFFFF;
         int hi =  bus.read(address+1)& 0xFFFF;
         return (hi <<8 | lo) & 0xFFFF;
     }
     // read16bug emulates a 6502 bug that caused the low byte to wrap without
 // incrementing the high byte
     public int read16bug(int address){
-        int a = address & 0xFFFF;
+        int a = address;
         int b = (a & 0xFF00 | (((a&0xFF)+1) & 0xFFFF));
         cpu.incrementCycle(2);
         int lo = bus.read(a);
         int hi = bus.read(b);
-        return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF))  & 0xFFFF;
+        return ((hi & 0xFFFF) <<8 | (lo & 0xFFFF));
     }
     // push pushes a byte onto the stack
     private void push(int value){
@@ -502,8 +502,6 @@ public class Register {
     }
 
 
-
-    //TODO : Zahl in die einzelnen FLAGS umwandeln.  also die einzelnen BITS aus getP().
     //Register setters
     public void incrementPC() {
         this.pc = (pc + 1) & 0xFFFF; //sicher gehen, dass er 0xFFFF nicht überschreitet.
@@ -517,23 +515,27 @@ public class Register {
     }
     public void decrementSP() { setSP(sp-1);/*(sp - 1) & 0xFFFF; */}
     public void setPC(int pc){this.pc = (pc & 0xFFFF);}
-    // versuche 0x100 in 0xFF zu ändern.
-    // versuche 0x100 in 0xFF zu ändern.
     public void setSP(int sp) {
         this.sp = (sp& 0xFF);
     }
-    // versuche 0x100 in 0xFF zu ändern.
     public void setA(int a) { this.a = (a & 0xFF); }
     public void setX(int x) {
         this.x = (x & 0xFF);
     }
-    // versuche 0x100 in 0xFF zu ändern.
     public void setY(int y) {
         this.y = (y & 0xFF);
     }
-    // versuche 0x100 in 0xFF zu ändern.
     public void setP(int p) {
-        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,((p & 0xFF) & 1));
+      /*  flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,((p & 0xFF) & 1));
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,((p & 0xFF) >> 1) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,((p & 0xFF) >> 2) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,((p & 0xFF) >> 3) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.BREAKCOMMAND,((p & 0xFF) >> 4) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.UNKNOWN,((p & 0xFF) >> 5) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,((p & 0xFF) >> 6) & 1);
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,((p & 0xFF) >> 7) & 1);
+    */
+        flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY,((p & 0xFF) >> 0) & 1);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO,((p & 0xFF) >> 1) & 1);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE,((p & 0xFF) >> 2) & 1);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE,((p & 0xFF) >> 3) & 1);
@@ -542,6 +544,7 @@ public class Register {
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW,((p & 0xFF) >> 6) & 1);
         flags.setProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE,((p & 0xFF) >> 7) & 1);
     }
+
 
     //Register getters
     public int getSP() {
@@ -552,7 +555,17 @@ public class Register {
     }
     public int getA() { return a & 0xFF; }
     public int getP() {
-        String sum="";
+        int f = 0;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.CARRY) << 0) ;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.ZERO) << 1) ;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.INTERRUPTDISABLE) << 2) ;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.DECIMALMODE) << 3) ;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.BREAKCOMMAND) << 4) ;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.UNKNOWN) << 5) ;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.OVERFLOW) << 6) ;
+        f |= (flags.getProcessorStatusFlag(Flags.ProcessorStatusFlags.NEGATIVE) << 7) ;
+        return f & 0xFF;
+        /*String sum="";
         for(Flags.ProcessorStatusFlags value : flags.getProcessorStatusFlagArray()){
             sum = value.getVal() + sum;
         }
@@ -568,6 +581,8 @@ public class Register {
         }
 
         return binToZahl;
+        */
+
     }
     public int getY() {
         return y & 0xFF;

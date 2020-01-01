@@ -28,14 +28,14 @@ public class CPU {
        // reset();
         register.setPC(0xC000);
         register.setP(0x24);
-        register.setSP(0xfd);
+        register.setSP(0xFD);
 
 
         while(true) {
 
             clock();
             try {
-                sleep(5);
+                sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -62,7 +62,7 @@ public class CPU {
                         irq();
                         break;
                 }
-
+                flags.setInterruptFlags(Flags.Interrupt.interruptNone);
                 //liest vielleicht nicht mehr vom ROm, sondern direkt aus dem RAM ???
                 incrementCycle(1);
                 instruction = bus.read(register.getPC());
@@ -184,15 +184,14 @@ public class CPU {
 
     private void absolutey(Opcode currentOpcode){
 
-        int addr =register.read16(register.getPC()+1) + (register.getY()& 0xFFFF);
+        int addr[] = {register.read16(register.getPC()+1) + (register.getY())};
 
-        if(pageCrossing(addr-(register.getY()& 0xFFFF),addr)){
+        if(pageCrossing(addr[0]-(register.getY()& 0xFFFF),addr[0])){
             incrementCycle(5);
-            currentOpcode.operation(new int[]{addr});
         }else{
             incrementCycle(4);
-            currentOpcode.operation(new int[]{addr});
         }
+        currentOpcode.operation(addr);
 
     }
     private void indirect(Opcode currentOpcode){
@@ -212,7 +211,7 @@ public class CPU {
 
 
         int []value = {register.read16bug(((bus.read(register.getPC()+1)&0xFFFF)&0xFFFF)+(register.getY()& 0xFFFF))};
-        if(pageCrossing(value[0]-register.getY(), value[0])){
+        if(pageCrossing(value[0]-(register.getY()&0xFFFF), value[0])){
             incrementCycle(6);
             currentOpcode.operation(value);
         }else{
@@ -234,10 +233,11 @@ public class CPU {
         else{
             value[0] = register.getPC() + 2 + offset - 0x100;
         }
+
         currentOpcode.operation(value);
 
     }
-
+    //TODO sind die increments wichtig ??
     private void zeropage(Opcode currentOpcode) {
 
         int[] val = {(bus.read(register.getPC()+1)) & 0xFFFF};
