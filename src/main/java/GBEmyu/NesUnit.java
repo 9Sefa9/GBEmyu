@@ -1,8 +1,14 @@
 package GBEmyu;
 
 
+import GBEmyu.utilities.Logger;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class NesUnit {
     //Alle Instructions aus dem Spiel
@@ -25,10 +31,14 @@ public class NesUnit {
     private int fourScreen;
     private int mapperType;
 
-    public NesUnit(int []allInstructions) {
+    public NesUnit(String loadPath) {
         prgBanks = new ArrayList<>();
         chrBanks = new ArrayList<>();
-		this.allInstructions = allInstructions;
+
+		//Lade Spiel.
+		load(loadPath);
+
+		//bearbeite / entnehme die Informationen.
 		process(this.allInstructions);
 	}
 
@@ -39,7 +49,7 @@ public class NesUnit {
     }
 
 
-    private NesUnit createNesHeader(int[] allInstructions) {
+    private void createNesHeader(int[] allInstructions) {
 		//header identifizieren und initialisieren. Die ersten 16 Byte.
 		headerInformation = new int[16];
 		System.arraycopy(allInstructions, 0, headerInformation, 0, 16);
@@ -63,7 +73,6 @@ public class NesUnit {
 
         mapperType = (romControlByte >> 4) | (headerInformation[7] & 0xF0);
 
-		return this;
 	}
     private void createPRGRom() {
         for (int i = 0; i < this.prgRomSize; i++) {
@@ -83,23 +92,60 @@ public class NesUnit {
         }
     }
     private void createCHRRom() {
+        /*
+        // provide chr-rom/ram if not in file
+	            if header.NumCHR == 0 {
+		        chr = make([]byte, 8192)
+	    }
+         */
         for (int i = 0; i < this.chrRomSize; i++) {
-            this.chrBanks.add(i, new int[4096]);
+            this.chrBanks.add(i, new int[8192]);
         }
         //Initialisiere die ersten beiden banks.
         int offset = 16; //weil die ersten 16 header sind.
         for (int i = 0; i < getPrgRomSize(); i++) {
-            for (int j = 0; j < 4096; j++) {
+            for (int j = 0; j < 8192; j++) {
                 if (offset + j >= allInstructions.length) {
                     break;
                 } else {
                     this.chrBanks.get(i)[j] = (allInstructions[offset + j] & 0xFF);
                 }
             }
-            offset += 4096;
+            offset += 8192;
         }
     }
+    // read file
+    public void load(final String nesPath) {
+        File rom=null;
+        byte[] romBuffer=null;
+        FileInputStream fis=null;
 
+        try {
+            rom = new File(nesPath);
+            romBuffer = new byte[(int) rom.length()];
+            fis = new FileInputStream(rom);
+            fis.read(romBuffer);
+
+        } catch (IOException e) {
+            Logger.LOGGER.log(Level.WARNING, "Failed to open file!");
+            e.printStackTrace();
+        }
+        finally{
+            try{
+                if(fis != null)
+                    fis.close();
+            }catch (IOException i){
+                i.printStackTrace();
+            }
+        }
+
+        int[] allInstructions = new int[romBuffer.length];
+        for (int i = 0; i < romBuffer.length; i++) {
+            allInstructions [i] = (short) (romBuffer[i] & 0xFF);
+        }
+        //wichtig um später drauf zugreifen zu können.
+        this.allInstructions = allInstructions ;
+    }
 
     public int getPrgRomSize(){
 		return this.prgRomSize;

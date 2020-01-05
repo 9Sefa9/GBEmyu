@@ -16,7 +16,7 @@ public class Mapper0 {
 	//Memory Map hat ein Speicher von 2^16. Also 65535.
     private int[] allInstructions;
     private int[] cpuMemoryMap;
-    private NesUnit unit;
+    private Cartridge cartridge;
 	//private Mapper0 mapper;
 	//private APU apu;
 	//private PPU ppu;
@@ -26,8 +26,8 @@ public class Mapper0 {
 	    //erstellt komplette Speicher.
         cpuMemoryMap = new int[0x10000];
         Logger.LOGGER.log(Level.INFO,"Create Memory Map...:: "+String.format("0x%04X", cpuMemoryMap.length));
-		this.unit = load(nesPath);
-        Logger.LOGGER.log(Level.INFO,"NesUnit created :: "+this.unit);
+		this.cartridge = new Cartridge(new NesUnit(nesPath));
+        Logger.LOGGER.log(Level.INFO,"NesUnit created :: "+this.cartridge);
 		writePRG();
         Logger.LOGGER.log(Level.INFO,"PRG Mapping done.");
 		writeCHR();
@@ -39,7 +39,7 @@ public class Mapper0 {
 
 
     private void writePRG() {
-	    if(this.unit.getPrgRomSize()>2){
+	    if(this.cartridge.getPrgRomSize()>2){
             try {
                 throw new Exception("PRG-ROM SIZE OVER 2 !");
             } catch (Exception e) {
@@ -47,9 +47,9 @@ public class Mapper0 {
             }
         }
 
-	    if(this.unit.getPrgRomSize()>1){
-            int[] prgBank0 = this.unit.getPrgBanks().get(0);
-            int[] prgBank1 = this.unit.getPrgBanks().get(1);
+	    if(this.cartridge.getPrgRomSize()>1){
+            int[] prgBank0 = this.cartridge.getPrgBanks().get(0);
+            int[] prgBank1 = this.cartridge.getPrgBanks().get(1);
             // Load the two first banks into memory.
             for (int i=0; i<prgBank0.length;i++){
                 write(0x8000+i,prgBank0[i]);
@@ -59,7 +59,7 @@ public class Mapper0 {
             }
         }else{
             // Load the one bank into both memory locations:
-            int[] prgBank0 = this.unit.getPrgBanks().get(0);
+            int[] prgBank0 = this.cartridge.getPrgBanks().get(0);
 
             for (int i=0; i<prgBank0.length;i++){
                 write(0x8000+i,prgBank0[i]);
@@ -91,40 +91,6 @@ public class Mapper0 {
         */
     }
 
-    // read file
-    public NesUnit load(final String nesPath) {
-        File rom=null;
-        byte[] romBuffer=null;
-        FileInputStream fis=null;
-
-        try {
-            rom = new File(nesPath);
-            romBuffer = new byte[(int) rom.length()];
-            fis = new FileInputStream(rom);
-            fis.read(romBuffer);
-
-        } catch (IOException e) {
-            Logger.LOGGER.log(Level.WARNING, "Failed to open file!");
-            e.printStackTrace();
-        }
-        finally{
-            try{
-                if(fis != null)
-                    fis.close();
-            }catch (IOException i){
-                i.printStackTrace();
-            }
-        }
-
-        int[] allInstructions = new int[romBuffer.length];
-        for (int i = 0; i < romBuffer.length; i++) {
-            allInstructions [i] = (short) (romBuffer[i] & 0xFF);
-        }
-        //wichtig um später drauf zugreifen zu können.
-        this.allInstructions = allInstructions ;
-        //INes Format anwenden und zugreifbar machen.
-        return new NesUnit(this.allInstructions);
-    }
 
     private void mirrorRam(int address, int value) {
 	    // 0x123 => 0x923 => B23 => 1923
